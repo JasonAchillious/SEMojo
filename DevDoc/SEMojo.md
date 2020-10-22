@@ -8,7 +8,6 @@
 
 ### Executive abstract 
 <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="100%" color=#987cb9 SIZE=1>
-
 The main purpose of this project is to design a website to provide the services of storing and uploading files, sharing files, online editing and multi-person collaboration. Using this website, Administrators can manage user permissions, test files uploaded by users, and provide solutions for user feedback. Users can upload, download files, access files made public by others, and provide comments and questions. This site solves the problem of lack of communication between users and providers, and users need open source technologies that are difficult to solve. This website aims to provide a convenient platform for administrators to publish information, users to query files, upload and download. In addition, a custom user interface was designed for each student to "follow" their areas of interest to simplify their use.
 
 
@@ -31,7 +30,7 @@ There are also some developers or small companies who want to use these techniqu
 
 This project aims to achieve the following functions:
 
-1. Develop a user-friendly website for these users to upload, save, share, update code and files.
+1. Develop a user-friendly website for these users to upload, save, share, update code and files. 
 2. Create a forum for users and developers to communicate, and for users and administrators to give feedback.
 
 
@@ -98,6 +97,7 @@ Shen believes that there are still many people who are troubled by this technica
 #### Requirements Summary
 
 <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="80%" color=#987cb9 SIZE=1>
+
 - Contributor:
   - Upload code, executable file in particular form and store it in his/her repository.
   - Manage his/her technologies. Such as: organize folder, make it available or not, update.
@@ -107,16 +107,13 @@ Shen believes that there are still many people who are troubled by this technica
   - Use search function to find and get services on the website quickly and accurately.
   - Manage his balance and he can transfer in or withdraw.
   - Manage his favorite program and purchased program.
-  - Download the program quickly from the web page.
+  - Download the program from the web page.
 - Administrator:
   - Test whether the program contributor uploaded runs successfully
   - Provides a repository to store every programs
   - Manage or organize the stored technologies
   - Manage the privilege of Customers and Contributors 
   - Manage members of the Web
-
-
-
 
 #### Design Document
 
@@ -141,10 +138,11 @@ Shen believes that there are still many people who are troubled by this technica
 #### Feasibility
 
 <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="80%" color=#987cb9 SIZE=1>
+Though we have tried our level best to design the system flawless and user-friendly by using modern technologies, some minor functional and design inconsistencies may exist in our order due to time constraints, design of the prototype, and cost constraints. The limitation of SEMojo is:
 
-Though we have tried our level best to design the system flawless and user-friendly by using modern technologies, some minor functional and design inconsistencies may exist in our order due to time constraints, design of the prototype, and cost constraints. The limitation of SEMojo is: The built-in search function of the website is based on the most basic inverted index structure and vector space model, so it may not be able to return perfect results like the Google search engine. However, we will try our best to improve matching accuracy through modifying our evaluation function.
-
-
+- The built-in search function of the website is based on the most basic inverted index structure and vector space model, so it may not be able to return perfect results like the Google search engine. However, we will try our best to improve matching accuracy through modifying our evaluation function. 
+- We will try our best to test the uploaded programs. But the test function may need users to give some test examples and we can not guarantee the correctness of users' program.
+- Consistency between the front end and the back end is also a problem for us. We will try our best to build a system that is as fast as possible, with correct transfers between front end and back end.
 
 
 
@@ -154,7 +152,7 @@ Though we have tried our level best to design the system flawless and user-frien
 
 FrontEnd: Vue(vue.js, Element UI), 
 
-BackEnd: Springboot, CI: Jenkins, CD: docker, K8S, Distributed configuration storage: zookeeper
+BackEnd: Springboot
 
 
 
