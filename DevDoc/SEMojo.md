@@ -150,12 +150,74 @@ Though we have tried our level best to design the system flawless and user-frien
 
 <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="80%" color=#987cb9 SIZE=1>
 
-FrontEnd: Vue(vue.js, Element UI), 
+Since we hava four roles, visitor, customer, contributor and administrator, we use a common framework, spring security, for authentication and authorization. And we have designed some APIs for each role by refering to https://api.github.com/ and https://docs.github.com/en/free-pro-team@latest/rest : 
 
-BackEnd: Springboot
+- visitor:
+  - "code_search_url": "https://semojo.com/search/code?q={query}{&page,per_page,sort,order}"
+  - "label_search_url": "https://semojo.com/search/labels?q={query}&repository_id={repository_id}{&page,per_page}"
+  - "repository_search_url": "https://semojo.com/search/repositories?q={query}{&page,per_page,sort,order}"
+  - "issue_search_url": "https://api.github.com/search/issues?q={query}{&page,per_page,sort,order}"
+  - "contributor_search_url": "https://semojo.com/search/contributors?q={query}{&page,per_page,sort,order}"
+  - "issues_url": "https://api.github.com/issues"
+- custormer:
+  - "custormer_url": "https://semojo.com/custormers/{custormer}"
+  - "followers_url": "https://semojo.com/custormers/followers"
+  - "transaction_url": "https://semojo.com/custormers/transactions"
+  - "technique_url": "https://semojo.com/custormers/techniques"
+- contributor:
+  - "contributor_artifact_url": "https://semojo.com/contributors/{contributor}/repos{?type,page,per_page,sort}"
+  - "technique_url": "https://semojo.com/contributors/techniques"
+- Administrator
+  - "authorizations_url": "https://semojo.com/authorizations"
+  - "user_management": "https://semojo.com/user"
+
+Remark: we follow the standard of restful API, so the HTTP verb defines our action. For example, the following is API definition of the openAPI format in swagger:
+
+```
+/contributors/{contributorId}/technique/:
+    post:
+      tags:
+      - "contributor"
+      summary: "uploads an technique"
+      description: ""
+      operationId: "uploadFile"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "contributorId"
+        in: "path"
+        description: "ID of contributor who uploads"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "additionalMetadata"
+        in: "formData"
+        description: "Additional data to pass to server"
+        required: false
+        type: "string"
+      - name: "file"
+        in: "formData"
+        description: "file to upload"
+        required: false
+        type: "file"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/ApiResponse"
+      security:
+      - petstore_auth:
+        - "write:contributors"
+```
 
 
 
 #### Technologies
 
 <HR style="FILTER: progid:DXImageTransform.Microsoft.Glow(color=#987cb9,strength=10)" width="80%" color=#987cb9 SIZE=1>
+
+FrontEnd: Vue, Element UI, Boostrap
+
+BackEnd: Springboot, Spring Security, Docker
