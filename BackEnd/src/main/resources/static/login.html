@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<!-- import CSS -->
+	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- import Vue before Element -->
+	<script type="text/javascript" src="./js/vue.js"></script>
+	<!-- import JavaScript -->
+	<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+	<style>
+
+
+	div {		
+		display: relative;
+	}
+
+	
+	
+	.el-header, .el-footer {
+		display: relative;
+		background-color: #150E4A;
+		background-size: 100% 100%;
+		color: #333;
+		text-align: center;
+		line-height: 60px;
+	}
+
+	.el-main {
+		display: relative;
+		background: url("./images/background.jpg");
+		background-color: #E9EEF3;
+		background-position: center top;
+		background-size: 100% 100%;
+		color: #333;
+		text-align: center;
+		height:620px;
+		line-height: 60px;
+	}
+
+	.fullscreen {
+		background-color: #FFFFFF;
+        width: 1520px;
+        height: 740px;
+        margin: 0 auto;
+        padding: 0;
+	}
+
+	.navigation_fontsize {
+		font-size: 17px;
+	}
+
+	.input {
+		display: absolute;
+		top: 36%;
+		left: 32.5%;
+		width: 22.5%;
+	}
+
+  	.input-with-select .el-input-group__prepend {
+    	background-color: #fff;
+  	}
+
+	#forgetpassword {
+		position: absolute;
+		top: 425px;
+		left: 1030px;
+		line-height: 20px;
+		width: 200px;
+	}
+
+	#signup {
+		position: absolute;
+		top: 452.5px;
+		left: 1057px;
+		line-height: 20px;
+		width: 200px;
+	}
+
+	#login {
+		position: absolute;
+		top: 430px;
+		left: 1330px;
+		width: 75px;
+	}
+
+	
+
+	</style>
+</head>
+
+<body>
+	<div id="app" class="fullscreen">
+		<el-container>
+			<el-header>
+				<div align="left" style="width:100%;">
+					<div align="left" style="width:55%; display:inline-block;">
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+						<a href="homepage.html">
+						<img border="0" src="images/logo.png" style="height:45px; width:75px"/>
+						<p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
+						</a>
+						<el-link 
+							href="product.html" 
+							target="_blank" 
+							style="color:#FFFFFF; text-decoration:none; width:10%"
+							class=navigation_fontsize
+							>Products
+						</el-link>
+						<el-link 
+							href="support.html" 
+							target="_blank" 
+							style="color:#FFFFFF; text-decoration:none; width:10%"
+							class=navigation_fontsize
+							>Support
+						</el-link>
+						<el-link 
+							href="forum.html" 
+							target="_blank" 
+							style="color:#FFFFFF; text-decoration:none; width:10%"
+							class=navigation_fontsize
+							>Forum
+						</el-link>
+					</div>
+
+					<div align="right" style="width:40%; display:inline-block" >
+						<el-input 
+							placeholder="Search SEMojo" 
+							v-model="search" 
+							class="input-with-select" 
+							style="width: 40%">
+							<el-button slot="append" icon="el-icon-search"></el-button>
+						</el-input>
+						<el-link 
+							href="login.html" 
+							target="_blank" 
+							style="color:#FFFFFF; width:15%;text-decoration:none"
+							class=navigation_fontsize
+							>Sign in
+						</el-link>
+						<el-link
+							href="signup.html"
+							:underline="false">
+						<el-button type="primary">Sign up</el-button>
+						</el-link>
+					</div>
+				</div>
+				
+			</el-header>
+		
+			<el-main>
+				<el-input
+				  	placeholder="input username"
+				  	v-model="username"
+				  	class="input"
+				  	clearable>
+				</el-input>
+				<br>
+				<el-input 
+					placeholder="input password" 
+					v-model="password"
+					class="input" 
+					show-password>
+				</el-input>
+				<br>
+				<el-link 
+					:underline="false"
+					href="http://baidu.com" 
+					type="info" 
+					target="_blank"
+					id="forgetpassword" 
+					>
+					forget password?
+				</el-link>
+				<el-link 
+					:underline="false"
+					href="http://baidu.com" 
+					type="info" 
+					target="_blank"
+					id="signup" 
+					>
+					New to SEMojo? Sign up!
+				</el-link>
+				<el-button type="primary" id="login">login</el-button>
+			</el-main>
+
+			<el-footer>about us: </el-footer>
+		</el-container>
+	</div>
+	<script>
+		var page = new Vue({
+			el: '#app',
+			data: {
+				search: '',
+				username: '',
+				password: ''
+			}
+		})
+	</script>
+</body>
+
+
+
+
+
+
+</html>
