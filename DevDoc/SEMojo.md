@@ -70,7 +70,7 @@ Shen believes that there are still many people who are troubled by this technica
 
 <center class="half">
 <img src=".\picture\product.png" alt="image-product" height="250" />
-<img src=".\picture\searchpage.png" alt="image-search" height="250"  />
+<img src=".\picture\searchPage.png" alt="image-search" height="250"  />
 </center>
 
 3. The styles of admin page, customer page and contributor page are similar. For every page, the left part is personal information that can be edited and the right are the special functions of different characters. Customers can view purchased products and products in the shopping cart. Contributors can view and edit their uploaded products, as well as add and edit new products to be uploaded. Administrators can manage user permission applications and products uploaded by contributors. It is worth noting that customers can enter the contributor mode by clicking the creation center button.
