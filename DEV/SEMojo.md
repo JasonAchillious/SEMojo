@@ -141,7 +141,7 @@ Shen believes that there are still many people who are troubled by this technica
 Though we have tried our level best to design the system flawless and user-friendly by using modern technologies, some minor functional and design inconsistencies may exist in our order due to time constraints, design of the prototype, and cost constraints. The limitation of SEMojo is:
 
 - The built-in search function of the website is based on the most basic inverted index structure and vector space model, so it may not be able to return perfect results like the Google search engine. However, we will try our best to improve matching accuracy through modifying our evaluation function. 
-- We will try ourbest to test the uploaded programs. But the test function may need users to give some test examples and we can not guarantee the correctness of users' program.
+- We will try our best to test the uploaded programs. But the test function may need users to give some test examples and we can not guarantee the correctness of users' program.
 - Consistency between the front end and the back end is also a problem for us. We will try our best to build a system that is as fast as possible, with correct transfers between front end and back end.
 
 
