@@ -62,35 +62,35 @@ Shen believes that there are still many people who are troubled by this technica
 1. The homepage is mainly responsible for showing the function and meaning of the platform and dynamically displaying recent popular products. In addition, the platform also provides entry links to other functional pages.
 
 <center class="half">
-<img src="C:\Users\hp\Desktop\typora-user-images\image-20201019233202963.png" alt="image-20201019233202963"  height="200" />
-<img src="C:\Users\hp\Desktop\typora-user-images\image-20201019233630621.png" alt="image-20201019233630621" height="200"  />
+<img src=".\picture\homepage.png" alt="image-homepage"  height="200" />
+<img src=".\picture\login.png" alt="image-login" height="200"  />
 </center>
 
 2. The products page displays important information about all products, including introduction, prices, and ratings. Users can search for products they want based on adjusting tags and sorting criteria. The search page  also allows users to adjust the search object to get the results they want.
 
 <center class="half">
-<img src="C:\Users\hp\Desktop\typora-user-images\image-20201019235158092.png" alt="image-20201019235158092" height="250" />
-<img src="C:\Users\hp\Desktop\typora-user-images\image-20201019235227017.png" alt="image-20201019235227017" height="250"  />
+<img src=".\picture\product.png" alt="image-product" height="250" />
+<img src=".\picture\searchpage.png" alt="image-search" height="250"  />
 </center>
 
 3. The styles of admin page, customer page and contributor page are similar. For every page, the left part is personal information that can be edited and the right are the special functions of different characters. Customers can view purchased products and products in the shopping cart. Contributors can view and edit their uploaded products, as well as add and edit new products to be uploaded. Administrators can manage user permission applications and products uploaded by contributors. It is worth noting that customers can enter the contributor mode by clicking the creation center button.
 
 <center class=half>
-<img src="C:\Users\hp\Desktop\typora-user-images\image-20201020000443877.png" alt="image-20201020000443877"  height="150" />
-<img src="C:\Users\hp\Desktop\typora-user-images\image-20201020000506433.png" alt="image-20201020000506433"  height="150" />
-<img src="C:\Users\hp\Desktop\typora-user-images\image-20201020000533767.png" alt="image-20201020000533767"  height="150" />
+<img src=".\picture\customer.png" alt="image-customer"  height="150" />
+<img src=".\picture\contributor.png" alt="image-contributor"  height="150" />
+<img src=".\picture\administrator.png" alt="image-administrator"  height="150" />
 </center>
 
 4. On the left is the detailed page of the product information that customers can view. The right product page is for contributor to update and edit product.
 
 <center class="half">
-<img src="C:\Users\hp\Desktop\typora-user-images\image-20201020001127910.png" alt="image-20201020001127910" height="300" />
-<img src="C:\Users\hp\Desktop\typora-user-images\image-20201020001159933.png" alt="image-20201020001159933" height="300" />
+<img src=".\picture\productDetail.png" alt="image-productDetail" height="300" />
+<img src=".\picture\productForContributor.png" alt="image-productForContributor" height="300" />
 </center>
 
 5. We have designed a Q&A forum to realize the interaction of the three: customers, contributors and administrators. 
 
-   <img src="C:\Users\hp\Desktop\typora-user-images\image-20201020001517356.png" alt="image-20201020001517356" style="zoom:40%;" />
+   <img src=".\picture\Forum.png" alt="image-Forum" style="zoom:40%;" />
 
 
 
