@@ -75,7 +75,7 @@ Shen believes that there are still many people who are troubled by this technica
 
 3. The styles of admin page, customer page and contributor page are similar. For every page, the left part is personal information that can be edited and the right are the special functions of different characters. Customers can view purchased products and products in the shopping cart. Contributors can view and edit their uploaded products, as well as add and edit new products to be uploaded. Administrators can manage user permission applications and products uploaded by contributors. It is worth noting that customers can enter the contributor mode by clicking the creation center button.
 
-<center class=half>
+<center class="half">
 <img src=".\picture\customer.png" alt="image-customer"  height="150" />
 <img src=".\picture\contributor.png" alt="image-contributor"  height="150" />
 <img src=".\picture\administrator.png" alt="image-administrator"  height="150" />
