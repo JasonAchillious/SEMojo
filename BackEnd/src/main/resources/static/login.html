@@ -10,7 +10,7 @@
 	<script type="text/javascript" src="./js/vue.js"></script>
 	<!-- import JavaScript -->
 	<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<style>
 
 
@@ -184,7 +184,7 @@
 					>
 					New to SEMojo? Sign up!
 				</el-link>
-				<el-button type="primary" id="login">login</el-button>
+				<el-button type="primary" id="login" v-on:click="login">login</el-button>
 			</el-main>
 
 			<el-footer>about us: </el-footer>
@@ -197,8 +197,22 @@
 				search: '',
 				username: '',
 				password: ''
+			},
+			methods: {
+				login: function (event) {
+					axios.post('/login', { username: this.username, password: this.password},
+							{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}
+					).then(function (response) {
+						console.log(response);
+					}).catch(function (error) {
+						console.log(error);
+					});
+				}
 			}
 		})
+
+
+
 	</script>
 </body>
 
