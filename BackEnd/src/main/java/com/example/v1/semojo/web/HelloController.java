@@ -11,7 +11,7 @@ public class HelloController {
         return"hello";
     }
 
-    @GetMapping("/custormer/hello")
+    @GetMapping("/customer/hello")
     public String custormer() {
         return "custormer";
     }

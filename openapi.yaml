@@ -1,31 +1,166 @@
 openapi: 3.0.0
 info:
-  description: "This file is about the APIs for SEMojo project: a website to provide services of advanced software engineering techniques (automated testing, repairing, code generation, code summarization, etc.)"
   version: "1.0.0"
   title: "Semojo APIs"
-  termsOfService: "http://swagger.io/terms/"
+  description: "This file is about the APIs for SEMojo project: a website to provide services of advanced software engineering techniques (automated testing, repairing, code generation, code summarization, etc.)"
   contact:
-    email: "11711621@swagger.io"
+    email: "11711621@mail.sustech.edu.cn"
   license:
     name: "GPL-3.0 License"
-host: "47.102.206.216"
+    
+# host: "47.102.206.216"
+# basePath: "semojo/v1"
 
-basePath: "semojo/v1"
+servers:
+  - url: 47.102.206.216/v1
+
+
 tags:
-- name: "store"
-  description: "Access to Petstore orders"
 - name: "customer"
   description: "Operations about customer"
   externalDocs:
-    description: "github repository read me"
+    description: "readme of github repository"
     url: "https://github.com/JasonAchillious/SEMojo"
 - name: "contributor"
   description: "Operations about contributor"
 - name: "admin"
   description: "Operations about administrator"
-schemes:
-- "http"
+  
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: spring security
+  schemas:
+    errorMsg:
+      type: object
+      properties:
+        error_msg:
+          type: string
+      
+security:
+  - BasicAuth: [jjwt, role inherent]
+      
 
 paths:
   /login:
-     
+    post:
+      summary: Sign In
+      description: native interface of spring security
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    enum: ["admin", "customer", "contributor"]
+        '401':
+          description: login fail
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/errorMsg'
+                
+  /registration:
+    post:
+      summary: register a user as customer or contributor
+      description: nil
+      parameters:
+        - in: query
+          name: type
+          required: true
+          schema:
+            type: string
+            enum: ["customer", "contributor"]
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+                matchingPassword:
+                  type: string
+                email:
+                  type: string
+      responses:
+        '200':
+           description: OK
+           content:
+             application/json:
+               schema:
+                 type: object
+                 properties:
+                   token:
+                     type: string
+                   role:
+                     type: string
+                     enum: ["customer", "contributor"]
+               
+        '400':
+           description: register failure
+           content:
+             application/json:
+               schema:
+                 $ref: '#/components/schemas/errorMsg'
+                 
+  /contributor/{username}/upload:
+    post:
+      summary: upload code files, docs and artifacts
+      description: only contributor and admin can upload
+      parameters:
+        - in: query
+          name: type
+          required: true
+          description: type of the uploaded file
+          schema:
+            type: string
+            enum: ["code", "doc", "artifact"]
+        - in: cookie
+          name: token
+          description: jwt for the user
+          schema:
+            type: string
+        - in: path
+          name: username
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileName:
+                  type: string
+                  format: binary
+      responses:
+        200:
+          description: upload success
+            
+            
+        
+
+      
+  

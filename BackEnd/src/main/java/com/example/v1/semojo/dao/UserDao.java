@@ -4,5 +4,5 @@ import com.example.v1.semojo.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserDao extends JpaRepository<User, Long> {
-    User findUserByUsername(String username);
+    User findUsersByName(String name);
 }

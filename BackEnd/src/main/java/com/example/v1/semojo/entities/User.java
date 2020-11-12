@@ -1,104 +1,56 @@
 package com.example.v1.semojo.entities;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import net.bytebuddy.dynamic.loading.InjectionClassLoader;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
-@Entity(name = "semojo_user")
-public class User implements UserDetails {
+@Entity
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column(unique = true, nullable = false, length = 50)
-    private String username;
-    private String password;
-    private boolean accountNonExpired;
-    private boolean accountNonLocked;
-    private boolean credentialsNonExpired;
-    private boolean enabled;
-    private int role;
+    private long Id;
+    private String name;
+    @OneToOne(fetch = FetchType.EAGER)
+    private UserAuth auth;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        if (role == 1){
-           authorities.add(new SimpleGrantedAuthority("CUSTOMER"));
-        }else if (role == 2){
-            authorities.add(new SimpleGrantedAuthority("CONTRIBUTOR"));
-        }else if (role == 3){
-            authorities.add(new SimpleGrantedAuthority("ADMINISTRATOR"));
-        }
-        return authorities;
+    @OneToOne(fetch = FetchType.LAZY)
+    private UserInfo info;
+
+    public com.example.v1.semojo.domain.User convertToDomainUser(){
+        return new com.example.v1.semojo.domain.User(
+                this.Id,
+                this.name,
+                (this.auth == null) ? 0 : this.auth.getId(),
+                (this.info == null) ? 0 : this.info.getId()
+        );
     }
 
-    @Override
-    public String getPassword() {
-        return password;
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public String getUsername() {
-        return username;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return accountNonExpired;
+    public UserAuth getAuth() {
+        return auth;
     }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
+    public void setAuth(UserAuth auth) {
+        auth.setUser(this);
+        this.auth = auth;
     }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
+    public UserInfo getInfo() {
+        return info;
     }
 
-    @Override
-    public boolean isEnabled() {
-        return enabled;
+    public void setInfo(UserInfo info) {
+        info.setUser(this);
+        this.info = info;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setAccountNonExpired(boolean accountNonExpired) {
-        this.accountNonExpired = accountNonExpired;
-    }
-
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
-    }
-
-    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
-        this.credentialsNonExpired = credentialsNonExpired;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public int getRole() {
-        return role;
-    }
-
-    public void setRole(int role) {
-        this.role = role;
-    }
 }

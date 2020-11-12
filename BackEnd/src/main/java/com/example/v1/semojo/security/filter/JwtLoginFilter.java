@@ -1,6 +1,6 @@
 package com.example.v1.semojo.security.filter;
 
-import com.example.v1.semojo.entities.User;
+import com.example.v1.semojo.entities.UserAuth;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -31,9 +31,9 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest req,
                                                 HttpServletResponse resp)
             throws AuthenticationException, IOException, ServletException {
-        User user = new ObjectMapper().readValue(req.getInputStream(), User.class);
+        UserAuth userAuth = new ObjectMapper().readValue(req.getInputStream(), UserAuth.class);
         return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
-                user.getUsername(), user.getPassword()));
+                userAuth.getUsername(), userAuth.getPassword()));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
                 .claim("authorities", roleStrBuf)
                 .setSubject(authResult.getName())
                 .setExpiration(new Date(System.currentTimeMillis() + 60*1000))
-                .signWith(SignatureAlgorithm.ES256, "zzx@11711621")
+                .signWith(SignatureAlgorithm.HS512, "zzx@11711621")
                 .compact();
         response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
