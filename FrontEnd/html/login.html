@@ -11,8 +11,6 @@
 		display: relative;
 	}
 
-	
-	
 	.el-header, .el-footer {
 		display: relative;
 		background-color: #150E4A;
@@ -46,41 +44,9 @@
 		font-size: 17px;
 	}
 
-	.input {
-		display: absolute;
-		top: 36%;
-		left: 32.5%;
-		width: 22.5%;
-	}
-
   	.input-with-select .el-input-group__prepend {
     	background-color: #fff;
   	}
-
-	#forgetpassword {
-		position: absolute;
-		top: 425px;
-		left: 1030px;
-		line-height: 20px;
-		width: 200px;
-	}
-
-	#signup {
-		position: absolute;
-		top: 452.5px;
-		left: 1057px;
-		line-height: 20px;
-		width: 200px;
-	}
-
-	#login {
-		position: absolute;
-		top: 430px;
-		left: 1330px;
-		width: 75px;
-	}
-
-	
 
 	</style>
 </head>
@@ -145,42 +111,44 @@
 			</el-header>
 		
 			<el-main>
-				<el-input
-				  	placeholder="input username"
-				  	v-model="username"
-				  	class="input"
-				  	clearable>
-				</el-input>
-				<br>
-				<el-input 
-					placeholder="input password" 
-					v-model="password"
-					class="input" 
-					show-password>
-				</el-input>
-				<br>
-				<el-link 
-					:underline="false"
-					href="http://baidu.com" 
-					type="info" 
-					target="_blank"
-					id="forgetpassword" 
-					>
-					forget password?
-				</el-link>
-				<el-link 
-					:underline="false"
-					href="http://baidu.com" 
-					type="info" 
-					target="_blank"
-					id="signup" 
-					>
-					New to SEMojo? Sign up!
-				</el-link>
-				<el-button type="primary" id="login">login</el-button>
-			</el-main>
+				<div style="margin-left: 940px;margin-top: 235px; width: 450px" align="left">
+					<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+						<el-form-item prop="username">
+							<el-input placeholder="input username" v-model="ruleForm.username" clearable></el-input>
+						</el-form-item>
 
-			<el-footer>about us: </el-footer>
+						<el-form-item prop="password">
+							<el-input placeholder="input password" v-model="ruleForm.password" clearable show-password></el-input>
+						</el-form-item>
+					</el-form>
+
+					<div style="margin-left: 100px; display: flex; line-height: 25px">
+						<div style="width: 79.5%;">
+							<el-link
+								:underline="false"
+								href="http://baidu.com"
+								type="info"
+								target="_blank"
+								>
+								forget password?
+							</el-link>
+							<br>
+							<el-link
+								:underline="false"
+								href="signup.html"
+								type="info"
+								target="_blank"
+								>
+								New to SEMojo? Sign up!
+							</el-link>
+						</div>
+						<div style="width: 20%; margin-top: 10px" align="right">
+							<el-button type="primary" @click="submitForm('ruleForm')">login</el-button>
+						</div>
+					</div>
+				</div>
+			</el-main>
+			<el-footer></el-footer>
 		</el-container>
 	</div>
 
@@ -192,15 +160,46 @@
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
 <script>
-	var page = new Vue({
-		el: '#app',
-		data: {
+var loginpage = new Vue({
+	el: '#app',
+	data() {
+		var checkPassword = (rule, value, callback) => {
+			if (this.ruleForm.password.length>=18) {
+				callback(new Error('please input password within 18 characters'));
+			} else {
+				callback();
+			}
+		};
+		return {
 			search: '',
-			username: '',
-			password: ''
+			ruleForm: {
+				username: '',
+				password: '',
+			},
+			rules: {
+				username: [
+					{ required: true, message: 'please input username', trigger: 'blur' }
+				],
+				password: [
+					{ required: true, message: 'please input password', trigger: 'blur' },
+					{ validator: checkPassword, trigger: 'blur' }
+				],
+			},
 		}
-	})
+	},
+	methods: {
+		submitForm(formName) {
+			this.$refs[formName].validate((valid) => {
+				if (valid) {
+					alert('submit!');
+				} else {
+					console.log('error submit!!');
+					return false;
+				}
+			});
+		},
+	}
+})
 </script>
-
 
 </html>
