@@ -12,6 +12,8 @@ public class TestUserAuthLoginDB {
 
     @Autowired
     UserAuthDao userAuthDao;
+
+
     @Test
     void contextLoads() {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

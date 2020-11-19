@@ -1,35 +1,22 @@
-package com.example.v1.semojo.entities;
+package com.example.v1.semojo.api.model;
 
-import javax.persistence.*;
-
-@Entity
-public class UserInfo {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(unique = true, nullable = false, length = 100)
+public class UserInfoModel {
+    
+    private String name;
     private String email;
     private String gender;
     private String address;
     private String phoneNum;
     private String qqNum;
     private String weChatNum;
-    private String portrait;
 
-    @OneToOne(mappedBy = "info")
-    private User user;
 
-    public void setUser(User user){
-        user.setInfo(this);
-        this.user = user;
+    public String getName() {
+        return name;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -80,15 +67,4 @@ public class UserInfo {
         this.weChatNum = weChatNum;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public String getPortrait() {
-        return portrait;
-    }
-
-    public void setPortrait(String portrait) {
-        this.portrait = portrait;
-    }
 }
