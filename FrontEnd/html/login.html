@@ -112,17 +112,23 @@
 		
 			<el-main>
 				<div style="margin-left: 940px;margin-top: 235px; width: 450px" align="left">
-					<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-						<el-form-item prop="username">
-							<el-input placeholder="input username" v-model="ruleForm.username" clearable></el-input>
-						</el-form-item>
+<!--					<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" method="post" action="/login">-->
+<!--						<el-form-item prop="username">-->
+<!--							<el-input placeholder="input username" v-model="ruleForm.username" clearable></el-input>-->
+<!--						</el-form-item>-->
 
-						<el-form-item prop="password">
-							<el-input placeholder="input password" v-model="ruleForm.password" clearable show-password></el-input>
-						</el-form-item>
-					</el-form>
+<!--						<el-form-item prop="password">-->
+<!--							<el-input placeholder="input password" v-model="ruleForm.password" clearable show-password></el-input>-->
+<!--						</el-form-item>-->
+<!--					</el-form>-->
 
-					<div style="margin-left: 100px; display: flex; line-height: 25px">
+					<form method="post" action="/login" align="right" style="line-height: 40px">
+						<p><input type="text" id="username" name="username" placeholder="Input username.." style="width: 300px" v-model="username"></p>
+						<p><input type="password" id="password" name="password" placeholder="Input password.." style="width: 300px" v-model="password"></p>
+						<button type="submit">login</button>
+					</form>
+
+					<div style="position: absolute; top: 428px; left: 1110px; line-height: 24px; width: 225px">
 						<div style="width: 79.5%;">
 							<el-link
 								:underline="false"
@@ -142,9 +148,6 @@
 								New to SEMojo? Sign up!
 							</el-link>
 						</div>
-						<div style="width: 20%; margin-top: 10px" align="right">
-							<el-button type="primary" @click="submitForm('ruleForm')">login</el-button>
-						</div>
 					</div>
 				</div>
 			</el-main>
@@ -163,41 +166,13 @@
 var loginpage = new Vue({
 	el: '#app',
 	data() {
-		var checkPassword = (rule, value, callback) => {
-			if (this.ruleForm.password.length>=18) {
-				callback(new Error('please input password within 18 characters'));
-			} else {
-				callback();
-			}
-		};
 		return {
 			search: '',
-			ruleForm: {
-				username: '',
-				password: '',
-			},
-			rules: {
-				username: [
-					{ required: true, message: 'please input username', trigger: 'blur' }
-				],
-				password: [
-					{ required: true, message: 'please input password', trigger: 'blur' },
-					{ validator: checkPassword, trigger: 'blur' }
-				],
-			},
+			username: '',
+			password: '',
 		}
 	},
 	methods: {
-		submitForm(formName) {
-			this.$refs[formName].validate((valid) => {
-				if (valid) {
-					alert('submit!');
-				} else {
-					console.log('error submit!!');
-					return false;
-				}
-			});
-		},
 	}
 })
 </script>
