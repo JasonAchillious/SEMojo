@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 
 @Service
@@ -52,4 +53,13 @@ public class UserService implements UserDetailsService {
         UserAuth auth = userAuthDao.findUserAuthByUsername(username);
         return auth.getUser();
     }
+
+    public void saveUser(User user, UserAuth auth, UserInfo info){
+        user.setAuth(auth);
+        user.setInfo(info);
+        userDao.save(user);
+        userAuthDao.save(auth);
+        userInfoDao.save(info);
+    }
+
 }

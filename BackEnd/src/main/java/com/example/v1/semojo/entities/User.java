@@ -36,7 +36,6 @@ public class User {
     }
 
     public void setAuth(UserAuth auth) {
-        auth.setUser(this);
         this.auth = auth;
     }
 
@@ -48,7 +47,5 @@ public class User {
         info.setUser(this);
         this.info = info;
     }
-
-
 
 }
