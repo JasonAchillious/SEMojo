@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS technology (
   lang INT NOT NULL,
   difficulty INT NOT NULL,
   score INT NOT NULL,
-  sales_volumn INT NOT NULL,
+  sales_volume INT NOT NULL,
   status VARCHAR(45) NOT NULL,
   create_time TIMESTAMP NOT NULL,
   update_time TIMESTAMP NOT NULL,

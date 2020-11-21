@@ -51,7 +51,6 @@ public class UserAuth implements UserDetails {
     }
 
     public void setUser(User user) {
-        user.setAuth(this);
         this.user = user;
     }
 

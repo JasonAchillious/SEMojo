@@ -20,7 +20,6 @@ public class UserInfo {
     private User user;
 
     public void setUser(User user){
-        user.setInfo(this);
         this.user = user;
     }
 
