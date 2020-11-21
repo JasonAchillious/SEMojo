@@ -4,7 +4,7 @@ package com.example.v1.semojo.api.model;
 import java.util.List;
 
 
-public class UserAuth {
+public class UserAuthModel {
     private Integer userId;
     private String username;
     private String role;
@@ -43,7 +43,7 @@ public class UserAuth {
 
     private List<String> auths;
 
-    public UserAuth(Integer userId, String username){
+    public UserAuthModel(Integer userId, String username){
         this.username = username;
         this.userId = userId;
     }

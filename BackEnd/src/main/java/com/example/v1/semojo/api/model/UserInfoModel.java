@@ -2,7 +2,7 @@ package com.example.v1.semojo.api.model;
 
 import java.io.Serializable;
 
-public class UserInfo {
+public class UserInfoModel {
     
     private String name;
     private String email;

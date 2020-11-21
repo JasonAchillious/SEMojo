@@ -1,10 +1,9 @@
 package com.example.v1.semojo.web;
 
 import com.example.v1.semojo.api.WebRespResult;
-import com.example.v1.semojo.api.model.UserAuth;
-import com.example.v1.semojo.api.model.UserInfo;
 import com.example.v1.semojo.api.model.UserAuthModel;
 import com.example.v1.semojo.api.model.UserInfoModel;
+
 import com.example.v1.semojo.api.util.UserRespResultUtil;
 import com.example.v1.semojo.entities.User;
 import com.example.v1.semojo.entities.UserAuth;
@@ -53,7 +52,7 @@ public class UserController {
             @ApiImplicitParam(name = "email", value = "email", required = true, dataType = "String")
     })
     @ApiResponses({
-            @ApiResponse(code=200, message="success", response= UserAuth.class),
+            @ApiResponse(code=200, message="success", response= UserAuthModel.class),
     })
     public WebRespResult register(String username, String password,
                                   String confirmPassword, String email
@@ -93,7 +92,7 @@ public class UserController {
             @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
     )
     public WebRespResult updateInfo(@PathVariable Long userId,
-                                    @RequestBody UserInfo userInfo){
+                                    @RequestBody UserInfoModel userInfoModel){
 
         return null;
     }
@@ -108,7 +107,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code=200, message="success", response= List.class)
     })
-    public WebRespResult<List<UserInfo>> getUserList(){
+    public WebRespResult<List<UserInfoModel>> getUserList(){
         return null;
     }
 
