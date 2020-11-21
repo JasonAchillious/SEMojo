@@ -1,8 +1,8 @@
 package com.example.v1.semojo.web;
 
 import com.example.v1.semojo.api.WebRespResult;
-import com.example.v1.semojo.api.model.UserAuthModel;
-import com.example.v1.semojo.api.model.UserInfoModel;
+import com.example.v1.semojo.api.model.UserAuth;
+import com.example.v1.semojo.api.model.UserInfo;
 import com.example.v1.semojo.services.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,17 +41,15 @@ public class UserController {
     @RequestMapping(value = "/register", method = POST, produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ApiOperation(value = "register a user")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "type", value = "type of registered user", required = true, dataType = "String"),
             @ApiImplicitParam(name = "username", value = "account", required = true, dataType = "String"),
             @ApiImplicitParam(name = "password", value = "password", required = true, dataType = "String"),
             @ApiImplicitParam(name = "confirmPassword", value = "string matching password", required = true, dataType = "String"),
             @ApiImplicitParam(name = "email", value = "email", required = true, dataType = "String")
     })
     @ApiResponses({
-            @ApiResponse(code=200, message="success", response= UserAuthModel.class),
+            @ApiResponse(code=200, message="success", response= UserAuth.class),
     })
-    public WebRespResult register(String type,
-                                  String username,
+    public WebRespResult register(String username,
                                   String password,
                                   String confirmPassword,
                                   String email){
@@ -61,8 +59,11 @@ public class UserController {
 
     @RequestMapping(value = "/info/{userId}", method = POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "updateInfo", notes = "update the Info", httpMethod = "POST")
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
+    )
     public WebRespResult updateInfo(@PathVariable Long userId,
-                                    @RequestBody UserInfoModel userInfo){
+                                    @RequestBody UserInfo userInfo){
 
         return null;
     }
@@ -71,17 +72,21 @@ public class UserController {
     @ApiOperation(value = "get the list", notes = "obtain the list of registered user", tags = "admin", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "start", value = "start index in database", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "limit", value = "the number of user in list", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "limit", value = "the number of user in list", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
     })
     @ApiResponses({
-            @ApiResponse(code=200, message="success", response= List.class),
+            @ApiResponse(code=200, message="success", response= List.class)
     })
-    public WebRespResult<List<UserInfoModel>> getUserList(){
+    public WebRespResult<List<UserInfo>> getUserList(){
         return null;
     }
 
     @RequestMapping(value = "admin/user/{userId}", method = DELETE)
     @ApiOperation(value = "delete user", notes = "delete user by id", tags = "admin", httpMethod = "DELETE")
+    @ApiImplicitParams(
+            @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
+    )
     @ApiResponses({
             @ApiResponse(code=200, message="success", response= WebRespResult.class),
     })

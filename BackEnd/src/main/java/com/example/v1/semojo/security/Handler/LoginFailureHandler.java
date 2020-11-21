@@ -16,6 +16,6 @@ public class LoginFailureHandler implements AuthenticationFailureHandler {
                                         HttpServletResponse resp,
                                         AuthenticationException e) throws IOException, ServletException {
         resp.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        resp.getWriter().write("{\"code\": \"500\", \"msg\": \"登录失败\"}");
+        resp.getWriter().write("{\"code\": \"400\", \"msg\": \"Bad Credentials\"}");
     }
 }

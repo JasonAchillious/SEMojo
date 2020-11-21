@@ -1,6 +1,8 @@
 package com.example.v1.semojo.api.model;
 
-public class UserInfoModel {
+import java.io.Serializable;
+
+public class UserInfo {
     
     private String name;
     private String email;

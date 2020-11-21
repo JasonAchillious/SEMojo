@@ -1,5 +1,7 @@
 package com.example.v1.semojo.api;
 
+
+
 public class WebRespResult<T> {
     private Integer code;
     private String msg;
@@ -7,6 +9,11 @@ public class WebRespResult<T> {
 
     public WebRespResult() {
         super();
+    }
+
+    public WebRespResult(Integer code, String msg){
+        this.code = code;
+        this.msg = msg;
     }
 
     public WebRespResult(Integer code, String msg, T data) {

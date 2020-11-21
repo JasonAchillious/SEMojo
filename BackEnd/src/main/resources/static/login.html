@@ -5,21 +5,12 @@
 	<!-- import CSS -->
 	<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-	<!-- import Vue before Element -->
-	<script type="text/javascript" src="./js/vue.js"></script>
-	<!-- import JavaScript -->
-	<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 	<style>
-
 
 	div {		
 		display: relative;
 	}
 
-	
-	
 	.el-header, .el-footer {
 		display: relative;
 		background-color: #150E4A;
@@ -53,41 +44,9 @@
 		font-size: 17px;
 	}
 
-	.input {
-		display: absolute;
-		top: 36%;
-		left: 32.5%;
-		width: 22.5%;
-	}
-
   	.input-with-select .el-input-group__prepend {
     	background-color: #fff;
   	}
-
-	#forgetpassword {
-		position: absolute;
-		top: 425px;
-		left: 1030px;
-		line-height: 20px;
-		width: 200px;
-	}
-
-	#signup {
-		position: absolute;
-		top: 452.5px;
-		left: 1057px;
-		line-height: 20px;
-		width: 200px;
-	}
-
-	#login {
-		position: absolute;
-		top: 430px;
-		left: 1330px;
-		width: 75px;
-	}
-
-	
 
 	</style>
 </head>
@@ -100,7 +59,7 @@
 					<div align="left" style="width:55%; display:inline-block;">
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<a href="homepage.html">
-						<img border="0" src="images/logo.png" style="height:45px; width:75px"/>
+						<img border="0" src="./images/logo.png" style="height:45px; width:75px"/>
 						<p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
 						</a>
 						<el-link 
@@ -152,73 +111,70 @@
 			</el-header>
 		
 			<el-main>
-				<el-input
-				  	placeholder="input username"
-				  	v-model="username"
-				  	class="input"
-				  	clearable>
-				</el-input>
-				<br>
-				<el-input 
-					placeholder="input password" 
-					v-model="password"
-					class="input" 
-					show-password>
-				</el-input>
-				<br>
-				<el-link 
-					:underline="false"
-					href="http://baidu.com" 
-					type="info" 
-					target="_blank"
-					id="forgetpassword" 
-					>
-					forget password?
-				</el-link>
-				<el-link 
-					:underline="false"
-					href="http://baidu.com" 
-					type="info" 
-					target="_blank"
-					id="signup" 
-					>
-					New to SEMojo? Sign up!
-				</el-link>
-				<el-button type="primary" id="login" v-on:click="login">login</el-button>
-			</el-main>
+				<div style="margin-left: 940px;margin-top: 235px; width: 450px" align="left">
+<!--					<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" method="post" action="/login">-->
+<!--						<el-form-item prop="username">-->
+<!--							<el-input placeholder="input username" v-model="ruleForm.username" clearable></el-input>-->
+<!--						</el-form-item>-->
 
-			<el-footer>about us: </el-footer>
+<!--						<el-form-item prop="password">-->
+<!--							<el-input placeholder="input password" v-model="ruleForm.password" clearable show-password></el-input>-->
+<!--						</el-form-item>-->
+<!--					</el-form>-->
+
+					<form method="post" action="/login" align="right" style="line-height: 40px">
+						<p><input type="text" id="username" name="username" placeholder="Input username.." style="width: 300px" v-model="username"></p>
+						<p><input type="password" id="password" name="password" placeholder="Input password.." style="width: 300px" v-model="password"></p>
+						<button type="submit">login</button>
+					</form>
+
+					<div style="position: absolute; top: 428px; left: 1110px; line-height: 24px; width: 225px">
+						<div style="width: 79.5%;">
+							<el-link
+								:underline="false"
+								href="http://baidu.com"
+								type="info"
+								target="_blank"
+								>
+								forget password?
+							</el-link>
+							<br>
+							<el-link
+								:underline="false"
+								href="signup.html"
+								type="info"
+								target="_blank"
+								>
+								New to SEMojo? Sign up!
+							</el-link>
+						</div>
+					</div>
+				</div>
+			</el-main>
+			<el-footer></el-footer>
 		</el-container>
 	</div>
-	<script>
-		var page = new Vue({
-			el: '#app',
-			data: {
-				search: '',
-				username: '',
-				password: ''
-			},
-			methods: {
-				login: function (event) {
-					axios.post('/login', { username: this.username, password: this.password},
-							{headers: {'Content-Type': 'application/x-www-form-urlencoded'}}
-					).then(function (response) {
-						console.log(response);
-					}).catch(function (error) {
-						console.log(error);
-					});
-				}
-			}
-		})
 
-
-
-	</script>
 </body>
 
+<!-- import Vue before Element -->
+<script src="./js/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 
-
-
-
+<script>
+var loginpage = new Vue({
+	el: '#app',
+	data() {
+		return {
+			search: '',
+			username: '',
+			password: '',
+		}
+	},
+	methods: {
+	}
+})
+</script>
 
 </html>
