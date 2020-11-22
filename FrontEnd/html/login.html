@@ -166,70 +166,7 @@
 
 	<script>
 		var qs = Qs;
-		var loginpage = new Vue({
-			el: '#app',
-			data() {
-				return {
-					search: '',
-					ruleForm: {
-						username: '',
-						password: '',
-					},
-					rules: {
-						username: [
-							{ required: true, message: 'please input username', trigger: 'blur' }
-						],
-						password: [
-							{ required: true, message: 'please input password', trigger: 'blur' }
-						],
-					}
-				}
-			},
-			methods: {
-				submitForm(formName) {
-					this.$refs[formName].validate((valid) => {
-						if (valid) {
-							axios({
-								method: 'post',
-								url: '/login',
-								data: qs.stringify({
-									'username': this.ruleForm.username,
-									'password': this.ruleForm.password,
-								}),
-								headers:{
-									'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-									"token": " "
-								}
-							}).then(res => {  //res是返回结果
-								if (res.data['code']===200){
-									this.$store.commit('setToken',JSON.stringify(res.data.token));
-									this.$message({
-										message:'登录成功',
-										type:'success'
-									})
-								}else {
-									this.$message({
-										message:'用户名或者密码错误',
-										type:'warning'
-									})
-								}
-							}).catch(err => { //请求失败就会捕获报错信息
-								console.log('服务器连接失败');
-								console.log(err);
-								this.$message({
-									message:'服务器连接失败',
-									type:'warning'
-								})
-							})
-						} else {
-							console.log('error submit!!');
-							return false;
-						}
-					});
-				},
-			}
-		});
-		var store = new Vuex.Store({
+		const store = new Vuex.Store({
 			state: {
 				token:''  //初始化token
 			},
@@ -254,7 +191,72 @@
 			actions: {
 
 			}
-		})
+		});
+		var loginpage = new Vue({
+			el: '#app',
+			store: store,
+			data() {
+				return {
+					search: '',
+					ruleForm: {
+						username: '',
+						password: '',
+					},
+					rules: {
+						username: [
+							{ required: true, message: 'please input username', trigger: 'blur' }
+						],
+						password: [
+							{ required: true, message: 'please input password', trigger: 'blur' }
+						],
+					}
+				}
+			},
+			methods: {
+				submitForm(formName) {
+					this.$refs[formName].validate((valid) => {
+						if (valid) {
+							axios({
+								method: 'post',
+								url: '/login_2.0',
+								data: qs.stringify({
+									'username': this.ruleForm.username,
+									'password': this.ruleForm.password,
+								}),
+								headers:{
+									'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+									"token": " "
+								}
+							}).then(res => {  //res是返回结果
+								if (res.data['code']===200){
+									this.$store.commit('setToken',JSON.stringify(res.data.token));
+									this.$message({
+										message:'登录成功'+ store.getters.getToken,
+										type:'success'
+									})
+								}else {
+									this.$message({
+										message:'用户名或者密码错误',
+										type:'warning'
+									})
+								}
+							}).catch(err => { //请求失败就会捕获报错信息
+								console.log('服务器连接失败');
+								console.log(err);
+								this.$message({
+									message:'服务器连接失败',
+									type:'warning'
+								})
+							})
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					});
+				},
+			}
+		});
+
 	</script>
 </body>
 
