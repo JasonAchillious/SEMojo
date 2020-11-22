@@ -14,6 +14,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
 
     private Long id;
+    private String productName;
     private String outline;
     private int reviewStar;
     private int salesVolume;
@@ -45,8 +46,16 @@ public class Product {
     @OneToMany
     private List<TestCase> testCases;
 
-    @ManyToOne
-    private Transaction productTransac;
+    @ManyToMany
+    private List<Transaction> productTransac;
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
 
     public Long getId() {
         return id;
@@ -160,11 +169,11 @@ public class Product {
         this.testCases = testCases;
     }
 
-    public Transaction getProductTransac() {
+    public List<Transaction> getProductTransac() {
         return productTransac;
     }
 
-    public void setProductTransac(Transaction productTransac) {
+    public void setProductTransac(List<Transaction> productTransac) {
         this.productTransac = productTransac;
     }
 }

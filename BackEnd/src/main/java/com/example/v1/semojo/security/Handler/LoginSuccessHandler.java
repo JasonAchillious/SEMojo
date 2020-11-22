@@ -1,5 +1,6 @@
 package com.example.v1.semojo.security.Handler;
 
+import com.example.v1.semojo.api.model.LoginRespModel;
 import com.example.v1.semojo.services.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
@@ -36,11 +37,13 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .signWith(SignatureAlgorithm.HS512, "zzx@11711621")
                 .compact();
         resp.setContentType("application/json;charset=utf-8");
+        LoginRespModel respModel = new LoginRespModel(authentication.getName(), roleStrBuf.toString(), jwt);
         resp.getWriter().write("{\"code\": \"200\", "
                 + "\"msg\": \"login successfully\", "
-                + "\"username\": " +  authentication.getName()
-                + ", \"role\": " +  roleStrBuf
-                + ", \"token\": " + jwt
-                + " }"    );
+                + "\"username\": " + "\""+  authentication.getName() + "\""
+                + ", \"role\": " + "\"" + roleStrBuf + "\""
+                + ", \"token\": " + "\"" + jwt + "\""
+                + " }"
+        );
     }
 }

@@ -113,8 +113,7 @@ public class UserController {
     @ApiOperation(value = "get the list", notes = "obtain the list of registered user", tags = "admin", httpMethod = "GET")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "start", value = "start index in database", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "limit", value = "the number of user in list", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
+            @ApiImplicitParam(name = "limit", value = "the number of user in list", required = true, dataType = "Integer")
     })
     @ApiResponses({
             @ApiResponse(code=200, message="success", response= List.class)

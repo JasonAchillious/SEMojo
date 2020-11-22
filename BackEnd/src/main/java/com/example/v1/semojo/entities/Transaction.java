@@ -25,7 +25,7 @@ public class Transaction {
     @ManyToOne
     private User booker;
 
-    @OneToMany(mappedBy = "productTransac")
+    @ManyToMany(mappedBy = "productTransac")
     private List<Product> products;
 
     public Long getId() {

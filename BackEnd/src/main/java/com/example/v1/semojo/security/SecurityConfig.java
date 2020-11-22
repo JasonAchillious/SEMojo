@@ -53,14 +53,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").permitAll()
                 .antMatchers("/contributor/**").hasRole("CONTRIBUTOR")
                 .antMatchers("/customer/**").hasRole("CUSTOMER")
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
-                .antMatchers("/hello").permitAll()
-                .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
-                        "/swagger-resources", "/swagger-resources/configuration/security",
-                        "/swagger-ui.html", "/webjars/**").permitAll()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/info/**").permitAll()
-                .anyRequest().authenticated();
+//                .antMatchers(HttpMethod.POST, "/login").permitAll()
+//                .antMatchers("/hello").permitAll()
+//                .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
+//                        "/swagger-resources", "/swagger-resources/configuration/security",
+//                        "/swagger-ui.html", "/webjars/**").permitAll()
+//                .antMatchers("/register").permitAll()
+//                .antMatchers("/info/**").permitAll()
+                .anyRequest().permitAll();
 
         http.formLogin()
                 .loginPage("/login.html").permitAll()
