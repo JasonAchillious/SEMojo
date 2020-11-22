@@ -1,7 +1,12 @@
 package com.example.v1.semojo.web;
 
 import com.example.v1.semojo.api.WebRespResult;
+import com.example.v1.semojo.api.model.ProductPreviewModel;
+import com.example.v1.semojo.api.util.ProductRespResultUtil;
+import com.example.v1.semojo.services.ProductService;
+import com.example.v1.semojo.services.UserService;
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
@@ -11,10 +16,13 @@ import java.util.List;
 
 @RestController
 public class ProductController {
+    @Autowired
+    ProductService productService;
 
     @GetMapping("/products")
     public WebRespResult getProductList(){
-        return null;
+        List<ProductPreviewModel> productList = productService.getProductList();
+        return ProductRespResultUtil.success(productList);
     }
 
     @GetMapping("/product/{productId}")

@@ -1,16 +1,11 @@
-package com.example.v1.semojo.entities;
+package com.example.v1.semojo.api.model;
 
-import org.hibernate.annotations.GeneratorType;
+import com.example.v1.semojo.entities.*;
 
-import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Entity(name = "PRODUCT")
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class ProductDetailModel {
     private String productName;
     private String outline;
     private int reviewStar;
@@ -20,31 +15,12 @@ public class Product {
     private String creator;
     private double fixPrice;
     private double currentPrice;
+    private Product.ProductStatus status;
 
-    public static enum ProductStatus {
-        developing,
-        alpha,
-        beta,
-        finalVersion,
-        deprecated;
-    }
-    @Enumerated(EnumType.STRING)
-    private ProductStatus status;
-
-    @ManyToMany(mappedBy = "products")
     private List<User> owners;
-
-    @OneToMany
     private List<Artifact> artifacts;
-
-    @OneToMany
     private List<Document> docs;
-
-    @OneToMany
     private List<TestCase> testCases;
-
-    @ManyToMany
-    private List<Transaction> productTransac;
 
     public String getProductName() {
         return productName;
@@ -52,14 +28,6 @@ public class Product {
 
     public void setProductName(String productName) {
         this.productName = productName;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getOutline() {
@@ -126,11 +94,11 @@ public class Product {
         this.currentPrice = currentPrice;
     }
 
-    public ProductStatus getStatus() {
+    public Product.ProductStatus getStatus() {
         return status;
     }
 
-    public void setStatus(ProductStatus status) {
+    public void setStatus(Product.ProductStatus status) {
         this.status = status;
     }
 
@@ -166,11 +134,23 @@ public class Product {
         this.testCases = testCases;
     }
 
-    public List<Transaction> getProductTransac() {
-        return productTransac;
-    }
-
-    public void setProductTransac(List<Transaction> productTransac) {
-        this.productTransac = productTransac;
+    @Override
+    public String toString() {
+        return "ProductDetailModel{" +
+                "productName='" + productName + '\'' +
+                ", outline='" + outline + '\'' +
+                ", reviewStar=" + reviewStar +
+                ", salesVolume=" + salesVolume +
+                ", create_time=" + create_time +
+                ", update_time=" + update_time +
+                ", creator='" + creator + '\'' +
+                ", fixPrice=" + fixPrice +
+                ", currentPrice=" + currentPrice +
+                ", status=" + status +
+                ", owners=" + owners +
+                ", artifacts=" + artifacts +
+                ", docs=" + docs +
+                ", testCases=" + testCases +
+                '}';
     }
 }
