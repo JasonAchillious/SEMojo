@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+
+        div {
+            display: relative;
+        }
+
+        .el-header, .el-footer {
+            display: relative;
+            background-color: #150E4A;
+            background-size: 100% 100%;
+            color: #333;
+            text-align: center;
+            line-height: 60px;
+        }
+
+        .el-main {
+            display: relative;
+            background: url("../images/Signup_background.jpg");
+            background-color: #E9EEF3;
+            background-position: center top;
+            background-size: 100% 100%;
+            color: #333;
+            text-align: center;
+            height:620px;
+            line-height: 60px;
+        }
+
+        .fullscreen {
+            background-color: #FFFFFF;
+            width: 1520px;
+            height: 740px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .navigation_fontsize {
+            font-size: 17px;
+        }
+
+        .input-with-select .el-input-group__prepend {
+            background-color: #fff;
+        }
+
+        .text-color{
+            color: white;
+        }
+
+    </style>
+</head>
+
+<body>
+<div id="app" class="fullscreen">
+    <el-container>
+        <el-header>
+            <div align="left" style="width:100%;">
+                <div align="left" style="width:55%; display:inline-block;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="homepage.html">
+                        <img border="0" src="../images/logo.png" style="height:45px; width:75px"/>
+                        <p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
+                    </a>
+                    <el-link
+                            href="product.html"
+                            target="_blank"
+                            style="color:#FFFFFF; text-decoration:none; width:10%"
+                            class=navigation_fontsize
+                    >Products
+                    </el-link>
+                    <el-link
+                            href="support.html"
+                            target="_blank"
+                            style="color:#FFFFFF; text-decoration:none; width:10%"
+                            class=navigation_fontsize
+                    >Support
+                    </el-link>
+                    <el-link
+                            href="forum.html"
+                            target="_blank"
+                            style="color:#FFFFFF; text-decoration:none; width:10%"
+                            class=navigation_fontsize
+                    >Forum
+                    </el-link>
+                </div>
+
+                <div align="right" style="width:40%; display:inline-block" >
+                    <el-input
+                            placeholder="Search SEMojo"
+                            v-model="search"
+                            class="input-with-select"
+                            style="width: 40%">
+                        <el-button slot="append" icon="el-icon-search"></el-button>
+                    </el-input>
+                    <el-link
+                            href="login.html"
+                            target="_blank"
+                            style="color:#FFFFFF; width:15%;text-decoration:none"
+                            class=navigation_fontsize
+                    >Sign in
+                    </el-link>
+                    <el-link
+                            href="signup.html"
+                            :underline="false">
+                        <el-button type="primary">Sign up</el-button>
+                    </el-link>
+                </div>
+            </div>
+
+        </el-header>
+
+        <el-main>
+            <div style="margin-left: 1090px;margin-top: 150px; width: 300px" align="left">
+                <el-form :hide-required-asterisk="true" :label-position="labelPosition" :model="ruleForm" :rules="rules"
+                         ref="ruleForm" label-width="100px" class="demo-ruleForm" method="post" action="/login"
+                         style="line-height: 10px">
+                    <p class="text-color">username</p>
+                    <el-form-item prop="username">
+                        <el-input placeholder="input username" v-model="ruleForm.username" clearable></el-input>
+                    </el-form-item>
+                    <p class="text-color">password</p>
+                    <el-form-item prop="password">
+                        <el-input placeholder="input password" v-model="ruleForm.password" clearable show-password></el-input>
+                    </el-form-item>
+                    <p class="text-color">repeat password again</p>
+                    <el-form-item prop="repeat_password">
+                        <el-input placeholder="input repeat_password" v-model="ruleForm.repeat_password" clearable show-password></el-input>
+                    </el-form-item>
+                    <p class="text-color">email</p>
+                    <el-form-item prop="email">
+                        <el-input placeholder="input email" v-model="ruleForm.email" clearable></el-input>
+                    </el-form-item>
+                    <p>&nbsp;</p>
+                    <el-button type="primary" style="width: 100%" @click="submitForm('ruleForm')">Sign up now</el-button>
+                </el-form>
+            </div>
+        </el-main>
+        <el-footer></el-footer>
+    </el-container>
+</div>
+
+<!-- import Vue before Element -->
+<script src="../vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
+<script src="https://unpkg.com/vuex@2.0.0"></script>
+
+
+<script>
+    const store = new Vuex.Store({
+        state: {
+            token:''  //初始化token
+        },
+        mutations: {
+            //存储token方法
+            //设置token等于外部传递进来的值
+            setToken(state, token) {
+                state.token = token
+                localStorage.token = token //同步存储token至localStorage
+            },
+        },
+        getters : {
+            //获取token方法
+            //判断是否有token,如果没有重新赋值，返回给state的token
+            getToken(state) {
+                if (!state.token) {
+                    state.token = localStorage.getItem('token')
+                }
+                return state.token
+            }
+        },
+        actions: {
+
+        }
+    });
+    var loginpage = new Vue({
+        el: '#app',
+        store: store,
+        data() {
+            var check_username = (rule, value, callback) => {
+                if (this.ruleForm.username.length>=12) {
+                    callback(new Error('username should less than 12 characters'));
+                } else {
+                    callback();
+                }
+            };
+            var check_password = (rule, value, callback) => {
+                if (this.ruleForm.password.length>=18) {
+                    callback(new Error('password should less than 18 characters'));
+                } else {
+                    callback();
+                }
+            };
+            var check_repassword = (rule, value, callback) => {
+                if (this.ruleForm.repeat_password.length>=18) {
+                    callback(new Error('password should less than 18 characters'));
+                } else if (!(this.ruleForm.password===this.ruleForm.repeat_password)) {
+                    callback(new Error('These two passwords are different'));
+                } else {
+                    callback();
+                }
+            };
+
+            return {
+                labelPosition: 'top',
+                search: '',
+                ruleForm: {
+                    username: '',
+                    password: '',
+                    repeat_password: '',
+                    email: '',
+                },
+                rules: {
+                    username: [
+                        { required: true, message: 'please input username', trigger: 'blur' },
+                        { validator: check_username, trigger: 'blur' }
+                    ],
+                    password: [
+                        { required: true, message: 'please input password', trigger: 'blur' },
+                        { validator: check_password, trigger: 'blur' }
+                    ],
+                    repeat_password: [
+                        { required: true, message: 'please reinput password', trigger: 'blur' },
+                        { validator: check_repassword, trigger: 'blur' }
+                    ],
+                    email: [
+                        { required: true, message: 'please input email', trigger: 'blur' }
+                    ],
+                }
+            }
+        },
+        methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        axios({
+                            method: 'post',
+                            url: '/signup',
+                            data: {
+                                'username': this.ruleForm.username,
+                                'password': this.ruleForm.password,
+                                'repeat_password': this.ruleForm.repeat_password,
+                                'email': this.ruleForm.email,
+                            },
+                        }).then(res => {  //res是返回结果
+                            if (res.data['code']===200){
+                                this.$message({
+                                    message:'注册成功',
+                                    type:'success'
+                                })
+                                axios({
+                                    method: 'post',
+                                    url: '/login',
+                                })
+                            }else {
+                                this.$message({
+                                    message:'注册失败',
+                                    type:'warning'
+                                })
+                            }
+                        }).catch(err => { //请求失败就会捕获报错信息
+                            console.log('服务器连接失败');
+                            console.log(err);
+                            this.$message({
+                                message:'服务器连接失败',
+                                type:'warning'
+                            })
+                        })
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+        }
+    });
+
+</script>
+</body>
+
+</html>
