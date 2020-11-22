@@ -58,33 +58,39 @@ public class UserController {
     public WebRespResult register(String username, String password,
                                   String confirmPassword, String email
                                   ){
-        try {
-            User user = userService.saveUser(username, password, confirmPassword, email);
-            UserAuth auth = user.getAuth();
+//        try {
+//            User user = userService.saveUser(username, password, confirmPassword, email);
+//            UserAuth auth = user.getAuth();
+//            StringBuffer roleStrBuf = new StringBuffer();
+//            for (GrantedAuthority authority: auth.getAuthorities()){
+//                roleStrBuf.append(authority.getAuthority()).append(",");
+//            }
+//            UserAuthModel userAuthModel = new UserAuthModel(user.getId(), auth.getUsername(), roleStrBuf.toString());
+//            return UserRespResultUtil.success(userAuthModel);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            if (e.getMessage().equals("password matching is not the same")){
+//                return UserRespResultUtil.error(400, "Wrong Matching");
+//            }
+//        }
+//        return UserRespResultUtil.error(500, "Unknown Exception");
+
+
+        if (userService.findUserByUsername(username) != null){
+            return UserRespResultUtil.error(UserResultEnum.USER_IS_EXISTS.getCode(), UserResultEnum.USER_IS_EXISTS.getMsg());
+        }else if(!password.equals(confirmPassword)){
+            return UserRespResultUtil.error(UserResultEnum.CONFIRM_PASSWORD_MISMATCH.getCode(), UserResultEnum.CONFIRM_PASSWORD_MISMATCH.getMsg());
+        }else {
+            userService.saveUser(username, password, email);
+            User n_user = userService.findUserByUsername(username);
+            UserAuth auth = n_user.getAuth();
             StringBuffer roleStrBuf = new StringBuffer();
             for (GrantedAuthority authority: auth.getAuthorities()){
                 roleStrBuf.append(authority.getAuthority()).append(",");
             }
-            UserAuthModel userAuthModel = new UserAuthModel(user.getId(), auth.getUsername(), roleStrBuf.toString());
+            UserAuthModel userAuthModel = new UserAuthModel(n_user.getId(), auth.getUsername(), roleStrBuf.toString());
             return UserRespResultUtil.success(userAuthModel);
-        }catch (Exception e){
-            e.printStackTrace();
-            if (e.getMessage().equals("password matching is not the same")){
-                return UserRespResultUtil.error(400, "Wrong Matching");
-            }
         }
-
-        return UserRespResultUtil.error(500, "Unknown Exception");
-//        if (userService.findUserByUsername(username) != null){
-//            return UserRespResultUtil.error(UserResultEnum.USER_IS_EXISTS.getCode(), UserResultEnum.USER_IS_EXISTS.getMsg());
-//        }else if(!password.equals(confirmPassword)){
-//            return UserRespResultUtil.error(UserResultEnum.CONFIRM_PASSWORD_MISMATCH.getCode(), UserResultEnum.CONFIRM_PASSWORD_MISMATCH.getMsg());
-//        }else {
-//            userService.saveUser(username, password, email);
-//            User n_user = userService.findUserByUsername(username);
-//            UserAuthModel userAuthModel = new UserAuthModel(n_user.getId(), n_user.getAuth().getUsername(), n_user.getAuth().getRole(), n_user.getAuth().getAuthority());
-//            return UserRespResultUtil.success(userAuthModel);
-//        }
         // TODO: 2020/11/22 add judgement
     }
 
