@@ -93,9 +93,8 @@
                     <el-input
                             placeholder="Search SEMojo"
                             v-model="search"
-                            class="input-with-select"
                             style="width: 40%">
-                        <el-button slot="append" icon="el-icon-search"></el-button>
+                        <el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
                     </el-input>
                     <el-link
                             href="login.html"
@@ -148,8 +147,6 @@
 <!-- import Vue before Element -->
 <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/index.js"></script>
 <!-- import JavaScript -->
-<script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/index.js"></script>
-
 <script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
 
 <script src="https://lib.baomitu.com/vuex/2.0.0/vuex.js"></script>
@@ -284,6 +281,29 @@
                         return false;
                     }
                 });
+            },
+            searchfor(search) {
+                if (store.getters.getToken){
+                    axios({
+                        method: 'post',
+                        url: '/search',
+                        data: {
+                            'search': search,
+                        },
+                        headers:{
+                            "Authorization": 'Bearer '+store.getters.getToken,
+                        }
+                    })
+                } else {
+                    this.$message({
+                        message:'Please login first',
+                        type:'warning'
+                    });
+                    axios({
+                        method: 'post',
+                        url: '/login',
+                    })
+                }
             },
         }
     });
