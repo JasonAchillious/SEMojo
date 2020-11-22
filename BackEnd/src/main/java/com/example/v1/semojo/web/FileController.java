@@ -28,6 +28,7 @@ public class FileController {
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    String uploadDir = "/uploadFile/";
 
     @RequestMapping(value = "/contributor/{username}/upload",
             method = RequestMethod.POST,
@@ -48,7 +49,7 @@ public class FileController {
         if (!type.equals("code") && !type.equals("doc") && !type.equals("artifact")){
             return new WebRespResult<>(400, "wrong type");
         }
-        String realPath = req.getSession().getServletContext().getRealPath("/uploadFile/");
+        String realPath = req.getSession().getServletContext().getRealPath(uploadDir);
 
         File folder = new File(realPath , username + "/" + type);
 
@@ -62,8 +63,10 @@ public class FileController {
         try{
             uploadFile.transferTo(new File(folder, newName));
             //todo add database
-            String filePath = "";
-            return new WebRespResult<>(200, "upload success", filePath);
+            String filePath = req.getScheme()
+                    + "://" + req.getServerName() + ":" + req.getServerPort()
+                    + uploadDir + username + "/" + type + "/" + newName;
+            return new WebRespResult<String>(200, "upload success", filePath);
         }catch (IOException e){
             e.printStackTrace();
             logger.error(e.getMessage());

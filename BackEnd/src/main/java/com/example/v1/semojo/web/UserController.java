@@ -7,7 +7,6 @@ import com.example.v1.semojo.api.model.UserInfoModel;
 import com.example.v1.semojo.api.util.UserRespResultUtil;
 import com.example.v1.semojo.entities.User;
 import com.example.v1.semojo.entities.UserAuth;
-import com.example.v1.semojo.entities.UserInfo;
 import com.example.v1.semojo.services.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,19 +69,9 @@ public class UserController {
         n_auth.setCredentialsNonExpired(true);
         n_auth.setRole(1);
         n_user.setAuth(n_auth);
-        System.out.println("---------");
-        UserInfo n_info = new UserInfo();
-        n_info.setUser(n_user);
-        n_info.setAddress("");
-        n_info.setEmail(email);
-        n_info.setGender("");
-        n_info.setPhoneNum("");
-        n_info.setPortrait("");
-        n_info.setQqNum("");
-        n_info.setWeChatNum("");
-        n_user.setInfo(n_info);
+
+
         UserAuthModel userAuthModel = new UserAuthModel(1, username);
-        System.out.println("+++++++++++++++");
         return UserRespResultUtil.success(userAuthModel);
     }
 
