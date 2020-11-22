@@ -9,4 +9,6 @@ import java.util.List;
 
 public interface UserDao extends JpaRepository<User, Long> {
     User findUserById(long userId);
+    List<User> findUsersByIdBetween(long start, long end);
+    User findUserByEmail(String email);
 }

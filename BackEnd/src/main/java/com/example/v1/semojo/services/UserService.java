@@ -1,5 +1,6 @@
 package com.example.v1.semojo.services;
 
+import com.example.v1.semojo.api.model.UserAllInfoModel;
 import com.example.v1.semojo.api.model.UserInfoModel;
 import com.example.v1.semojo.dao.UserAuthDao;
 import com.example.v1.semojo.dao.UserDao;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityManager;
+import java.util.*;
 
 
 @Service
@@ -54,6 +56,9 @@ public class UserService implements UserDetailsService {
         }else return auth.getUser();
     }
 
+    public User findUserByEmail(String email){
+        return userDao.findUserByEmail(email);
+    }
     public void saveUser(String username, String password, String email){
         User n_user = new User();
         n_user.setEmail(email);
@@ -93,6 +98,25 @@ public class UserService implements UserDetailsService {
         userDao.deleteById(findUserByUsername(username).getId());
     }
 
+    public List<UserAllInfoModel> getUserList(long start, long limit){
+        List<UserAllInfoModel> result = new ArrayList<>();
+        List<User> users = userDao.findUsersByIdBetween(start, start+limit);
+        for (User userTemp : users) {
+            UserAuth authTemp = userTemp.getAuth();
+            UserAllInfoModel n_model = new UserAllInfoModel();
+            n_model.setUsername(authTemp.getUsername());
+            n_model.setAddress(userTemp.getAddress());
+            n_model.setAuths(authTemp);
+            n_model.setEmail(userTemp.getEmail());
+            n_model.setGender(userTemp.getGender());
+            n_model.setPhoneNum(userTemp.getPhoneNum());
+            n_model.setPortrait(userTemp.getPortrait());
+            n_model.setQqNum(userTemp.getQqNum());
+            n_model.setWeChatNum(userTemp.getWeChatNum());
+            result.add(n_model);
+        }
+        return result;
+    }
     public void changePassword(){
 //        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 //        String encodedPwd = encoder.encode(password);
