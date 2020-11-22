@@ -1,6 +1,7 @@
 package com.example.v1.semojo.web;
 
 import com.example.v1.semojo.api.WebRespResult;
+import com.example.v1.semojo.api.enums.UserResultEnum;
 import com.example.v1.semojo.api.model.UserAuthModel;
 import com.example.v1.semojo.api.model.UserInfoModel;
 
@@ -74,17 +75,34 @@ public class UserController {
         }
 
         return UserRespResultUtil.error(500, "Unknown Exception");
+//        if (userService.findUserByUsername(username) != null){
+//            return UserRespResultUtil.error(UserResultEnum.USER_IS_EXISTS.getCode(), UserResultEnum.USER_IS_EXISTS.getMsg());
+//        }else if(!password.equals(confirmPassword)){
+//            return UserRespResultUtil.error(UserResultEnum.CONFIRM_PASSWORD_MISMATCH.getCode(), UserResultEnum.CONFIRM_PASSWORD_MISMATCH.getMsg());
+//        }else {
+//            userService.saveUser(username, password, email);
+//            User n_user = userService.findUserByUsername(username);
+//            UserAuthModel userAuthModel = new UserAuthModel(n_user.getId(), n_user.getAuth().getUsername(), n_user.getAuth().getRole(), n_user.getAuth().getAuthority());
+//            return UserRespResultUtil.success(userAuthModel);
+//        }
+        // TODO: 2020/11/22 add judgement
     }
 
-    @RequestMapping(value = "/info/{userId}", method = POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/info/{username}", method = POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "updateInfo", notes = "update the Info", httpMethod = "POST")
     @ApiImplicitParams(
             @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
     )
-    public WebRespResult updateInfo(@PathVariable Long userId,
+    public WebRespResult updateInfo(@PathVariable String username,
                                     @RequestBody UserInfoModel userInfoModel){
-
-        return null;
+        System.out.println(username);
+        if (userService.findUserByUsername(username) == null){
+            return UserRespResultUtil.error(UserResultEnum.USER_NOT_EXIST.getCode(), UserResultEnum.USER_NOT_EXIST.getMsg());
+        }else {
+            userService.updateUser(username, userInfoModel);
+            return new WebRespResult(200, "success", userInfoModel);
+            //方法名一样不知道是否会有错误❌
+        }
     }
 
     @RequestMapping(value = "/admin/users", method = GET)
