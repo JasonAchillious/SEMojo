@@ -89,9 +89,8 @@
 						<el-input 
 							placeholder="Search SEMojo" 
 							v-model="search" 
-							class="input-with-select" 
 							style="width: 40%">
-							<el-button slot="append" icon="el-icon-search"></el-button>
+							<el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
 						</el-input>
 						<el-link 
 							href="login.html" 
@@ -241,7 +240,8 @@
 								}),
 								headers:{
 									'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-									"token": " "
+									"token": " ",
+									"Authorization": " ",
 								}
 							}).then(res => {  //res是返回结果
 								console.log(res);
@@ -276,6 +276,25 @@
 						}
 					});
 				},
+				searchfor(search) {
+					if (store.getters.getToken){
+						axios({
+							method: 'post',
+							url: '/search',
+							data: {
+								'search': search,
+							},
+							headers:{
+								"Authorization": 'Bearer '+store.getters.getToken,
+							}
+						})
+					} else {
+						this.$message({
+							message:'Please login first',
+							type:'warning'
+						})
+					}
+				}
 			}
 		});
 
