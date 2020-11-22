@@ -1,19 +1,22 @@
 package com.example.v1.semojo.api.model;
 
 
+import com.example.v1.semojo.entities.Authority;
+
 import java.util.List;
 
 
 public class UserAuthModel {
-    private Integer userId;
+    private long userId;
     private String username;
-    private String role;
+    private int role;
+    private List<Authority> auths;
 
-    public Integer getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -25,27 +28,27 @@ public class UserAuthModel {
         this.username = username;
     }
 
-    public String getRole() {
+    public int getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(int role) {
         this.role = role;
     }
 
-    public List<String> getAuths() {
+    public List<Authority> getAuths() {
         return auths;
     }
 
-    public void setAuths(List<String> auths) {
+    public void setAuths(List<Authority> auths) {
         this.auths = auths;
     }
 
-    private List<String> auths;
-
-    public UserAuthModel(Integer userId, String username){
+    public UserAuthModel(long userId, String username, int role, List<Authority> auths){
         this.username = username;
         this.userId = userId;
+        this.role = role;
+        this.auths = auths;
     }
 
 

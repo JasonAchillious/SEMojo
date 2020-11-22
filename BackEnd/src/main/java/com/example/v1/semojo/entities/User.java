@@ -7,7 +7,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String name;
     @Column(unique = true, nullable = false, length = 100)
     private String email;
     private String gender;
@@ -17,19 +16,11 @@ public class User {
     private String weChatNum;
     private String portrait;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
     private UserAuth auth;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Technology tech;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+//    @OneToMany(fetch = FetchType.LAZY)
+//    private Technology tech;
 
     public UserAuth getAuth() {
         return auth;

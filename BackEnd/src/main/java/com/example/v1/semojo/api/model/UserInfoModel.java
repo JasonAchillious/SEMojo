@@ -1,25 +1,13 @@
 package com.example.v1.semojo.api.model;
 
-import java.io.Serializable;
-
 public class UserInfoModel {
-    
-    private String name;
     private String email;
     private String gender;
     private String address;
     private String phoneNum;
     private String qqNum;
     private String weChatNum;
-
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String portrait;
 
     public String getEmail() {
         return email;
@@ -69,4 +57,11 @@ public class UserInfoModel {
         this.weChatNum = weChatNum;
     }
 
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
+    }
 }
