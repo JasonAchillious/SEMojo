@@ -1,8 +1,10 @@
 package com.example.v1.semojo.web;
 
 import com.example.v1.semojo.api.WebRespResult;
+import com.example.v1.semojo.api.model.ProductDetailModel;
 import com.example.v1.semojo.api.model.ProductPreviewModel;
 import com.example.v1.semojo.api.util.ProductRespResultUtil;
+import com.example.v1.semojo.entities.Product;
 import com.example.v1.semojo.services.ProductService;
 import com.example.v1.semojo.services.UserService;
 import io.jsonwebtoken.*;
@@ -20,14 +22,18 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/products")
-    public WebRespResult getProductList(){
+    public WebRespResult getProductList(@RequestParam int start,
+                                        @RequestParam int limit,
+                                        @RequestParam String type,
+                                        @RequestParam String lang){
         List<ProductPreviewModel> productList = productService.getProductList();
         return ProductRespResultUtil.success(productList);
     }
 
     @GetMapping("/product/{productId}")
     public WebRespResult getProductInfo(@PathVariable Long productId){
-        return null;
+        ProductDetailModel product = productService.findProductByProductId(productId);
+        return ProductRespResultUtil.success(product);
     }
 
     @PostMapping("/contributor/product")

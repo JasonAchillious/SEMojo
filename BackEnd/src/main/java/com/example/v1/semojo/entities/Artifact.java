@@ -17,8 +17,11 @@ public class Artifact {
     private String location;
     private String version;
 
-    private static enum ArtifactStatus{
-        bata,
+    @Enumerated(EnumType.STRING)
+    private SourceCode.Lang lang;
+
+    public static enum ArtifactStatus{
+        beta,
         finalVersion,
         deprecated;
     }

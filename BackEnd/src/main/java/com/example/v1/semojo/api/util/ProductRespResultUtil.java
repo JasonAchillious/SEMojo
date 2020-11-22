@@ -2,6 +2,7 @@ package com.example.v1.semojo.api.util;
 
 import com.example.v1.semojo.api.WebRespResult;
 import com.example.v1.semojo.api.enums.ProductResultEnum;
+import com.example.v1.semojo.api.model.ProductDetailModel;
 import com.example.v1.semojo.api.model.ProductPreviewModel;
 import com.example.v1.semojo.api.model.UserAllInfoModel;
 import com.example.v1.semojo.entities.Product;
@@ -14,6 +15,14 @@ public class ProductRespResultUtil {
         result.setCode(ProductResultEnum.SUCCESS.getCode());
         result.setMsg(ProductResultEnum.SUCCESS.getMsg());
         result.setData(productPreviewModels);
+        return result;
+    }
+
+    public static WebRespResult<ProductDetailModel> success(ProductDetailModel productDetailModel){
+        WebRespResult<ProductDetailModel> result = new WebRespResult<>();
+        result.setCode(ProductResultEnum.SUCCESS.getCode());
+        result.setMsg(ProductResultEnum.SUCCESS.getMsg());
+        result.setData(productDetailModel);
         return result;
     }
 }

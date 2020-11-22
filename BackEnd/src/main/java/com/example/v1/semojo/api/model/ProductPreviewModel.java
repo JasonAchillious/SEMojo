@@ -4,16 +4,32 @@ import com.example.v1.semojo.entities.*;
 import java.sql.Timestamp;
 
 public class ProductPreviewModel {
+    private int productId;
     private String productName;
     private String outline;
     private int reviewStar;
-//    private int salesVolume;
-//    private Timestamp create_time;
     private Timestamp update_time;
     private String creator;
-//    private double fixPrice;
+    private String tags;
+    private String language;
     private double currentPrice;
     private Product.ProductStatus status;
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     public String getProductName() {
         return productName;
@@ -79,6 +95,8 @@ public class ProductPreviewModel {
                 ", reviewStar=" + reviewStar +
                 ", update_time=" + update_time +
                 ", creator='" + creator + '\'' +
+                ", tags='" + tags + '\'' +
+                ", language='" + language + '\'' +
                 ", currentPrice=" + currentPrice +
                 ", status=" + status +
                 '}';

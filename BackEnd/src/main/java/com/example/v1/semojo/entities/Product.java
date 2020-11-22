@@ -46,6 +46,7 @@ public class Product {
     @ManyToMany
     private List<Transaction> productTransac;
 
+
     public String getProductName() {
         return productName;
     }

@@ -1,5 +1,6 @@
 package com.example.v1.semojo.services;
 
+import com.example.v1.semojo.api.model.ProductDetailModel;
 import com.example.v1.semojo.api.model.ProductPreviewModel;
 import com.example.v1.semojo.dao.ProductDao;
 import com.example.v1.semojo.entities.Product;
@@ -31,9 +32,13 @@ public class ProductService {
         return result;
     }
 
-    public Product findProductByProductId(){}
+    public ProductDetailModel findProductByProductId(long productId){
+        Product product = productDao.findProductById(productId);
+        ProductDetailModel result = new ProductDetailModel();
+        return result;
+    }
 
-    public void createNewProduct(){
+    public void saveNewProduct(){
 
     }
 }
