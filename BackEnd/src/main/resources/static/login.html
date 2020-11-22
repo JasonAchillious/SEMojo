@@ -22,7 +22,7 @@
 
 	.el-main {
 		display: relative;
-		background: url("./images/background.jpg");
+		background: url("../images/Login_background.jpg");
 		background-color: #E9EEF3;
 		background-position: center top;
 		background-size: 100% 100%;
@@ -59,7 +59,7 @@
 					<div align="left" style="width:55%; display:inline-block;">
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						<a href="homepage.html">
-						<img border="0" src="./images/logo.png" style="height:45px; width:75px"/>
+						<img border="0" src="../images/logo.png" style="height:45px; width:75px"/>
 						<p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
 						</a>
 						<el-link 
@@ -112,24 +112,18 @@
 		
 			<el-main>
 				<div style="margin-left: 940px;margin-top: 235px; width: 450px" align="left">
-<!--					<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" method="post" action="/login">-->
-<!--						<el-form-item prop="username">-->
-<!--							<el-input placeholder="input username" v-model="ruleForm.username" clearable></el-input>-->
-<!--						</el-form-item>-->
+					<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm" method="post" action="/login">
+						<el-form-item prop="username">
+							<el-input placeholder="input username" v-model="ruleForm.username" clearable></el-input>
+						</el-form-item>
 
-<!--						<el-form-item prop="password">-->
-<!--							<el-input placeholder="input password" v-model="ruleForm.password" clearable show-password></el-input>-->
-<!--						</el-form-item>-->
-<!--					</el-form>-->
+						<el-form-item prop="password">
+							<el-input placeholder="input password" v-model="ruleForm.password" clearable show-password></el-input>
+						</el-form-item>
+					</el-form>
 
-					<form method="post" action="/login" align="right" style="line-height: 40px">
-						<p><input type="text" id="username" name="username" placeholder="Input username.." style="width: 300px" v-model="username"></p>
-						<p><input type="password" id="password" name="password" placeholder="Input password.." style="width: 300px" v-model="password"></p>
-						<button type="submit">login</button>
-					</form>
-
-					<div style="position: absolute; top: 428px; left: 1110px; line-height: 24px; width: 225px">
-						<div style="width: 79.5%;">
+					<div style="margin-left: 100px; line-height: 25px; display: flex">
+						<div style="width: 60%;">
 							<el-link
 								:underline="false"
 								href="http://baidu.com"
@@ -148,6 +142,9 @@
 								New to SEMojo? Sign up!
 							</el-link>
 						</div>
+						<div style="width: 39%;" align="right">
+							<el-button type="primary" @click="submitForm('ruleForm')">login</el-button>
+						</div>
 					</div>
 				</div>
 			</el-main>
@@ -155,26 +152,132 @@
 		</el-container>
 	</div>
 
+	<!-- import Vue before Element -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+	<!-- import JavaScript -->
+	<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+	<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
+	<script src="https://cdn.bootcss.com/qs/6.7.0/qs.min.js"></script>
+
+	<script src="https://unpkg.com/vuex@2.0.0"></script>
+
+
+	<script>
+		var qs = Qs;
+		const store = new Vuex.Store({
+			state: {
+				token:''  //初始化token
+			},
+			mutations: {
+				//存储token方法
+				//设置token等于外部传递进来的值
+				setToken(state, token) {
+					state.token = token
+					localStorage.token = token //同步存储token至localStorage
+				},
+			},
+			getters : {
+				//获取token方法
+				//判断是否有token,如果没有重新赋值，返回给state的token
+				getToken(state) {
+					if (!state.token) {
+						state.token = localStorage.getItem('token')
+					}
+					return state.token
+				}
+			},
+			actions: {
+
+			}
+		});
+		var loginpage = new Vue({
+			el: '#app',
+			store: store,
+			data() {
+				var check_username = (rule, value, callback) => {
+					if (this.ruleForm.username.length>=12) {
+						callback(new Error('username should less than 12 characters'));
+					} else {
+						callback();
+					}
+				};
+				var check_password = (rule, value, callback) => {
+					if (this.ruleForm.password.length>=18) {
+						callback(new Error('password should less than 18 characters'));
+					} else {
+						callback();
+					}
+				};
+				return {
+					search: '',
+					ruleForm: {
+						username: '',
+						password: '',
+					},
+					rules: {
+						username: [
+							{ required: true, message: 'please input username', trigger: 'blur' },
+							{ validator: check_username, trigger: 'blur' }
+						],
+						password: [
+							{ required: true, message: 'please input password', trigger: 'blur' },
+							{ validator: check_password, trigger: 'blur' }
+						],
+					}
+				}
+			},
+			methods: {
+				submitForm(formName) {
+					this.$refs[formName].validate((valid) => {
+						if (valid) {
+							axios({
+								method: 'post',
+								url: '/login',
+								data: qs.stringify({
+									'username': this.ruleForm.username,
+									'password': this.ruleForm.password,
+								}),
+								headers:{
+									'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
+									"token": " "
+								}
+							}).then(res => {  //res是返回结果
+								if (res.data['code']===200){
+									this.$store.commit('setToken',JSON.stringify(res.data.token));
+									this.$message({
+										message:'登录成功'+ store.getters.getToken,
+										type:'success'
+									})
+									axios({
+										method: 'post',
+										url: '/homepage'
+									})
+								}else {
+									this.$message({
+										message:'用户名或者密码错误',
+										type:'warning'
+									})
+								}
+							}).catch(err => { //请求失败就会捕获报错信息
+								console.log('服务器连接失败');
+								console.log(err);
+								this.$message({
+									message:'服务器连接失败',
+									type:'warning'
+								})
+							})
+						} else {
+							console.log('error submit!!');
+							return false;
+						}
+					});
+				},
+			}
+		});
+
+	</script>
 </body>
-
-<!-- import Vue before Element -->
-<script src="./js/vue.js"></script>
-<!-- import JavaScript -->
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
-
-<script>
-var loginpage = new Vue({
-	el: '#app',
-	data() {
-		return {
-			search: '',
-			username: '',
-			password: '',
-		}
-	},
-	methods: {
-	}
-})
-</script>
 
 </html>
