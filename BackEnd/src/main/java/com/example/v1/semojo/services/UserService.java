@@ -98,9 +98,9 @@ public class UserService implements UserDetailsService {
         userDao.deleteById(findUserByUsername(username).getId());
     }
 
-    public List<UserAllInfoModel> getUserList(long start, long limit){
+    public List<UserAllInfoModel> getUserList(long limit, long start){
         List<UserAllInfoModel> result = new ArrayList<>();
-        List<User> users = userDao.findUsersByIdBetween(start, start+limit);
+        List<User> users = userDao.findUsersByIdLimit(start, limit);
         for (User userTemp : users) {
             UserAuth authTemp = userTemp.getAuth();
             UserAllInfoModel n_model = new UserAllInfoModel();

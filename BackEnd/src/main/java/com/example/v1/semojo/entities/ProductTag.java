@@ -5,14 +5,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-@Entity(name = "tag")
-public class Tag {
+@Entity(name = "product_tag")
+public class ProductTag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long productId;
-    private String name;
-    private String description;
+    private String tag;
+    private String detail;
 
     public Long getId() {
         return id;
@@ -30,19 +30,19 @@ public class Tag {
         this.productId = productId;
     }
 
-    public String getName() {
-        return name;
+    public String getTag() {
+        return tag;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDetail() {
+        return detail;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 }

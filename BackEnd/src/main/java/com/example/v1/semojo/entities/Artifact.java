@@ -28,6 +28,14 @@ public class Artifact {
     @Enumerated(EnumType.STRING)
     private ArtifactStatus status;
 
+    public SourceCode.Lang getLang() {
+        return lang;
+    }
+
+    public void setLang(SourceCode.Lang lang) {
+        this.lang = lang;
+    }
+
     public long getId() {
         return id;
     }

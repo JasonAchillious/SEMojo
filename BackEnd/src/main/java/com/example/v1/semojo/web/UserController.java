@@ -116,8 +116,8 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code=200, message="success", response= List.class)
     })
-    public WebRespResult<List<UserAllInfoModel>> getUserList(long start, long limit){
-        List<UserAllInfoModel> userList = userService.getUserList(start, limit);
+    public WebRespResult<List<UserAllInfoModel>> getUserList(long limit, long start){
+        List<UserAllInfoModel> userList = userService.getUserList(limit, start);
         return UserRespResultUtil.success(userList);
     }
 
