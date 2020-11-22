@@ -8,7 +8,6 @@ import java.util.List;
 public class Artifact {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="ARTIFACT_ID")
     private long id;
     private String uploader;
     private String description;

@@ -21,6 +21,14 @@ public class UserRespResultUtil {
         result.setData(userInfoModel);
         return result;
     }
+
+    public static WebRespResult success(Integer code,String msg){
+        WebRespResult result = new WebRespResult();
+        result.setCode(code);
+        result.setMsg(msg);
+        return result;
+    }
+
     /**失败**/
     public static WebRespResult error(Integer code,String msg){
         WebRespResult result = new WebRespResult();

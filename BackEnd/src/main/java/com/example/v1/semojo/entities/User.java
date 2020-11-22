@@ -17,12 +17,10 @@ public class User {
     private String weChatNum;
     private String portrait;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "auth_id")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private UserAuth auth;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name="product_id")
     private List<Product> products;
 
     @OneToMany(mappedBy = "booker", cascade = CascadeType.ALL)
