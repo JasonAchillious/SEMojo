@@ -1,13 +1,13 @@
 package com.example.v1.semojo.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "semojo_user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String name;
     @Column(unique = true, nullable = false, length = 100)
     private String email;
     private String gender;
@@ -18,18 +18,13 @@ public class User {
     private String portrait;
 
     @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_auth_id")
     private UserAuth auth;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private Technology tech;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name="product_id")
+    private List<Product> products;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public UserAuth getAuth() {
         return auth;

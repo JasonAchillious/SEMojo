@@ -58,7 +58,6 @@ public class UserController {
                                   ){
         User n_user = new User();
         System.out.println("**********************");
-        n_user.setName("");
         UserAuth n_auth = new UserAuth();
         n_auth.setUser(n_user);
         n_auth.setUsername(username);
