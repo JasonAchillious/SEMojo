@@ -46,6 +46,12 @@ public class Product {
     @OneToMany
     private List<TestCase> testCases;
 
+    @OneToMany
+    private List<SourceCode> sourceCodes;
+
+    @OneToMany
+    private List<AdditionalFile> additionalFiles;
+
     @ManyToMany
     private List<Transaction> productTransac;
 
