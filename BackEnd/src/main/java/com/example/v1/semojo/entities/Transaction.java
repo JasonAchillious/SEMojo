@@ -8,6 +8,7 @@ import java.util.List;
 @Entity(name = "transaction")
 public class Transaction {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Timestamp createTime;
 

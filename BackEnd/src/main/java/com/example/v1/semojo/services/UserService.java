@@ -37,11 +37,10 @@ public class UserService implements UserDetailsService {
         userDao.save(user);
     }
 
-    public void saveUserWithAuth(User user, UserAuth auth){
+    public User saveUserWithAuth(User user, UserAuth auth){
         user.setAuth(auth);
         auth.setUser(user);
-        userDao.save(user);
-        userAuthDao.save(auth);
+        return userDao.save(user);
     }
 
     public User findUserByUsername(String username){
@@ -55,4 +54,22 @@ public class UserService implements UserDetailsService {
         userAuthDao.save(auth);
     }
 
+    public User saveUser(String username, String password, String confirmPassword, String email) throws Exception {
+        if (!password.equals(confirmPassword)){
+            throw new Exception("password matching is not the same");
+        }
+        User user = new User();
+        user.setEmail(email);
+        UserAuth auth = new UserAuth();
+        auth.setUser(user);
+        auth.setUsername(username);
+        auth.setPassword(password);
+        auth.setAccountNonExpired(true);
+        auth.setAccountNonLocked(true);
+        auth.setEnabled(true);
+        auth.setCredentialsNonExpired(true);
+        auth.setRole(1);
+        user.setAuth(auth);
+        return userDao.save(user);
+    }
 }

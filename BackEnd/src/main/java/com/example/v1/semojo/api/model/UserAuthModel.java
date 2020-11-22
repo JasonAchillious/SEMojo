@@ -5,15 +5,15 @@ import java.util.List;
 
 
 public class UserAuthModel {
-    private Integer userId;
+    private Long userId;
     private String username;
-    private String role;
+    private String auths;
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -25,27 +25,18 @@ public class UserAuthModel {
         this.username = username;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    public List<String> getAuths() {
+    public String getAuths() {
         return auths;
     }
 
-    public void setAuths(List<String> auths) {
+    public void setAuths(String auths) {
         this.auths = auths;
     }
 
-    private List<String> auths;
-
-    public UserAuthModel(Integer userId, String username){
+    public UserAuthModel(Long userId, String username, String auth){
         this.username = username;
         this.userId = userId;
+        this.auths = auth;
     }
 
 

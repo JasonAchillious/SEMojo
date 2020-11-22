@@ -11,6 +11,7 @@ import com.example.v1.semojo.services.UserService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,22 +57,23 @@ public class UserController {
     public WebRespResult register(String username, String password,
                                   String confirmPassword, String email
                                   ){
-        User n_user = new User();
-        System.out.println("**********************");
-        UserAuth n_auth = new UserAuth();
-        n_auth.setUser(n_user);
-        n_auth.setUsername(username);
-        n_auth.setPassword(password);
-        n_auth.setAccountNonExpired(true);
-        n_auth.setAccountNonLocked(true);
-        n_auth.setEnabled(true);
-        n_auth.setCredentialsNonExpired(true);
-        n_auth.setRole(1);
-        n_user.setAuth(n_auth);
+        try {
+            User user = userService.saveUser(username, password, confirmPassword, email);
+            UserAuth auth = user.getAuth();
+            StringBuffer roleStrBuf = new StringBuffer();
+            for (GrantedAuthority authority: auth.getAuthorities()){
+                roleStrBuf.append(authority.getAuthority()).append(",");
+            }
+            UserAuthModel userAuthModel = new UserAuthModel(user.getId(), auth.getUsername(), roleStrBuf.toString());
+            return UserRespResultUtil.success(userAuthModel);
+        }catch (Exception e){
+            e.printStackTrace();
+            if (e.getMessage().equals("password matching is not the same")){
+                return UserRespResultUtil.error(400, "Wrong Matching");
+            }
+        }
 
-
-        UserAuthModel userAuthModel = new UserAuthModel(1, username);
-        return UserRespResultUtil.success(userAuthModel);
+        return UserRespResultUtil.error(500, "Unknown Exception");
     }
 
     @RequestMapping(value = "/info/{userId}", method = POST, produces = MediaType.APPLICATION_JSON_VALUE)

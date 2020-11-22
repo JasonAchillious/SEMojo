@@ -18,7 +18,7 @@ public class User {
     private String portrait;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_auth_id")
+    @JoinColumn(name = "auth_id")
     private UserAuth auth;
 
     @ManyToMany(fetch = FetchType.LAZY)

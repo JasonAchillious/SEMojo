@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 @Entity(name = "source_code")
 public class SourceCode {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String uploader;
     private String description;

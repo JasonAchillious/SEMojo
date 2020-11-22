@@ -7,7 +7,7 @@ import java.util.List;
 @Entity(name = "artifact")
 public class Artifact {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="ARTIFACT_ID")
     private long id;
     private String uploader;

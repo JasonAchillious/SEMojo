@@ -13,7 +13,7 @@ import java.util.List;
 public class UserAuth implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_auth_id")
+    @Column(name = "auth_id")
     private Long id;
     @Column(unique = true, nullable = false, length = 50)
     private String username;
@@ -23,7 +23,7 @@ public class UserAuth implements UserDetails {
     private boolean credentialsNonExpired;
     private boolean enabled;
     private int role;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Authority> authorities;
     @OneToOne(mappedBy = "auth")
     private User user;

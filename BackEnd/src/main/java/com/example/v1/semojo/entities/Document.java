@@ -1,12 +1,15 @@
 package com.example.v1.semojo.entities;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.sql.Timestamp;
 
 @Entity(name = "documemnt")
 public class Document {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String uploader;
