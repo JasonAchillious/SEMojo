@@ -1,6 +1,7 @@
 package com.example.v1.semojo.entities;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "semojo_user")
 public class User {
@@ -17,10 +18,13 @@ public class User {
     private String portrait;
 
     @OneToOne(fetch = FetchType.EAGER, cascade={CascadeType.ALL})
+    @JoinColumn(name = "user_auth_id")
     private UserAuth auth;
 
-//    @OneToMany(fetch = FetchType.LAZY)
-//    private Technology tech;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name="product_id")
+    private List<Product> products;
+
 
     public UserAuth getAuth() {
         return auth;

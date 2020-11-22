@@ -4,18 +4,15 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
-@Entity(name = "technology")
-public class Technology {
+@Entity(name = "artifact")
+public class Artifact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="ARTIFACT_ID")
     private long id;
-
-    private String contributor;
-    private String outline;
-    private int lang;
-    private int review_star;
-    private int sales_volume;
+    private String uploaderName;
+    private String description;
     private String status;
-    private Timestamp create_time;
+    private Timestamp upload_time;
     private Timestamp update_time;
 }
