@@ -89,6 +89,10 @@ public class UserService implements UserDetailsService {
         userDao.save(n_user);
     }
 
+    public void deleteUserByUserName(String username){
+        userDao.deleteById(findUserByUsername(username).getId());
+    }
+
     public void changePassword(){
 //        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 //        String encodedPwd = encoder.encode(password);

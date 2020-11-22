@@ -13,7 +13,7 @@ import java.util.List;
 public class UserAuth implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "auth_id")
+
     private Long id;
     @Column(unique = true, nullable = false, length = 50)
     private String username;
@@ -39,11 +39,12 @@ public class UserAuth implements UserDetails {
         }else if (role == 3){
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMINISTRATOR"));
         }
-
-        for (Authority auth : getAuthority()) {
-            authorities.add(new SimpleGrantedAuthority(auth.getName()));
+        List<Authority> auths = getAuthority();
+        if (auths != null) {
+            for (Authority auth : getAuthority()) {
+                authorities.add(new SimpleGrantedAuthority(auth.getName()));
+            }
         }
-
         return authorities;
     }
 

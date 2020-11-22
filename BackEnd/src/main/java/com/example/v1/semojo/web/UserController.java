@@ -101,13 +101,11 @@ public class UserController {
     )
     public WebRespResult updateInfo(@PathVariable String username,
                                     @RequestBody UserInfoModel userInfoModel){
-        System.out.println(username);
         if (userService.findUserByUsername(username) == null){
             return UserRespResultUtil.error(UserResultEnum.USER_NOT_EXIST.getCode(), UserResultEnum.USER_NOT_EXIST.getMsg());
         }else {
             userService.updateUser(username, userInfoModel);
-            return new WebRespResult(200, "success", userInfoModel);
-            //方法名一样不知道是否会有错误❌
+            return UserRespResultUtil.success(userInfoModel);
         }
     }
 
@@ -125,7 +123,7 @@ public class UserController {
         return null;
     }
 
-    @RequestMapping(value = "admin/user/{userId}", method = DELETE)
+    @RequestMapping(value = "admin/user/{username}", method = DELETE)
     @ApiOperation(value = "delete user", notes = "delete user by id", tags = "admin", httpMethod = "DELETE")
     @ApiImplicitParams(
             @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
@@ -133,7 +131,12 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code=200, message="success", response= WebRespResult.class),
     })
-    public WebRespResult deleteUser(@PathVariable Integer userId){
-        return null;
+    public WebRespResult deleteUser(@PathVariable String username){
+        if (userService.findUserByUsername(username) == null){
+            return UserRespResultUtil.error(UserResultEnum.USER_NOT_EXIST.getCode(), UserResultEnum.USER_NOT_EXIST.getMsg());
+        }else {
+            userService.deleteUserByUserName(username);
+            return UserRespResultUtil.success(UserResultEnum.SUCCESS.getCode(), UserResultEnum.SUCCESS.getMsg());
+        }
     }
 }
