@@ -2,8 +2,9 @@ package com.example.v1.semojo.api.util;
 
 import com.example.v1.semojo.api.WebRespResult;
 import com.example.v1.semojo.api.enums.UserResultEnum;
-import com.example.v1.semojo.api.model.UserAuthModel;
-import com.example.v1.semojo.api.model.UserInfoModel;
+import com.example.v1.semojo.api.model.*;
+
+import java.util.List;
 
 public class UserRespResultUtil {
     public static WebRespResult<UserAuthModel> success(UserAuthModel userAuthModel){
@@ -19,6 +20,14 @@ public class UserRespResultUtil {
         result.setCode(UserResultEnum.SUCCESS.getCode());
         result.setMsg(UserResultEnum.SUCCESS.getMsg());
         result.setData(userInfoModel);
+        return result;
+    }
+
+    public static WebRespResult<List<UserAllInfoModel>> success(List<UserAllInfoModel> userAllInfoModel){
+        WebRespResult<List<UserAllInfoModel>> result = new WebRespResult<>();
+        result.setCode(UserResultEnum.SUCCESS.getCode());
+        result.setMsg(UserResultEnum.SUCCESS.getMsg());
+        result.setData(userAllInfoModel);
         return result;
     }
 

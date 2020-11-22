@@ -2,9 +2,7 @@ package com.example.v1.semojo.web;
 
 import com.example.v1.semojo.api.WebRespResult;
 import com.example.v1.semojo.api.enums.UserResultEnum;
-import com.example.v1.semojo.api.model.UserAuthModel;
-import com.example.v1.semojo.api.model.UserInfoModel;
-
+import com.example.v1.semojo.api.model.*;
 import com.example.v1.semojo.api.util.UserRespResultUtil;
 import com.example.v1.semojo.entities.User;
 import com.example.v1.semojo.entities.UserAuth;
@@ -75,8 +73,7 @@ public class UserController {
 //        }
 //        return UserRespResultUtil.error(500, "Unknown Exception");
 
-
-        if (userService.findUserByUsername(username) != null){
+        if (userService.findUserByUsername(username) != null || userService.findUserByEmail(email) != null){
             return UserRespResultUtil.error(UserResultEnum.USER_IS_EXISTS.getCode(), UserResultEnum.USER_IS_EXISTS.getMsg());
         }else if(!password.equals(confirmPassword)){
             return UserRespResultUtil.error(UserResultEnum.CONFIRM_PASSWORD_MISMATCH.getCode(), UserResultEnum.CONFIRM_PASSWORD_MISMATCH.getMsg());
@@ -112,14 +109,16 @@ public class UserController {
     @RequestMapping(value = "/admin/users", method = GET)
     @ApiOperation(value = "get the list", notes = "obtain the list of registered user", tags = "admin", httpMethod = "GET")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "start", value = "start index in database", required = true, dataType = "Integer"),
-            @ApiImplicitParam(name = "limit", value = "the number of user in list", required = true, dataType = "Integer")
+            @ApiImplicitParam(name = "start", value = "start index in database", required = true, dataType = "long"),
+            @ApiImplicitParam(name = "limit", value = "the number of user in list", required = true, dataType = "long"),
+            @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
     })
     @ApiResponses({
             @ApiResponse(code=200, message="success", response= List.class)
     })
-    public WebRespResult<List<UserInfoModel>> getUserList(){
-        return null;
+    public WebRespResult<List<UserAllInfoModel>> getUserList(long start, long limit){
+        List<UserAllInfoModel> userList = userService.getUserList(start, limit);
+        return UserRespResultUtil.success(userList);
     }
 
     @RequestMapping(value = "admin/user/{username}", method = DELETE)

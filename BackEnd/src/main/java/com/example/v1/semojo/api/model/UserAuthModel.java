@@ -1,6 +1,9 @@
 package com.example.v1.semojo.api.model;
 
 
+import com.example.v1.semojo.entities.UserAuth;
+import org.springframework.security.core.GrantedAuthority;
+
 import java.util.List;
 
 
@@ -38,6 +41,5 @@ public class UserAuthModel {
         this.userId = userId;
         this.auths = auth;
     }
-
 
 }

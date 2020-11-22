@@ -13,7 +13,7 @@ public class SourceCode {
     private Timestamp uploadTime;
     private String location;
 
-    private static enum Lang{
+    public static enum Lang{
         cplusplus,
         java,
         python,
