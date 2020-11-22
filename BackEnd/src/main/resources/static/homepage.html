@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/theme-chalk/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        div {
+            display: relative;
+        }
+
+        .el-header {
+            display: relative;
+            background-color: #150E4A;
+            background-size: 100% 100%;
+            color: #333;
+            text-align: center;
+            line-height: 60px;
+        }
+        .el-main {
+            background-color: #ffffff;
+            color: #333;
+            text-align: left;
+            line-height: 30px;
+            height:620px;
+        }
+
+        .fullscreen {
+            background-color: #ffffff;
+            width: 1520px;
+            height: 620px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .list .list-item {
+            height: 125px;
+            line-height: 20px;
+            background: #e8f3fe;
+            margin: 10px;
+            color: #000000;
+        }
+
+        body > .el-container {
+            margin-bottom: 40px;
+        }
+    </style>
+</head>
+
+<body>
+<div id="app" class="fullscreen">
+    <el-container>
+        <el-header>
+            <div align="left" style="width:100%;">
+                <div align="left" style="width:55%; display:inline-block;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="homepage.html">
+                        <img border="0" src="./images/logo.png" style="height:45px; width:75px"/>
+                        <p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
+                    </a>
+                    <el-link
+                            href="product.html"
+                            target="_blank"
+                            style="color:#FFFFFF; text-decoration:none; width:10%"
+                            class=navigation_fontsize
+                    >Products
+                    </el-link>
+                    <el-link
+                            href="support.html"
+                            target="_blank"
+                            style="color:#FFFFFF; text-decoration:none; width:10%"
+                            class=navigation_fontsize
+                    >Support
+                    </el-link>
+                    <el-link
+                            href="forum.html"
+                            target="_blank"
+                            style="color:#FFFFFF; text-decoration:none; width:10%"
+                            class=navigation_fontsize
+                    >Forum
+                    </el-link>
+                </div>
+
+                <div align="right" style="width:40%; display:inline-block" >
+                    <el-input
+                            placeholder="Search SEMojo"
+                            v-model="search"
+                            style="width: 40%">
+                        <el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
+                    </el-input>
+                    <el-link
+                            href="login.html"
+                            target="_blank"
+                            style="color:#FFFFFF; width:15%;text-decoration:none"
+                            class=navigation_fontsize
+                    >Sign in
+                    </el-link>
+                    <el-link
+                            href="signup.html"
+                            :underline="false">
+                        <el-button type="primary">Sign up</el-button>
+                    </el-link>
+                </div>
+            </div>
+
+        </el-header>
+
+        <el-main style="height: 620px" >
+            <div style="display: flex; margin-left: 50px; margin-top: 50px" >
+                <div style="width: 50%" class="demo-image">
+                    <el-image style="width: 100%; height: 100%" :src="src" :fit="fit"></el-image>
+                </div>
+                <div style="width: 39%; margin-left: 100px">
+                    <h1>Welcome to SEMojo!</h1><br>
+                    <p>SEMojo is a platform for creators to share their advanced software techniques
+                       and for customers to explore mature techniques supporting the implementation
+                       of their ideas.</p>
+                    <br>
+                    <p>If you are a geek who are keen on creating or developing useful techniques to
+                       solve difficult problem, and are willing to share with others. We are glad to
+                       invite you to join us to turn techniques into wealth.</p>
+                    <br>
+                    <p>If you are a dreamer who has lots of excellent ideas, but are stuck with the
+                       techniques to achieve your great ideas. We are proud to introduce our SEMojo
+                       platform where you are likely to find what you want to support your geate ideas.</p>
+                </div>
+            </div>
+        </el-main>
+    </el-container>
+</div>
+<!-- import Vue before Element -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+<!-- import JavaScript -->
+<script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/index.js"></script>
+
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
+<script src="https://lib.baomitu.com/vuex/2.0.0/vuex.js"></script>
+
+<script>
+    const store = new Vuex.Store({
+        state: {
+            token:''  //初始化token
+        },
+        mutations: {
+            //存储token方法
+            //设置token等于外部传递进来的值
+            setToken(state, token) {
+                state.token = token
+                localStorage.token = token //同步存储token至localStorage
+            },
+        },
+        getters : {
+            //获取token方法
+            //判断是否有token,如果没有重新赋值，返回给state的token
+            getToken(state) {
+                if (!state.token) {
+                    state.token = localStorage.getItem('token')
+                }
+                return state.token
+            }
+        },
+        actions: {
+
+        }
+    });
+    var Main = new Vue({
+        el: '#app',
+        data () {
+            return {
+                search: '',
+                fit: 'fill',
+                src: './images/illustration.png',
+            };
+        },
+        methods: {
+            searchfor(search) {
+                if (store.getters.getToken){
+                    axios({
+                        method: 'post',
+                        url: '/search',
+                        data: {
+                            'search': search,
+                        },
+                        headers:{
+                            "Authorization": 'Bearer '+store.getters.getToken,
+                        }
+                    })
+                } else {
+                    this.$message({
+                        message:'Please login first',
+                        type:'warning'
+                    });
+                    axios({
+                        method: 'post',
+                        url: '/login',
+                    })
+                }
+            }
+        },
+    })
+</script>
+</body>
+
+</html>
