@@ -25,6 +25,9 @@ public class User {
     @JoinColumn(name="product_id")
     private List<Product> products;
 
+    @OneToMany(mappedBy = "booker", cascade = CascadeType.ALL)
+    private List<Transaction> userTransec;
+
 
     public UserAuth getAuth() {
         return auth;
@@ -97,4 +100,22 @@ public class User {
     public void setPortrait(String portrait) {
         this.portrait = portrait;
     }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public List<Transaction> getUserTransec() {
+        return userTransec;
+    }
+
+    public void setUserTransec(List<Transaction> userTransec) {
+        this.userTransec = userTransec;
+    }
+
+
 }
