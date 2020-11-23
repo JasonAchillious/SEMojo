@@ -21,6 +21,9 @@ public class Product {
     private double fixPrice;
     private double currentPrice;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private List<ProductTag> tags;
+
     public static enum ProductStatus {
         developing,
         alpha,
@@ -52,6 +55,13 @@ public class Product {
     @ManyToMany
     private List<Transaction> productTransac;
 
+    public List<ProductTag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<ProductTag> tags) {
+        this.tags = tags;
+    }
 
     public String getProductName() {
         return productName;

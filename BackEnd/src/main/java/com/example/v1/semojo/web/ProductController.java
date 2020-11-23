@@ -22,11 +22,11 @@ public class ProductController {
     ProductService productService;
 
     @GetMapping("/products")
-    public WebRespResult getProductList(@RequestParam int start,
-                                        @RequestParam int limit,
-                                        @RequestParam String type,
+    public WebRespResult getProductList(@RequestParam int limit,
+                                        @RequestParam int start,
+                                        @RequestParam String tag,
                                         @RequestParam String lang){
-        List<ProductPreviewModel> productList = productService.getProductList();
+        List<ProductPreviewModel> productList = productService.getProductList(limit, start, tag, lang);
         return ProductRespResultUtil.success(productList);
     }
 
