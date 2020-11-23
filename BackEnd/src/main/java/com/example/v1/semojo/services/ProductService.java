@@ -3,12 +3,14 @@ package com.example.v1.semojo.services;
 import com.example.v1.semojo.api.model.ProductDetailModel;
 import com.example.v1.semojo.api.model.ProductPreviewModel;
 import com.example.v1.semojo.dao.ProductDao;
-import com.example.v1.semojo.entities.Artifact;
-import com.example.v1.semojo.entities.Product;
-import com.example.v1.semojo.entities.ProductTag;
+import com.example.v1.semojo.dao.UserAuthDao;
+import com.example.v1.semojo.dao.UserDao;
+import com.example.v1.semojo.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.HTML;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Service
@@ -16,11 +18,20 @@ public class ProductService {
     @Autowired
     ProductDao productDao;
 
+    @Autowired
+    UserAuthDao userAuthDao;
+
     public List<ProductPreviewModel> getProductList( int limit, int start, String tag, String lang){
         List<ProductPreviewModel> result = new ArrayList<>();
-        List<Product> products = productDao.findProductsByLimitAndStart(limit, start);
+        List<Product> products;
+        if (start==-1||limit==-1){
+            products = productDao.findAll();
+        }else {
+            products = productDao.findProductsByLimitAndStart(limit, start);
+        }
         for (Product productsTemp : products){
             ProductPreviewModel n_product = new ProductPreviewModel();
+            n_product.setProductId(productsTemp.getProductId());
             n_product.setCreator(productsTemp.getCreator());
             n_product.setCurrentPrice(productsTemp.getCurrentPrice());
             n_product.setOutline(productsTemp.getOutline());
@@ -65,7 +76,7 @@ public class ProductService {
                     break;
                 }
             }
-            while(lang_it.hasNext()){
+            while(tag_it.hasNext()){
                 Map.Entry<String, Integer> entry = tag_it.next();
                 if(entry.getValue().equals(maxTag)){
                     n_product.setTags(entry.getKey());
@@ -74,7 +85,11 @@ public class ProductService {
             }
             result.add(n_product);
         }
-        return result;
+        if (result.size()>400){
+            return result.subList(0, 400);
+        }else {
+            return result;
+        }
     }
 
     public ProductDetailModel findProductByProductId(long productId){
@@ -97,7 +112,39 @@ public class ProductService {
         return result;
     }
 
-    public void saveNewProduct(){
+    public void saveNewProduct(String productName, String outline, String authority, String creator, double fixed_price){
+        Product n_product = new Product();
+        n_product.setProductName(productName);
+        n_product.setOutline(outline);
+        Timestamp d = new Timestamp(System.currentTimeMillis());
+        n_product.setCreate_time(d);
+        n_product.setUpdate_time(d);
+        Authority n_authority = new Authority();
+        n_authority.setProductId(n_product.getProductId());
+        n_product.setSalesVolume(0);
+        n_product.setCreator(creator);
+        n_product.setFixPrice(fixed_price);
+        List<User> owners = new ArrayList<>();
+        UserAuth t_userAuth = userAuthDao.findUserAuthByUsername(creator);
 
+//        t_userAuth.setAuthorities();
+        User t_creator = t_userAuth.getUser();
+        owners.add(t_creator);
+        n_product.setOwners(owners);
+        n_product.setStatus(Product.ProductStatus.developing);
+        productDao.save(n_product);
+
+    }
+
+    public Product findProductByProductName(String productName){
+        return productDao.findProductByProductName(productName);
+    }
+
+    public void updateProduct(){
+
+    }
+
+    public void deleteProductByProductId(long productId){
+        productDao.deleteById(productId);
     }
 }

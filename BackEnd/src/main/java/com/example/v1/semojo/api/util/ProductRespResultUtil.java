@@ -25,4 +25,26 @@ public class ProductRespResultUtil {
         result.setData(productDetailModel);
         return result;
     }
+
+    public static WebRespResult<ProductPreviewModel> success(ProductPreviewModel productPreviewModel){
+        WebRespResult<ProductPreviewModel> result = new WebRespResult<>();
+        result.setCode(ProductResultEnum.SUCCESS.getCode());
+        result.setMsg(ProductResultEnum.SUCCESS.getMsg());
+        result.setData(productPreviewModel);
+        return result;
+    }
+
+    public static WebRespResult success(Integer code,String msg){
+        WebRespResult result = new WebRespResult();
+        result.setCode(code);
+        result.setMsg(msg);
+        return result;
+    }
+
+    public static WebRespResult error(Integer code,String msg){
+        WebRespResult result = new WebRespResult();
+        result.setCode(code);
+        result.setMsg(msg);
+        return result;
+    }
 }

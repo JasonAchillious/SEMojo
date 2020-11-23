@@ -10,6 +10,7 @@ import java.util.List;
 public interface ProductDao extends JpaRepository<Product, Long> {
     Product findProductByProductId(long productId);
 
-    @Query(nativeQuery=true, value = "select * from product order by productId limit ?1 offset ?2")
+    @Query(nativeQuery=true, value = "select *from product order by sales_volume desc limit ?1 offset ?2")
     List<Product> findProductsByLimitAndStart(long limit, long start);
+    Product findProductByProductName(String productName);
 }

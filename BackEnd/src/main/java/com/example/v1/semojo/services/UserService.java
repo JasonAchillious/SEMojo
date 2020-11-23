@@ -88,7 +88,7 @@ public class UserService implements UserDetailsService {
         n_user.setWeChatNum(userInfoModel.getWeChatNum());
         n_user.setQqNum(userInfoModel.getQqNum());
         n_user.setPhoneNum(userInfoModel.getPhoneNum());
-        n_user.setPortrait(userInfoModel.getPortrait());
+//        n_user.setPortrait(userInfoModel.getPortrait());
         n_user.setGender(userInfoModel.getGender());
         n_user.setAddress(userInfoModel.getAddress());
         userDao.save(n_user);

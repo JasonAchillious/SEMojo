@@ -178,7 +178,10 @@
 
 <script src="https://lib.baomitu.com/vuex/2.0.0/vuex.js"></script>
 
+<script src="https://cdn.bootcss.com/qs/6.7.0/qs.min.js"></script>
+
 <script>
+	var qs = Qs;
 	const store = new Vuex.Store({
 		state: {
 			token:''  //初始化token
@@ -283,36 +286,38 @@
 		mounted() {
 			axios({
 				method: 'get',
-				url: '/product',
-				data: {
-					'start': -1,
-					'limit': -1,
-					'tags': "-1",
-					'language': "-1",
+				url: '/products',
+				params: {
+					limit: -1,
+					start: -1,
+					tag: "-1",
+					lang: "-1",
 				},
 			}).then(res => {  //res是返回结果
-				if (res.data['code']===200){
+				if (res.data['code']==10200){
 					let datalist = [];
-					datalist = res.data['list'];
-					for (let i = 1, length = datalist.length; i <= length; i++) {
+					datalist = res.data['data'];
+					console.log(datalist);
+					for (let i = 0, length = datalist.length; i < length; i++) {
 						let product = {
-							id : i,
-							name: datalist.productName,
-							satisfaction: datalist.revierStar,
-							price: datalist.currentPrice,
-							contributors: datalist.creator,
-							language: datalist.language,
-							tags: datalist.tags,
-							destribution: datalist.outline,
-							DBid: datalist.DBid,
+							id : i+1,
+							name: datalist[i].productName,
+							satisfaction: datalist[i].revierStar,
+							price: datalist[i].currentPrice,
+							contributors: datalist[i].creator,
+							language: datalist[i].language,
+							tags: datalist[i].tags,
+							destribution: datalist[i].outline,
+							DBid: datalist[i].productId,
 						}
+						console.log(product.name);
 						this.list.push(product);
 						this.conditional_list.push(product);
 					}
+					this.total = this.conditional_list.length;
 					for (let i=0; i<8 && i<this.total; i++){
 						this.show_list.push(this.conditional_list[i]);
 					}
-					this.total = res.data['total'];
 				}
 			})
 		}
