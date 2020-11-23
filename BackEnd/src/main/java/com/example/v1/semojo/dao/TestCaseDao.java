@@ -4,4 +4,5 @@ import com.example.v1.semojo.entities.TestCase;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TestCaseDao extends JpaRepository<TestCase, Long> {
+    TestCase findTestCaseById(Long id);
 }

@@ -48,7 +48,7 @@ public class ProductController {
         return null;
     }
 
-    @DeleteMapping("admin/product/{productId}")
+    @DeleteMapping("contributor/product/{productId}")
     public WebRespResult deleteProduct(@PathVariable Long productId,
                                        HttpServletRequest req){
         String jwtToken = req.getHeader("authorization");

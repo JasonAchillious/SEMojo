@@ -9,6 +9,7 @@ import java.io.File;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -34,7 +35,6 @@ public class FileService {
         Product product = productDao.findProductByProductId(productId);
         System.out.println(product.getProductName());
         List<AdditionalFile> additionalFileList;
-        System.out.println("---------------------------");
         AdditionalFile newAddition = new AdditionalFile();
         newAddition.setLocation(location);
         newAddition.setDescription(description);
@@ -45,14 +45,12 @@ public class FileService {
             additionalFileList.add(newAddition);
             product.setAdditionalFiles(additionalFileList);
             productDao.save(product);
-            System.out.println(newAddition.getLocation() + "+++++++++++++++++++++++++++");
             return newAddition;
         }else {
             additionalFileList = product.getAdditionalFiles();
             additionalFileList.add(newAddition);
             product.setAdditionalFiles(additionalFileList);
             productDao.save(product);
-            System.out.println(newAddition.getLocation() + "---------------------------");
             return newAddition;
         }
     }
@@ -67,6 +65,20 @@ public class FileService {
 
     public SourceCode uploadSourceCode(){
         return null;
+    }
+
+    public Optional<AdditionalFile> getAdditionalFile(Long fileId){
+        return additionalFileDao.findById(fileId);
+    }
+
+    public String getLocation(String type, Long fileId) throws Exception {
+        switch (type){
+            case "other": return additionalFileDao.findAdditionalFileById(fileId).getLocation();
+            case "doc": return documentDao.findDocumentById(fileId).getLocation();
+            case "artifact": return artifactDao.findArtifactById(fileId).getLocation();
+            case "testcase": return testCaseDao.findTestCaseById(fileId).getLocation();
+            default: throw new Exception("Type Wrong");
+        }
     }
 
     public String randomFileName(String oldName){

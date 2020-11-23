@@ -24,7 +24,6 @@ public class JwtAuthFilter extends GenericFilterBean {
         HttpServletRequest req = (HttpServletRequest) request;
         String jwtToken = req.getHeader("authorization");
         if (jwtToken != null && jwtToken.trim().length() > 0) {
-            System.out.println("jwtToken: " + jwtToken);
             try {
                 Claims claims = Jwts.parser()
                         .setSigningKey("zzx@11711621")
