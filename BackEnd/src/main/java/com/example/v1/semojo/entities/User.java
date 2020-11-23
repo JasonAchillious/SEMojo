@@ -20,12 +20,11 @@ public class User {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private UserAuth auth;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Product> products;
-
     @OneToMany(mappedBy = "booker", cascade = CascadeType.ALL)
     private List<Transaction> userTransec;
 
+    @ManyToMany
+    private List<Product> products;
 
     public UserAuth getAuth() {
         return auth;
@@ -97,14 +96,6 @@ public class User {
 
     public void setPortrait(String portrait) {
         this.portrait = portrait;
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
     }
 
     public List<Transaction> getUserTransec() {

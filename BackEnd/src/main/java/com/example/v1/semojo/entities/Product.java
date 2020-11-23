@@ -11,6 +11,7 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long productId;
+    @Column(unique = true)
     private String productName;
     private String outline;
     private int reviewStar;

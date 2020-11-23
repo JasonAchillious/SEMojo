@@ -1,8 +1,13 @@
 package com.example.v1.semojo.api.enums;
 
+import com.example.v1.semojo.entities.Product;
+
 public enum ProductResultEnum {
     UNKNOWN_ERROR(20500,"unknown error"),
-    SUCCESS(20200,"success")
+    SUCCESS(20200,"success"),
+    PRODUCT_NOT_EXIST(20401,"product not exist"),
+    PRODUCT_IS_EXISTS(20402,"product has existed"),
+    NO_AUTHORITY(20403, "No authority")
     ;
     private Integer code;
     private String msg;

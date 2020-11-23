@@ -1,9 +1,6 @@
 package com.example.v1.semojo.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "authority")
 public class Authority {
@@ -12,20 +9,21 @@ public class Authority {
     private Long id;
     private Long productId;
 
-    public static enum authType{
+    public static enum AuthType{
         update,
         download,
         delete,
         all
     }
-    private authType name;
+    @Enumerated(EnumType.STRING)
+    private AuthType name;
     private String description;
 
-    public authType getName() {
+    public AuthType getName() {
         return name;
     }
 
-    public void setName(authType name) {
+    public void setName(AuthType name) {
         this.name = name;
     }
 
