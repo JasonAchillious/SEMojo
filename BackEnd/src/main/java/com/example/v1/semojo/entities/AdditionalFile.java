@@ -15,6 +15,15 @@ public class AdditionalFile {
     private String description;
     private Timestamp uploadTime;
     private String location;
+    private String fileName;
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
     public Long getId() {
         return id;

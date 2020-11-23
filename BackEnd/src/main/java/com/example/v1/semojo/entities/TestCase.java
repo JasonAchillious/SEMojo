@@ -14,7 +14,7 @@ public class TestCase {
     private String uploader;
     private String description;
     private Timestamp uploadTime;
-
+    private Timestamp updateTime;
     private String input;
     private String output;
 
@@ -22,6 +22,7 @@ public class TestCase {
     private String outPutDescription;
 
     private String location;
+    private String fileName;
 
     public static enum testStatus{
         pass,
@@ -29,6 +30,22 @@ public class TestCase {
         untested
     }
     private testStatus status ;
+
+    public Timestamp getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
     public long getId() {
         return id;

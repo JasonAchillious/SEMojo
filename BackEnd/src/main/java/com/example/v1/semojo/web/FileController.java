@@ -32,11 +32,11 @@ public class FileController {
     FileService fileService;
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
-    String uploadDir = "/uploadFile/";
+
 
     @RequestMapping(value = "/contributor/{username}/product/{productId}/other",
             method = RequestMethod.POST,
-            produces = MediaType.MULTIPART_FORM_DATA_VALUE
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation(value = "upload", notes = "upload file", tags = "customer", httpMethod = "POST")
     @ApiImplicitParams(
@@ -48,40 +48,19 @@ public class FileController {
                                           MultipartFile uploadFile,
                                           HttpServletRequest req){
 
-        if (uploadFile.isEmpty()) {
-            return new WebRespResult<>(400, "File is Empty");
-        }
-
-        String productPath = "product/" + productId + "/other/";
-        String realPath = req.getSession().getServletContext().getRealPath(uploadDir);
-        File folder = fileService.createFolder(realPath , productPath);
-
-        String oldName = uploadFile.getOriginalFilename();
-        String newName = fileService.randomFileName(oldName);
         try{
-            File file = new File(folder, newName);
-            uploadFile.transferTo(file);
-            String filePath = file.getPath();
-            System.out.println(filePath);
-
-            AdditionalFile other = fileService.uploadAddition(productId, username, description, filePath);
-            FileRespModel respModel = new FileRespModel();
-            respModel.setId(other.getId());
-            respModel.setDescription(other.getDescription());
-            respModel.setLocation(other.getLocation());
-            respModel.setUploadTime(other.getUploadTime());
-            // TODO: 2020/11/23  HttpMessageNotWritableException: No converter for ... with preset Content-Type 'null'
-            return FileRespResultUtil.success(respModel);
+            AdditionalFile file = fileService.uploadAddition(productId, username, description, uploadFile, req);
+           return new WebRespResult<>(200, "upload success", file);
         }catch (IOException e){
             e.printStackTrace();
             logger.error(e.getMessage());
-            return FileRespResultUtil.error(500, "Unknown Error");
+            return FileRespResultUtil.error(400, e.getMessage());
         }
 
     }
 
     @DeleteMapping("/contributor/{username}/product/{productId}/other/{fileId}")
-    public WebRespResult deleteFile(@PathVariable String username,
+    public WebRespResult deleteAdditionFile(@PathVariable String username,
                                         @PathVariable String projectId,
                                         @RequestParam String type,
                                         @PathVariable Long fileId){
@@ -89,7 +68,7 @@ public class FileController {
     }
 
     @PutMapping("/contributor/{username}/product/{productId}/other/{fileId}")
-    public WebRespResult updateFile(@PathVariable String username,
+    public WebRespResult updateAdditionFile(@PathVariable String username,
                                     @PathVariable String projectId,
                                     @PathVariable Long fileId,
                                     MultipartFile uploadFile,
@@ -98,7 +77,7 @@ public class FileController {
     }
 
     @GetMapping("/contributor/{username}/product/{productId}/others")
-    public WebRespResult getFileList(@PathVariable String username,
+    public WebRespResult getAdditionFileList(@PathVariable String username,
                                      @PathVariable Long projectId
                                     ){
         return null;

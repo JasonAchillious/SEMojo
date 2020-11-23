@@ -16,6 +16,7 @@ public class Artifact {
     private Timestamp update_time;
     private String location;
     private String version;
+    private String fileName;
 
     @Enumerated(EnumType.STRING)
     private SourceCode.Lang lang;
@@ -27,6 +28,15 @@ public class Artifact {
     }
     @Enumerated(EnumType.STRING)
     private ArtifactStatus status;
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
 
     public SourceCode.Lang getLang() {
         return lang;
@@ -64,7 +74,7 @@ public class Artifact {
         return upload_time;
     }
 
-    public void setUpload_time(Timestamp upload_time) {
+    public void setUploadTime(Timestamp upload_time) {
         this.upload_time = upload_time;
     }
 
