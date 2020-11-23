@@ -23,7 +23,7 @@ public class TestCase {
 
     private String location;
 
-    private static enum testStatus{
+    public static enum testStatus{
         pass,
         fail,
         untested

@@ -42,7 +42,7 @@ public class UserAuth implements UserDetails {
         List<Authority> auths = getAuthority();
         if (auths != null) {
             for (Authority auth : getAuthority()) {
-                authorities.add(new SimpleGrantedAuthority(auth.getName()));
+                authorities.add(new SimpleGrantedAuthority(auth.getProductId() + auth.getName().toString()));
             }
         }
         return authorities;

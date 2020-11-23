@@ -12,6 +12,7 @@ public class SourceCode {
     private String description;
     private Timestamp uploadTime;
     private String location;
+    private Timestamp updateTime;
 
     public static enum Lang{
         cplusplus,

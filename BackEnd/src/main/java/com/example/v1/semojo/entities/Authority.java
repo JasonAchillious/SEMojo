@@ -11,14 +11,21 @@ public class Authority {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long productId;
-    private String name;
+
+    public static enum authType{
+        update,
+        download,
+        delete,
+        all
+    }
+    private authType name;
     private String description;
 
-    public String getName() {
+    public authType getName() {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(authType name) {
         this.name = name;
     }
 

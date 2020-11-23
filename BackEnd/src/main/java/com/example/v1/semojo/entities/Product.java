@@ -34,19 +34,19 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private List<User> owners;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Artifact> artifacts;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Document> docs;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<TestCase> testCases;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<SourceCode> sourceCodes;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AdditionalFile> additionalFiles;
 
     @ManyToMany
@@ -179,5 +179,21 @@ public class Product {
 
     public void setProductTransac(List<Transaction> productTransac) {
         this.productTransac = productTransac;
+    }
+
+    public List<SourceCode> getSourceCodes() {
+        return sourceCodes;
+    }
+
+    public void setSourceCodes(List<SourceCode> sourceCodes) {
+        this.sourceCodes = sourceCodes;
+    }
+
+    public List<AdditionalFile> getAdditionalFiles() {
+        return additionalFiles;
+    }
+
+    public void setAdditionalFiles(List<AdditionalFile> additionalFiles) {
+        this.additionalFiles = additionalFiles;
     }
 }
