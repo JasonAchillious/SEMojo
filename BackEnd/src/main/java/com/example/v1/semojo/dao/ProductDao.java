@@ -8,7 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface ProductDao extends JpaRepository<Product, Long> {
-    Product findProductById(long productId);
-    @Query(nativeQuery=true, value = "select *from product order by id limit ?1 offset ?2")
-    List<Product> findProductsByIdLimit(long limit, long start);
+    Product findProductByProductId(long productId);
+
+    @Query(nativeQuery=true, value = "select * from product order by productId limit ?1 offset ?2")
+    List<Product> findProductsByLimitAndStart(long limit, long start);
 }

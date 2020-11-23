@@ -45,6 +45,7 @@ public class FileController {
                                           @RequestParam String type,
                                           MultipartFile uploadFile,
                                           HttpServletRequest req){
+
         if (uploadFile.isEmpty()) {
             return new WebRespResult<>(400, "File is Empty");
         }
@@ -53,7 +54,7 @@ public class FileController {
         }
 
 
-        String productPath = "/product" + productId + "/"+ username + "/" + type + "/";
+        String productPath = "product/" + productId + "/"+ username + "/" + type + "/";
         String realPath = req.getSession().getServletContext().getRealPath(uploadDir);
         File folder = fileService.createFolder(realPath , productPath);
 
@@ -64,19 +65,22 @@ public class FileController {
             String filePath = req.getScheme()
                     + "://" + req.getServerName() + ":" + req.getServerPort()
                     + uploadDir + productPath;
+            System.out.println(filePath);
             switch (type) {
-                case  "/other/" : return new WebRespResult<>(200,
-                        "upload success",
-                        fileService.uploadAddition(productId, username, description, filePath));
-                default: return new WebRespResult(400, "wrong type");
+                case  "other" :
+                    AdditionalFile file = fileService.uploadAddition(productId, username, description, filePath);
+
+                    return new WebRespResult<>(200,
+                        "upload success");
+                default: return new WebRespResult<>(400, "wrong type");
             }
 
         }catch (IOException e){
             e.printStackTrace();
             logger.error(e.getMessage());
+            return new WebRespResult<>(500, e.getMessage());
         }
 
-        return new WebRespResult<>(500, "upload error");
     }
 
     @DeleteMapping("/contributor/{username}/product/{productId}/{fileId}")

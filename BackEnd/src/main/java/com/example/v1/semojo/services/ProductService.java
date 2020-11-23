@@ -18,7 +18,7 @@ public class ProductService {
 
     public List<ProductPreviewModel> getProductList( int limit, int start, String tag, String lang){
         List<ProductPreviewModel> result = new ArrayList<>();
-        List<Product> products = productDao.findProductsByIdLimit(limit, start);
+        List<Product> products = productDao.findProductsByLimitAndStart(limit, start);
         for (Product productsTemp : products){
             ProductPreviewModel n_product = new ProductPreviewModel();
             n_product.setCreator(productsTemp.getCreator());
@@ -78,7 +78,7 @@ public class ProductService {
     }
 
     public ProductDetailModel findProductByProductId(long productId){
-        Product product = productDao.findProductById(productId);
+        Product product = productDao.findProductByProductId(productId);
         ProductDetailModel result = new ProductDetailModel();
         result.setArtifacts(product.getArtifacts());
         result.setCreate_time(product.getCreate_time());

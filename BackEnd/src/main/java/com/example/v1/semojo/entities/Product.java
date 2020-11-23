@@ -10,7 +10,7 @@ import java.util.List;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long productId;
     private String productName;
     private String outline;
     private int reviewStar;
@@ -71,12 +71,12 @@ public class Product {
         this.productName = productName;
     }
 
-    public Long getId() {
-        return id;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public String getOutline() {

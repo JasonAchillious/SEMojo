@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,17 +31,30 @@ public class FileService {
     }
 
     public AdditionalFile uploadAddition(Long productId, String username, String description, String location){
-        Product product = productDao.findProductById(productId);
-        List<AdditionalFile> additionalFileList = product.getAdditionalFiles();
+        Product product = productDao.findProductByProductId(productId);
+        System.out.println(product.getProductName());
+        List<AdditionalFile> additionalFileList;
+        System.out.println("---------------------------");
         AdditionalFile newAddition = new AdditionalFile();
         newAddition.setLocation(location);
         newAddition.setDescription(description);
         newAddition.setUploader(username);
         newAddition.setUploadTime(new Timestamp(System.currentTimeMillis()));
-        additionalFileList.add(newAddition);
-        product.setAdditionalFiles(additionalFileList);
-        productDao.save(product);
-        return newAddition;
+        if (product.getAdditionalFiles() == null){
+            additionalFileList= new ArrayList<>();
+            additionalFileList.add(newAddition);
+            product.setAdditionalFiles(additionalFileList);
+            productDao.save(product);
+            System.out.println(newAddition.getLocation() + "+++++++++++++++++++++++++++");
+            return newAddition;
+        }else {
+            additionalFileList = product.getAdditionalFiles();
+            additionalFileList.add(newAddition);
+            product.setAdditionalFiles(additionalFileList);
+            productDao.save(product);
+            System.out.println(newAddition.getLocation() + "---------------------------");
+            return newAddition;
+        }
     }
 
     public Document uploadDoc(){
