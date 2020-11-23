@@ -67,11 +67,18 @@ public class ProductController {
     }
 
     @PutMapping("/product/{productId}")
-    public WebRespResult updateProductInfo(){
+    public WebRespResult updateProductInfo(@PathVariable long productId,
+                                           @RequestParam String productName,
+                                           @RequestParam String outline,
+                                           @RequestParam double currentPrice,
+                                           @RequestParam String status,
+                                           @RequestParam String owners){
+//        if ()
+        productService.updateProduct(productId, productName, outline, currentPrice, status, owners);
         return null;
     }
 
-    @DeleteMapping("admin/product/{productId}")
+    @DeleteMapping("/contributor/product/{productId}")
     public WebRespResult deleteProduct(@PathVariable Long productId,
                                        HttpServletRequest req){
         String jwtToken = req.getHeader("authorization");
@@ -111,4 +118,6 @@ public class ProductController {
         }
         return null;
     }
+
+
 }

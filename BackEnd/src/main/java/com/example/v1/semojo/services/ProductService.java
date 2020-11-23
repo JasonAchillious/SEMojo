@@ -57,7 +57,7 @@ public class ProductService {
                 }
             }
             for (int i = 0; i < tags.size(); i++){
-                String Tag_temp = tags.get(i).getTag().toString();
+                String Tag_temp = tags.get(i).getTag();
                 if (tagMap.containsKey(Tag_temp)){
                     tagMap.put(Tag_temp, tagMap.get(Tag_temp) + 1);
                     if (tagMap.get(Tag_temp) > maxTag){
@@ -126,9 +126,14 @@ public class ProductService {
         n_product.setFixPrice(fixed_price);
         List<User> owners = new ArrayList<>();
         UserAuth t_userAuth = userAuthDao.findUserAuthByUsername(creator);
-
-//        t_userAuth.setAuthorities();
+        Authority n_auth = new Authority();
+        n_auth.setProductId(n_product.getProductId());
+        n_auth.setName(Authority.AuthType.all);
+        List<Authority> n_authorities = new ArrayList<>();
+        n_authorities.add(n_auth);
+        t_userAuth.setAuthorities(n_authorities);
         User t_creator = t_userAuth.getUser();
+        t_creator.setAuth(t_userAuth);
         owners.add(t_creator);
         n_product.setOwners(owners);
         n_product.setStatus(Product.ProductStatus.developing);
@@ -140,7 +145,8 @@ public class ProductService {
         return productDao.findProductByProductName(productName);
     }
 
-    public void updateProduct(){
+    public void updateProduct(long productId, String productName, String outline, double currentPrice, String status, String owners){
+        Timestamp d = new Timestamp(System.currentTimeMillis());
 
     }
 
