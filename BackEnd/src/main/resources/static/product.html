@@ -56,7 +56,7 @@
 				<div align="left" style="width:55%; display:inline-block;">
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="homepage.html">
-						<img border="0" src="./images/logo.png" style="height:45px; width:75px"/>
+						<img border="0" src="../images/logo.png" style="height:45px; width:75px"/>
 						<p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
 					</a>
 					<el-link
@@ -205,11 +205,10 @@
 
 		}
 	});
-	Vue.filter('capitalize', function (value) {
-		if (!value) return ''
-		value = value.toString()
-		return value.charAt(0).toUpperCase() + value.slice(1)
-	})
+	var sleep = function(time) {
+		var startTime = new Date().getTime() + parseInt(time, 10);
+		while(new Date().getTime() < startTime) {}
+	};
 	var Main = new Vue({
 		el: '#app',
 		data () {
@@ -221,8 +220,6 @@
 				loading: false,
 				id: 1,
 				total: 0,
-				now_language: 'All',
-				now_type: 'All',
 				current_page: 1,
 				show_list:[],
 				conditional_list:[],
@@ -248,10 +245,8 @@
 						message:'Please login first',
 						type:'warning'
 					});
-					axios({
-						method: 'post',
-						url: '/login',
-					})
+					sleep(1500);
+					window.location.href="./login.html";
 				}
 			},
 			handleCurrentChange(val) {
@@ -263,10 +258,10 @@
 				window.scrollTo(0, 0);
 			},
 			handleLanguageChange(val) {
-				this.now_language = val;
+				this.language = val;
 				this.conditional_list = [];
 				for (let i = 0, length = this.list.length; i < length; i++) {
-					if(this.list[i].language==this.now_language && (this.list[i].type==this.now_type || this.now_type=='All')){
+					if(this.list[i].language==this.language && (this.list[i].type==this.type || this.type=='All Types')){
 						this.conditional_list.push(this.list[i]);
 					}
 				}
@@ -274,10 +269,10 @@
 				this.current_page = 1;
 			},
 			handleTypeChange(val) {
-				this.now_type = val;
+				this.type = val;
 				this.conditional_list = [];
 				for (let i = 0, length = this.list.length; i < length; i++) {
-					if(this.list[i].type==this.type && (this.list[i].language==this.now_language || this.now_language=='All')){
+					if(this.list[i].type==this.type && (this.list[i].language==this.language || this.language=='All Languages')){
 						this.conditional_list.push(this.list[i]);
 					}
 				}
