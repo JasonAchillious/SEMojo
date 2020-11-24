@@ -85,7 +85,7 @@ public class UserController {
             for (GrantedAuthority authority: auth.getAuthorities()){
                 roleStrBuf.append(authority.getAuthority()).append(",");
             }
-            UserAuthModel userAuthModel = new UserAuthModel(n_user.getId(), auth.getUsername(), roleStrBuf.toString());
+            UserAuthModel userAuthModel = new UserAuthModel(n_user.getUserId(), auth.getUsername(), roleStrBuf.toString());
             return UserRespResultUtil.success(userAuthModel);
         }
         // TODO: 2020/11/22 add judgement

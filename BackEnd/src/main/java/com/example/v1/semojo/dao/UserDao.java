@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface UserDao extends JpaRepository<User, Long> {
-    User findUserById(long userId);
-    @Query(nativeQuery=true, value = "select *from semojo_user order by id limit ?1 offset ?2")
+    User findUserByUserId(long userId);
+    @Query(nativeQuery=true, value = "select *from semojo_user order by userId limit ?1 offset ?2")
     List<User> findUsersByIdLimit(long limit, long start);
     User findUserByEmail(String email);
 }

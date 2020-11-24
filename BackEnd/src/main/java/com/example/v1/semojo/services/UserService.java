@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityManager;
 import java.util.*;
@@ -79,7 +78,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUserByUserId(long userId){
-        return userDao.findUserById(userId);
+        return userDao.findUserByUserId(userId);
     }
 
     public void updateUser(String username, UserInfoModel userInfoModel){
@@ -95,7 +94,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUserByUserName(String username){
-        userDao.deleteById(findUserByUsername(username).getId());
+        userDao.deleteById(findUserByUsername(username).getUserId());
     }
 
     public List<UserAllInfoModel> getUserList(long limit, long start){
