@@ -251,17 +251,15 @@
         mounted() {
             axios({
                 method: 'get',
-                url: '/login',
-                params: {
-                    'username': store.getters.getUsername,
-                },
+                url: '/customer/' + store.getters.getUsername +'/portrait',
                 headers: {
-                    "Authorization": 'Bearer ' + store.getters.getToken,
+                    "authorization": 'Bearer ' + store.getters.getToken,
                 }
             }).then(res => {  //res是返回结果
+                console.log(res);
                 if (res.data['code'] == "200") {
                     this.is_login = true;
-                    this.img_src = res.data['src'];
+                    this.img_src = res.data['data'];
                 } else {
                     this.$message({
                         message: 'connect wrong',

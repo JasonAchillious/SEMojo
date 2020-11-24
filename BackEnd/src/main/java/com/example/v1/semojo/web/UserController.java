@@ -50,9 +50,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code=200, message="success", response= UserAuthModel.class),
     })
-    public WebRespResult register(String username, String password,
-                                  String confirmPassword, String email
-                                  ){
+    public WebRespResult register(@RequestBody RegisterModel model){
 //        try {
 //            User user = userService.saveUser(username, password, confirmPassword, email);
 //            UserAuth auth = user.getAuth();
@@ -69,6 +67,10 @@ public class UserController {
 //            }
 //        }
 //        return UserRespResultUtil.error(500, "Unknown Exception");
+        String username = model.getUsername();
+        String email = model.getEmail();
+        String password = model.getPassword();
+        String confirmPassword = model.getConfirmPassword();
 
         if (userService.findUserByUsername(username) != null || userService.findUserByEmail(email) != null){
             return UserRespResultUtil.error(UserResultEnum.USER_IS_EXISTS.getCode(), UserResultEnum.USER_IS_EXISTS.getMsg());
@@ -136,7 +138,7 @@ public class UserController {
     }
 
     @GetMapping("/customer/{username}/portrait")
-    public WebRespResult getPortrait(String username){
+    public WebRespResult getPortrait(@PathVariable String username){
         try {
             String path = userService.getPortrait(username);
             return new WebRespResult<>(200, "success", path);

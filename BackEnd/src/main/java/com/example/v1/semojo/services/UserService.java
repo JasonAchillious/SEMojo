@@ -26,7 +26,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     EntityManager entityManager;
 
-    String defaultPortait = "/images/";
+    String defaultPortait = "/images/touxiang.png";
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
