@@ -89,7 +89,7 @@
                     </el-link>
                 </div>
 
-                <div align="right" style="width:40%; display:inline-block" >
+                <div align="right" style="width:40%; display:inline-block;" v-show="!is_login">
                     <el-input
                             placeholder="Search SEMojo"
                             v-model="search"
@@ -97,17 +97,38 @@
                         <el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
                     </el-input>
                     <el-link
-                            href="\login"
+                            href="login.html"
                             target="_blank"
                             style="color:#FFFFFF; width:15%;text-decoration:none"
                             class=navigation_fontsize
                     >Sign in
                     </el-link>
                     <el-link
-                            href="\register"
+                            href="signup.html"
                             :underline="false">
                         <el-button type="primary">Sign up</el-button>
                     </el-link>
+                </div>
+                <div style="width: 20%; display: inline-block" v-show="is_login">&nbsp;</div>
+                <div align="right" style="width:20%; display:inline-flex;" v-show="is_login">
+                    <el-input
+                            placeholder="Search SEMojo"
+                            v-model="search"
+                            style="width: 80%">
+                        <el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
+                    </el-input>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <el-dropdown @command="handleCommand">
+							<span class="el-dropdown-link">
+								<el-avatar :src="img_src"></el-avatar>
+							</span>
+                        <el-dropdown-menu slot="dropdown" style="margin-top: -10px">
+                            <el-dropdown-item command="userpage">Your profile</el-dropdown-item>
+                            <el-dropdown-item command="contributor">Your products</el-dropdown-item>
+                            <el-dropdown-item command="logout">sign out</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </div>
             </div>
 
@@ -121,16 +142,16 @@
                 <div style="width: 39%; margin-left: 100px">
                     <h1>Welcome to SEMojo!</h1><br>
                     <p>SEMojo is a platform for creators to share their advanced software techniques
-                       and for customers to explore mature techniques supporting the implementation
-                       of their ideas.</p>
+                        and for customers to explore mature techniques supporting the implementation
+                        of their ideas.</p>
                     <br>
                     <p>If you are a geek who are keen on creating or developing useful techniques to
-                       solve difficult problem, and are willing to share with others. We are glad to
-                       invite you to join us to turn techniques into wealth.</p>
+                        solve difficult problem, and are willing to share with others. We are glad to
+                        invite you to join us to turn techniques into wealth.</p>
                     <br>
                     <p>If you are a dreamer who has lots of excellent ideas, but are stuck with the
-                       techniques to achieve your great ideas. We are proud to introduce our SEMojo
-                       platform where you are likely to find what you want to support your geate ideas.</p>
+                        techniques to achieve your great ideas. We are proud to introduce our SEMojo
+                        platform where you are likely to find what you want to support your geate ideas.</p>
                 </div>
             </div>
         </el-main>
@@ -148,7 +169,8 @@
 <script>
     const store = new Vuex.Store({
         state: {
-            token:''  //初始化token
+            token:'',  //初始化token
+            username:''  //初始化username
         },
         mutations: {
             //存储token方法
@@ -156,6 +178,10 @@
             setToken(state, token) {
                 state.token = token
                 localStorage.token = token //同步存储token至localStorage
+            },
+            setUsername(state, username) {
+                state.username = username
+                localStorage.username = username //同步存储username至localStorage
             },
         },
         getters : {
@@ -166,6 +192,12 @@
                     state.token = localStorage.getItem('token')
                 }
                 return state.token
+            },
+            getUsername(state) {
+                if (!state.username) {
+                    state.username = localStorage.getItem('username')
+                }
+                return state.username
             }
         },
         actions: {
@@ -177,6 +209,8 @@
         data () {
             return {
                 search: '',
+                is_login: false,
+                img_src: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
                 fit: 'fill',
                 src: './images/illustration.png',
             };
@@ -199,13 +233,43 @@
                         message:'Please login first',
                         type:'warning'
                     });
-                    axios({
-                        method: 'post',
-                        url: '/login',
-                    })
+                    window.location.href="./login.html";
+                }
+            },
+            handleCommand(command) {
+                if (command=="userpage"){
+                    window.location.href="./userpage.html";
+                }else if (command=="contributor"){
+                    window.location.href="./contributor.html";
+                }else {
+                    this.is_login = false;
+                    localStorage.clear();
+                    window.location.href="./homepage.html";
                 }
             }
         },
+        mounted() {
+            axios({
+                method: 'get',
+                url: '/login',
+                params: {
+                    'username': store.getters.getUsername,
+                },
+                headers: {
+                    "Authorization": 'Bearer ' + store.getters.getToken,
+                }
+            }).then(res => {  //res是返回结果
+                if (res.data['code'] == "200") {
+                    this.is_login = true;
+                    this.img_src = res.data['src'];
+                } else {
+                    this.$message({
+                        message: 'connect wrong',
+                        type: 'warning'
+                    })
+                }
+            });
+        }
     })
 </script>
 </body>
