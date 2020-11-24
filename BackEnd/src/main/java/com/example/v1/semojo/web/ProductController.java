@@ -46,20 +46,19 @@ public class ProductController {
         return ProductRespResultUtil.success(product);
     }
 
-    @PostMapping("/contributor/product")
+    @PostMapping("/contributor/{username}/product")
     public WebRespResult createProduct(@RequestParam String productName,
                                        @RequestParam String outline,
-                                       @RequestParam String authority,
-                                       @RequestParam String creator,
+                                       @RequestParam String username,
                                        @RequestParam double fixed_price
     ){
         if (productService.findProductByProductName(productName) != null){
             return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_IS_EXISTS.getCode(), ProductResultEnum.PRODUCT_IS_EXISTS.getMsg());
-        }else if(userService.findUserByUsername(creator)==null){
+        }else if(userService.findUserByUsername(username)==null){
             return UserRespResultUtil.error(UserResultEnum.USER_NOT_EXIST.getCode(), UserResultEnum.USER_NOT_EXIST.getMsg());
         }
         else {
-            productService.saveNewProduct(productName, outline, authority, creator, fixed_price);
+            productService.saveNewProduct(productName, outline, username, fixed_price);
             Product n_product = productService.findProductByProductName(productName);
             ProductPreviewModel n_productModel = new ProductPreviewModel(n_product);
             return ProductRespResultUtil.success(n_productModel);

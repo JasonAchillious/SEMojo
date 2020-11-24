@@ -26,6 +26,8 @@ public class UserService implements UserDetailsService {
     @Autowired
     EntityManager entityManager;
 
+    String defaultPortait = "/images/";
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserAuth userAuth = userAuthDao.findUserAuthByUsername(username);
@@ -73,6 +75,7 @@ public class UserService implements UserDetailsService {
         n_auth.setCredentialsNonExpired(true);
         n_auth.setRole(1);
         n_user.setAuth(n_auth);
+        n_user.setPortrait(defaultPortait);
         userDao.save(n_user);
         userAuthDao.save(n_auth);
     }
@@ -120,5 +123,13 @@ public class UserService implements UserDetailsService {
 //        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 //        String encodedPwd = encoder.encode(password);
 //        boolean bool = encoder.matches("1234569077", encodedPwd);
+    }
+
+    public String getPortrait(String username) throws Exception {
+        User user = findUserByUsername(username);
+        if (user == null){
+            throw new Exception("User is not exist");
+        }
+        return user.getPortrait();
     }
 }

@@ -11,10 +11,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 import java.util.List;
@@ -135,6 +132,17 @@ public class UserController {
         }else {
             userService.deleteUserByUserName(username);
             return UserRespResultUtil.success(UserResultEnum.SUCCESS.getCode(), UserResultEnum.SUCCESS.getMsg());
+        }
+    }
+
+    @GetMapping("/customer/{username}/portrait")
+    public WebRespResult getPortrait(String username){
+        try {
+            String path = userService.getPortrait(username);
+            return new WebRespResult<>(200, "success", path);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new WebRespResult(400, e.getMessage());
         }
     }
 }
