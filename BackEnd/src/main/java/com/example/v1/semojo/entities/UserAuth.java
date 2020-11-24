@@ -25,7 +25,7 @@ public class UserAuth implements UserDetails {
     private int role;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Authority> authorities;
-    @OneToOne(mappedBy = "auth")
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "auth")
     private User user;
 
 

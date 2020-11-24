@@ -8,25 +8,36 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 public class TestCaseController {
     @Autowired
     FileService fileService;
 
-    @GetMapping("/project/{projectId}/testcases")
-    public WebRespResult getTestCaseList(@PathVariable Long projectId){
+    @GetMapping("/project/{productId}/testcases")
+    public WebRespResult getTestCaseList(@PathVariable Long productId){
+        try {
+            List<TestCase> testCases = fileService.findAllTestCase(productId);
+            return new WebRespResult<>(200, "success", testCases);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new WebRespResult(400, e.getMessage());
+        }
+    }
+
+    @PutMapping("/contributor/{username}/product/{productId}/testcase/{caseId}")
+    public WebRespResult updateTestCase(@PathVariable Long productId,
+                                        @PathVariable String username,
+                                        @PathVariable Long caseId
+    ){
         return null;
     }
 
-    @PutMapping("/contributor/{username}/project/{projectId}/testcase/{caseId}")
-    public WebRespResult updateTestCase(@PathVariable Long projectId){
-        return null;
-    }
-
-    @DeleteMapping("/contributor/{username}/project/{projectId}/testcase/{caseId}")
-    public WebRespResult deleteTestCase(@PathVariable Long projectId,
-                                        @PathVariable Long caseId){
+    @DeleteMapping("/contributor/{username}/product/{productId}/testcase/{caseId}")
+    public WebRespResult deleteTestCase(@PathVariable Long productId,
+                                        @PathVariable Long caseId,
+                                        @PathVariable String username){
         return null;
     }
 

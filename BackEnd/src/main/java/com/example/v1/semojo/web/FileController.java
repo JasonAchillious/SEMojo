@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -76,11 +77,15 @@ public class FileController {
         return null;
     }
 
-    @GetMapping("/contributor/{username}/product/{productId}/others")
-    public WebRespResult getAdditionFileList(@PathVariable String username,
-                                     @PathVariable Long projectId
-                                    ){
-        return null;
+    @GetMapping("/product/{productId}/others")
+    public WebRespResult getAdditionFileList(@PathVariable Long productId){
+        try {
+            List<AdditionalFile> additionalFileList = fileService.findAllAddition(productId);
+            return new WebRespResult<>(200, "success", additionalFileList);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new WebRespResult(400, e.getMessage());
+        }
     }
 
     @GetMapping("/contributor/{username}/product/{productId}/file")

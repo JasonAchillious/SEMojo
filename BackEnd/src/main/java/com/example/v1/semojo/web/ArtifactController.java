@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 public class ArtifactController {
     @Autowired
@@ -56,11 +57,15 @@ public class ArtifactController {
         return null;
     }
 
-    @GetMapping("/{username}/product/{productId}/artifacts")
-    public WebRespResult updateArtifact(@PathVariable String username,
-                                        @PathVariable Long productId){
-
-        return null;
+    @GetMapping("/product/{productId}/artifacts")
+    public WebRespResult getArtifactDetail(@PathVariable Long productId){
+        try {
+            List<Artifact> artifacts = fileService.findAllArtifacts(productId);
+            return new WebRespResult<>(200, "success", artifacts);
+        }catch (Exception e) {
+            e.printStackTrace();
+            return new WebRespResult(400, e.getMessage());
+        }
     }
 
     @PutMapping("/contributor/{username}/product/{productId}/artifactInfo/{artifactId}")

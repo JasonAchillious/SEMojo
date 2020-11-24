@@ -256,6 +256,31 @@ public class FileService {
         return additionalFileDao.findById(fileId);
     }
 
+    public List<Artifact> findAllArtifacts(Long productId) throws Exception{
+        Product product = productDao.findProductByProductId(productId);
+        return product.getArtifacts();
+    }
+
+    public List<Document> findAllDocument(Long productId) throws Exception{
+        Product product = productDao.findProductByProductId(productId);
+        return product.getDocs();
+    }
+
+    public List<AdditionalFile> findAllAddition(Long productId) throws Exception{
+        Product product = productDao.findProductByProductId(productId);
+        return product.getAdditionalFiles();
+    }
+
+    public List<SourceCode> findAllSourceCode(Long productId) throws Exception{
+        Product product = productDao.findProductByProductId(productId);
+        return product.getSourceCodes();
+    }
+
+    public List<TestCase> findAllTestCase(Long productId) throws Exception{
+        Product product = productDao.findProductByProductId(productId);
+        return product.getTestCases();
+    }
+
     public String getLocation(String type, Long fileId) throws Exception {
         switch (type){
             case "other": return additionalFileDao.findAdditionalFileById(fileId).getLocation();
