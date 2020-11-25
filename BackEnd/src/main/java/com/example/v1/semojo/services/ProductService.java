@@ -134,6 +134,7 @@ public class ProductService {
         Authority n_auth = new Authority();
         n_auth.setProductId(n_product.getProductId());
         n_auth.setName(Authority.AuthType.all);
+        authorityDao.save(n_auth);
         List<Authority> n_authorities;
         if (t_userAuth.getAuthority()!=null){
             n_authorities = t_userAuth.getAuthority();
