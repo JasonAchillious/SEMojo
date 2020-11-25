@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/theme-chalk/index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/css/userpage.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Userpage</title>
@@ -143,29 +144,32 @@
                     <div class="show-products" style="min-height:150px;overflow-y:auto;max-height:180px;">
                         <ul class="list">
                             <li class="list-item" v-for="(product, index) in products">
-                                <div style="display: block;margin-left:5%;margin-top:2%;width: 60%" v-bind:class="product.name">
-                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;"><a
-                                            v-bind:href="product.url">{{product.name}}</a></h1>
+                                <div style="display: block;margin-left:5%;margin-top:2%;width: 60%"
+                                     v-bind:class="product.name">
+                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;">
+                                        <a
+                                                v-bind:href="product.url">{{product.name}}</a></h1>
                                 </div>
                                 <div style="display: block;width:40%;margin-left:15%;margin-top: 6px;margin-bottom: 5px">
-                                    <el-button type="primary" size="mini" @click="clickDownload($event)">Download</el-button>
+                                    <el-button type="primary" size="mini" @click="clickDownload($event)">Download
+                                    </el-button>
                                     <el-button type="plain" size='mini' @click="clickReview($event)"
                                     >Review
                                     </el-button>
 
                                     <div v-bind:class="product.name">
-                                    <el-dialog title="Review" :visible.sync="dialogFormVisible">
-                                        <el-form>
-                                            <el-form-item label="Your Review:" :label-width="formLabelWidth">
-                                                <el-input v-model="review" autocomplete="off"></el-input>
-                                            </el-form-item>
-                                        </el-form>
-                                        <div slot="footer" class="dialog-footer">
-                                            <el-button @click="dialogFormVisible = false">Cancel</el-button>
-                                            <el-button type="primary" @click="reviewConfirm()">Confirm
-                                            </el-button>
-                                        </div>
-                                    </el-dialog>
+                                        <el-dialog title="Review" :visible.sync="dialogFormVisible">
+                                            <el-form>
+                                                <el-form-item label="Your Review:" :label-width="formLabelWidth">
+                                                    <el-input v-model="review" autocomplete="off"></el-input>
+                                                </el-form-item>
+                                            </el-form>
+                                            <div slot="footer" class="dialog-footer">
+                                                <el-button @click="dialogFormVisible = false">Cancel</el-button>
+                                                <el-button type="primary" @click="reviewConfirm()">Confirm
+                                                </el-button>
+                                            </div>
+                                        </el-dialog>
                                     </div>
                                 </div>
                             </li>
@@ -179,8 +183,9 @@
                         <ul class="list">
                             <li class="list-item" v-for="product in shoppingCarts">
                                 <div style="display: block;margin-left:5%;margin-top:2%;width: 60%">
-                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;"><a
-                                            v-bind:href="product.url">{{product.name}}</a></h1>
+                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;">
+                                        <a
+                                                v-bind:href="product.url">{{product.name}}</a></h1>
                                 </div>
                                 <div style="flex: right;display: block;width:40%;margin-left:15%;margin-top: 6px;margin-bottom: 5px">
                                     <el-button type="primary" size="mini">Purchase</el-button>
@@ -244,136 +249,133 @@
     });
 
     var page = new Vue({
-            el: '#app',
+        el: '#app',
 
-            data() {
-                return {
-                    search: '',
-                    circleUrl: "/images/bg2.jpg",
-                    squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-                    sizeList: ["large", "medium", "small"],
-                    imageUrl: '',
+        data() {
+            return {
+                search: '',
+                circleUrl: "/images/bg2.jpg",
+                squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+                sizeList: ["large", "medium", "small"],
+                imageUrl: '',
 
 
-                    // 原始个人信息
-                    origin: {
-                        name: '',
-                        address: '',
-                        email: '',
-                        gender: '',
-                        phoneNum: '',
-                        qqNum: '',
-                        weChatNum: '',
-                        portrait: '',
-                    },
+                // 原始个人信息
+                origin: {
+                    name: '',
+                    address: '',
+                    email: '',
+                    gender: '',
+                    phoneNum: '',
+                    qqNum: '',
+                    weChatNum: '',
+                    portrait: '',
+                },
 
-                    // products purchased
-                    products: [],
+                // products purchased
+                products: [],
 
-                    shoppingCarts: [],
-                    count: 0,
-                    profileVisible: false,
+                shoppingCarts: [],
+                count: 0,
+                profileVisible: false,
 
-                    // review dialog
-                    productname: '',
-                    review: '',
-                    dialogTableVisible: false,
-                    dialogFormVisible: false,
-                    formLabelWidth: '120px',
-                }
+                // review dialog
+                productname: '',
+                review: '',
+                dialogTableVisible: false,
+                dialogFormVisible: false,
+                formLabelWidth: '120px',
+            }
+        },
+        methods: {
+            getProfile: function () {
+                axios({
+                    method: 'get',
+                    url: '/customer/' + store.getters.getUsername + '/info',
+                    headers: {
+                        "authorization": 'Bearer ' + store.getters.getToken,
+                    }
+                }).then(res => {  //res是返回结果
+                    console.log(res);
+                    if (res.data['code'] == "200") {
+                        let temp = res.data['data'];
+                        this.origin.name = store.getters.getUsername;
+                        this.origin.address = temp.address;
+                        this.origin.email = temp.email;
+                        this.origin.gender = temp.gender;
+                        this.origin.phoneNum = temp.phoneNum;
+                        this.origin.qqNum = temp.qqNum;
+                        this.origin.weChatNum = temp.weChatNum;
+                        this.origin.portrait = temp.portrait;
+                    } else {
+                        this.$message({
+                            message: 'connect wrong',
+                            type: 'warning'
+                        })
+                    }
+                });
             },
-            methods: {
-                getProfile: function () {
-                    axios({
-                        method: 'get',
-                        url: '/customer/' + store.getters.getUsername + '/info',
-                        headers: {
-                            "authorization": 'Bearer ' + store.getters.getToken,
-                        }
-                    }).then(res => {  //res是返回结果
-                        console.log(res);
-                        if (res.data['code'] == "200") {
-                            let temp = res.data['data'];
-                            this.origin.name = store.getters.getUsername;
-                            this.origin.address = temp.address;
-                            this.origin.email = temp.email;
-                            this.origin.gender = temp.gender;
-                            this.origin.phoneNum = temp.phoneNum;
-                            this.origin.qqNum = temp.qqNum;
-                            this.origin.weChatNum = temp.weChatNum;
-                            this.origin.portrait = temp.portrait;
-                        } else {
-                            this.$message({
-                                message: 'connect wrong',
-                                type: 'warning'
-                            })
-                        }
-                    });
-                },
 
-                getPurchased: function () {
-                    axios({
-                        method: 'get',
-                        url: '/customer/' + store.getters.getUsername + '/info',
-                        headers: {
-                            "authorization": 'Bearer ' + store.getters.getToken,
-                        }
-                    }).then(res => {  //res是返回结果
-                        console.log(res);
-                        if (res.data['code'] == "200") {
-                            let datalist = res.data['data'];
-                            for (let i = 0, length = datalist.length; i < length; i++) {
-                                let product = {
-                                    productId: datalist[i].productId,
-                                    productName: datalist[i].productName,
-                                    url: 'www.baidu.com',
-                                }
-                                this.products.push(product);
+            getPurchased: function () {
+                axios({
+                    method: 'get',
+                    url: '/customer/' + store.getters.getUsername + '/userpage/products',
+                    headers: {
+                        "authorization": 'Bearer ' + store.getters.getToken,
+                    }
+                }).then(res => {  //res是返回结果
+                    if (res.data['code'] == "200") {
+                        let datalist = res.data['data'];
+                        for (let i = 0, length = datalist.length; i < length; i++) {
+                            let product = {
+                                productId: datalist[i].productId,
+                                productName: datalist[i].productName,
+                                url: 'www.baidu.com',
                             }
-                        } else {
-                            this.$message({
-                                message: 'connect wrong',
-                                type: 'warning'
-                            })
+                            this.products.push(product);
                         }
-                    });
-                },
+                    } else {
+                        this.$message({
+                            message: 'connect wrong',
+                            type: 'warning'
+                        })
+                    }
+                });
+            },
 
-                getShoppingCart: function () {
-                    axios({
-                        method: 'get',
-                        url: '/customer/' + store.getters.getUsername + '/info',
-                        headers: {
-                            "authorization": 'Bearer ' + store.getters.getToken,
-                        }
-                    }).then(res => {  //res是返回结果
-                        console.log(res);
-                        if (res.data['code'] == "200") {
-                            let datalist = res.data['data'];
-                            for (let i = 0, length = datalist.length; i < length; i++) {
-                                let product = {
-                                    productId: datalist[i].productId,
-                                    productName: datalist[i].productName,
-                                    url: 'www.baidu.com'
-                                }
-                                this.shoppingCarts.push(product);
+            getShoppingCart: function () {
+                axios({
+                    method: 'get',
+                    url: '/customer/' + store.getters.getUsername + '/info',
+                    headers: {
+                        "authorization": 'Bearer ' + store.getters.getToken,
+                    }
+                }).then(res => {  //res是返回结果
+                    console.log(res);
+                    if (res.data['code'] == "200") {
+                        let datalist = res.data['data'];
+                        for (let i = 0, length = datalist.length; i < length; i++) {
+                            let product = {
+                                productId: datalist[i].productId,
+                                productName: datalist[i].productName,
+                                url: 'www.baidu.com'
                             }
-                        } else {
-                            this.$message({
-                                message: 'connect wrong',
-                                type: 'warning'
-                            })
+                            this.shoppingCarts.push(product);
                         }
-                    });
-                },
-
-
+                    } else {
+                        this.$message({
+                            message: 'connect wrong',
+                            type: 'warning'
+                        })
+                    }
+                });
+            },
 
             submit: function () {
                 this.profileVisible = false;
 
                 //发送修改后的信息
-                axios.put('/info/'+ store.getters.getUsername, this.origin).then(res => {
+                axios.put('/info/' + store.getters.getUsername, this.origin).then(res => {
                     if (res.data.code === 10200) {
                         //console.log(res);
                         this.$message('上传成功');
@@ -421,37 +423,62 @@
                         this.$message('失败')
                     }
                 })
-            },
+            }
 
         },
         mounted() {
-        axios({
-            method: 'get',
-            url: '/customer/' + store.getters.getUsername + '/info',
-            headers: {
-                "authorization": 'Bearer ' + store.getters.getToken,
-            }
-        }).then(res => {  //res是返回结果
-            console.log(res);
-            if (res.data['code'] == "200") {
-                let temp = res.data['data'];
-                this.origin.name = store.getters.getUsername;
-                this.origin.address = temp.address;
-                this.origin.email = temp.email;
-                this.origin.gender = temp.gender;
-                this.origin.phoneNum = temp.phoneNum;
-                this.origin.qqNum = temp.qqNum;
-                this.origin.weChatNum = temp.weChatNum;
-                this.origin.portrait = temp.portrait;
-            } else {
-                this.$message({
-                    message: 'connect wrong',
-                    type: 'warning'
-                })
-            }
-        });
+            axios({
+                method: 'get',
+                url: '/customer/' + store.getters.getUsername + '/info',
+                headers: {
+                    "authorization": 'Bearer ' + store.getters.getToken,
+                }
+            }).then(res => {  //res是返回结果
+                console.log(res);
+                if (res.data['code'] == "200") {
+                    let temp = res.data['data'];
+                    this.origin.name = store.getters.getUsername;
+                    this.origin.address = temp.address;
+                    this.origin.email = temp.email;
+                    this.origin.gender = temp.gender;
+                    this.origin.phoneNum = temp.phoneNum;
+                    this.origin.qqNum = temp.qqNum;
+                    this.origin.weChatNum = temp.weChatNum;
+                    this.origin.portrait = temp.portrait;
+                } else {
+                    this.$message({
+                        message: 'connect wrong',
+                        type: 'warning'
+                    })
+                }
+            });
 
-    }
+            axios({
+                method: 'get',
+                url: '/customer/' + store.getters.getUsername + '/userpage/products',
+                headers: {
+                    "authorization": 'Bearer ' + store.getters.getToken,
+                }
+            }).then(res => {  //res是返回结果
+                if (res.data['code'] == "200") {
+                    let datalist = res.data['data'];
+                    for (let i = 0, length = datalist.length; i < length; i++) {
+                        let product = {
+                            productId: datalist[i].productId,
+                            productName: datalist[i].productName,
+                            url: 'www.baidu.com',
+                        }
+                        this.products.push(product);
+                    }
+                } else {
+                    this.$message({
+                        message: 'connect wrong',
+                        type: 'warning'
+                    })
+                }
+            });
+
+        }
 
     })
 </script>
