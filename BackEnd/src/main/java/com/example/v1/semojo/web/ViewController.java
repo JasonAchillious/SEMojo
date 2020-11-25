@@ -58,11 +58,11 @@ public class ViewController {
 
     @GetMapping("/contributor/{username}/userpage")
     public String getContributorPage(@PathVariable String username){
-        return "contributor.html";
+        return "forward:/contributor.html";
     }
 
     @GetMapping("/admin/{username}/userpage")
     public String getAdminPage(@PathVariable String username){
-        return "administrator.html";
+        return "forward:/administrator.html";
     }
 }

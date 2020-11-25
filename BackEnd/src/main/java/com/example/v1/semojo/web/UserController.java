@@ -175,11 +175,13 @@ public class UserController {
     }
 
     @GetMapping("/admin/{username}/userpage/authlist")
-    public WebRespResult getNeededAuthUserList(
-            @PathVariable String username){
+    public WebRespResult getNeededAuthUserList(){
         try{
-            List<User> neededAuthUsers = userService.getNeededAuthUsers();
-            return new WebRespResult<>(200, "success", neededAuthUsers);
+            List<UserAuth> neededAuthUsers = userService.getNeededAuthUsers();
+            for (UserAuth auth: neededAuthUsers){
+                auth.setUser(null);
+            }
+            return new WebRespResult<List<UserAuth>>(200, "success", neededAuthUsers);
         }catch (NullPointerException e){
             return new WebRespResult<>(400, "not such user");
         }catch (Exception e){

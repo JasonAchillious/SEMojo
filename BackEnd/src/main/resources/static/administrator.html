@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/theme-chalk/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/userpage.css">
+    <link rel="stylesheet" type="text/css" href="/css/userpage.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrator</title>
 </head>
@@ -18,7 +18,7 @@
                 <div align="left" style="width:55%; display:inline-block;">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="homepage.html">
-                        <img border="0" src="./images/logo.png" style="height:45px; width:75px"/>
+                        <img border="0" src="/images/logo.png" style="height:45px; width:75px"/>
                         <p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
                     </a>
                     <el-link
@@ -267,7 +267,7 @@
         data() {
             return {
                 search: '',
-                circleUrl: "./images/bg2.jpg",
+                circleUrl: "/images/bg2.jpg",
                 squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
                 sizeList: ["large", "medium", "small"],
                 imageUrl: '',
@@ -300,28 +300,7 @@
                 },
 
                 // products purchased
-                permissions: [
-                    {
-                        name: 'Paul',
-                        url: '',
-                    },
-                    {
-                        name: 'Zhao',
-                        url: '',
-                    },
-                    {
-                        name: 'CQF',
-                        url: '',
-                    },
-                    {
-                        name: 'Pin Shen',
-                        url: '',
-                    },
-                    {
-                        name: 'Zhu',
-                        url: '',
-                    },
-                ],
+                permissions: [],
 
                 shoppingCarts: [
                     {
@@ -411,25 +390,25 @@
 
         },
 
-        mouted() {
-
-            //获取所有users信息
+        mounted() {
+            //获取auth users信息
             axios({
                 method: 'get',
                 url: '/admin/' + store.getters.getUsername + '/userpage/authlist',
                 headers: {
-                    "authorization": 'Bearer ' + store.getters.getToken,
+                    "Authorization": 'Bearer ' + store.getters.getToken,
                 }
             }).then(res => {  //res是返回结果
-                if (res.data['code'] == "200") {
+                console.log(res);
+                if (res.data['code'] == 200) {
                     let datalist = res.data['data'];
                     for (let i = 0, length = datalist.length; i < length; i++) {
+                        console.log(datalist[i]);
                         let user = {
-                            username: datalist[i].username,
-                            productName: datalist[i].productName,
-                            url: 'www.baidu.com',
+                            name: datalist[i].username,
+                            url: "www.baidu.com"
                         }
-                        this.products.push(user);
+                        this.permissions.push(user);
                     }
                 } else {
                     this.$message({

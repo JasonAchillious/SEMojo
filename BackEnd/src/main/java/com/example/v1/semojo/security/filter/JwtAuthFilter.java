@@ -41,6 +41,8 @@ public class JwtAuthFilter extends GenericFilterBean {
                 response.getWriter().write("{ \"error_msg\":" + "token parsing error" + "}");
             } catch (ExpiredJwtException e){
                 response.getWriter().write("{ \"error_msg\":" + "token has expired" + "}");
+            } catch (Exception e){
+                e.printStackTrace();
             }
         }
         // token empty will redirect to login page

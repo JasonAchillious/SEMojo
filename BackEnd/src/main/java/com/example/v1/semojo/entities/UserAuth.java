@@ -23,9 +23,9 @@ public class UserAuth implements UserDetails {
     private boolean credentialsNonExpired;
     private boolean enabled;
     private int role;
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<Authority> authorities;
-    @OneToOne(fetch = FetchType.EAGER, mappedBy = "auth")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "auth")
     private User user;
 
 
