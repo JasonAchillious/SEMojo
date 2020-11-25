@@ -63,6 +63,13 @@ public class Product {
     private List<Issue> issueList;
 
 
+    public List<Issue> getIssueList() {
+        return issueList;
+    }
+
+    public void setIssueList(List<Issue> issueList) {
+        this.issueList = issueList;
+    }
 
     public List<Review> getReviewList() {
         return reviewList;

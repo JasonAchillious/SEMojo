@@ -44,26 +44,26 @@
                     </el-link>
                 </div>
 
-                <div align="right" style="width:40%; display:inline-block">
+                <div style="width: 20%; display: inline-block">&nbsp;</div>
+                <div align="right" style="width:20%; display:inline-flex;">
                     <el-input
                             placeholder="Search SEMojo"
                             v-model="search"
-                            class="input-with-select"
-                            style="width: 40%">
-                        <el-button slot="append" icon="el-icon-search"></el-button>
+                            style="width: 80%">
+                        <el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
                     </el-input>
-                    <el-link
-                            href="login.html"
-                            target="_blank"
-                            style="color:#FFFFFF; width:15%;text-decoration:none"
-                            class=navigation_fontsize
-                    >Sign in
-                    </el-link>
-                    <el-link
-                            href="signup.html"
-                            :underline="false">
-                        <el-button type="primary">Sign up</el-button>
-                    </el-link>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <el-dropdown @command="handleCommand">
+							<span class="el-dropdown-link">
+								<el-avatar :src="img_src"></el-avatar>
+							</span>
+                        <el-dropdown-menu slot="dropdown" style="margin-top: -10px">
+                            <el-dropdown-item command="userpage">Your profile</el-dropdown-item>
+                            <el-dropdown-item command="contributor">Your products</el-dropdown-item>
+                            <el-dropdown-item command="logout">sign out</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </div>
             </div>
 
@@ -171,24 +171,6 @@
                 </div>
 
                 <div class="products">
-                    <h1 class="products-purchased">All Users List</h1>
-                    <div class="show-products" style="min-height:150px;overflow-y:auto;max-height:180px;">
-                        <ul class="list">
-                            <li class="list-item" v-for="user in users">
-                                <div style="display: block;margin-left:5%;margin-top:2%;width: 60%">
-                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;">
-                                        <a v-bind:href="user.url">{{user.name}}</a></h1>
-                                </div>
-                                <div style="flex: right;display: block;width:40%;margin-left:0%;margin-top: 6px;margin-bottom: 5px">
-                                    <el-button type="primary" size="mini">Approve</el-button>
-                                    <el-button type="plain" size="mini">Disapprove</el-button>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="products">
                     <h1 class="products-purchased">Manage Products</h1>
                     <div class="show-products" style="min-height:150px;overflow-y:auto;max-height:180px;">
                         <ul class="list">
@@ -266,14 +248,12 @@
 
         data() {
             return {
+                img_src: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
                 search: '',
                 circleUrl: "/images/bg2.jpg",
                 squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
                 sizeList: ["large", "medium", "small"],
                 imageUrl: '',
-
-                //users list
-                users: [],
 
                 // 表单内容
                 profile: {
@@ -387,9 +367,18 @@
                 var ele = event.currentTarget.parentElement.parentElement.firstElementChild.getAttribute("class");
                 this.productname = ele;
             },
+            handleCommand(command) {
+                if (command == "userpage") {
+                    window.location.href = "./" + store.getters.getUsername + "/userpage";
+                } else if (command == "contributor") {
+                    window.location.href = "./contributor.html";
+                } else {
+                    localStorage.clear();
+                    window.location.href = "./homepage.html";
 
+                }
+            }
         },
-
         mounted() {
             //获取auth users信息
             axios({
@@ -417,7 +406,7 @@
                     })
                 }
             });
-
+            this.img_src = window.localStorage.getItem('img_src');
         }
 
     })

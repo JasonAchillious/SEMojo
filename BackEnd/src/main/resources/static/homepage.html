@@ -217,7 +217,7 @@
         },
         methods: {
             searchfor(search) {
-                if (store.getters.getToken){
+                if (this.is_login){
                     axios({
                         method: 'post',
                         url: '/search',
@@ -226,6 +226,10 @@
                         },
                         headers:{
                             "Authorization": 'Bearer '+store.getters.getToken,
+                        }
+                    }).then(res => {
+                        if(res.data['code']==200){
+                            window.localStorage.search = search;
                         }
                     })
                 } else {
@@ -242,7 +246,6 @@
                 }else if (command=="contributor"){
                     window.location.href="./contributor.html";
                 }else {
-                    this.is_login = false;
                     localStorage.clear();
                     window.location.href="./homepage.html";
                 }
@@ -261,6 +264,7 @@
                     if (res.data['code'] == "200") {
                         this.is_login = true;
                         this.img_src = res.data['data'];
+                        window.localStorage.img_src = this.img_src;
                     } else {
                         this.$message({
                             message: 'connect wrong',

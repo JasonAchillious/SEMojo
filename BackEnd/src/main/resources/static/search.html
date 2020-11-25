@@ -92,29 +92,8 @@
 						</el-link>
 					</div>
 
-					<div align="right" style="width:40%; display:inline-block;" v-show="!is_login">
-						<el-input 
-							placeholder="Search SEMojo" 
-							v-model="search"
-							style="width: 40%">
-							<el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
-						</el-input>
-						<el-link 
-							href="login.html" 
-							target="_blank" 
-							style="color:#FFFFFF; width:15%;text-decoration:none"
-							class=navigation_fontsize
-							>Sign in
-						</el-link>
-						<el-link
-							href="signup.html"
-							:underline="false"
-							>
-						<el-button type="primary">Sign up</el-button>
-						</el-link>
-					</div>
-					<div style="width: 20%; display: inline-block" v-show="is_login">&nbsp;</div>
-					<div align="right" style="width:20%; display:inline-flex;" v-show="is_login">
+					<div style="width: 20%; display: inline-block">&nbsp;</div>
+					<div align="right" style="width:20%; display:inline-flex;">
 						<el-input
 								placeholder="Search SEMojo"
 								v-model="search"
@@ -258,7 +237,6 @@
 			data () {
 				return {
 					search: '',
-					is_login: false,
 					img_src: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
 					loading: false,
 					id: 0,
@@ -309,38 +287,26 @@
 					}, 1500)
 				},
 				searchfor(search) {
-					if (store.getters.getToken){
-						axios({
-							method: 'post',
-							url: '/search',
-							data: {
-								'search': search,
-							},
-							headers:{
-								"Authorization": 'Bearer '+store.getters.getToken,
-							}
-						})
-					} else {
-						this.$message({
-							message:'Please login first',
-							type:'warning'
-						});
-						axios({
-							method: 'post',
-							url: '/login',
-						})
-					}
+					axios({
+						method: 'post',
+						url: '/search',
+						data: {
+							'search': search,
+						},
+						headers:{
+							"Authorization": 'Bearer '+store.getters.getToken,
+						}
+					})
 				},
 				handleSelectChange(val){
 
 				},
 				handleCommand(command) {
 					if (command=="userpage"){
-						window.location.href="customer.html";
+						window.location.href="./"+ store.getters.getUsername + "/userpage";
 					}else if (command=="contributor"){
 						window.location.href="./contributor.html";
 					}else {
-						this.is_login = false;
 						localStorage.clear();
 						window.location.href="./homepage.html";
 					}
@@ -348,28 +314,7 @@
 			},
 			mounted() {
 				this.total = 10;
-
-				axios({
-					method: 'get',
-					url: '/login',
-					params:{
-						'username': store.getters.getUsername,
-					},
-					headers:{
-						"Authorization": 'Bearer '+ store.getters.getToken,
-					}
-				}).then(res => {  //res是返回结果
-					if (res.data['code']=="200"){
-						this.is_login = true;
-						this.img_src = res.data['src'];
-					}else {
-						this.$message({
-							message:'connect wrong',
-							type:'warning'
-						})
-					}
-				});
-
+				this.img_src = window.localStorage.getItem("img_src");
 				axios({
 					method: 'get',
 					url: '/products',
@@ -394,7 +339,7 @@
 								DBid: datalist[i].productId,
 								update_time: datalist[i].update_time,
 								score: datalist[i].score,
-							}
+							};
 							this.list.push(product);
 						}
 						this.total = this.list.length;

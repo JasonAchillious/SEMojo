@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class TransactionService {
     @Autowired
-    TransactionDao transacDao;
+    TransactionDao transactionDao;
     @Autowired
     UserDao userDao;
     @Autowired
@@ -41,7 +41,7 @@ public class TransactionService {
         transac.setStatus(Transaction.TransactionStatus.WaitingProcess);
         transac.setCreateTime(new Timestamp(System.currentTimeMillis()));
         transac.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-        return transacDao.save(transac);
+        return transactionDao.save(transac);
     }
 
     public Transaction createTransaction(List<Long> productIds, String username) throws Exception {
@@ -61,11 +61,47 @@ public class TransactionService {
             perchasedProducts.add(product);
         }
         transac.setProducts(perchasedProducts);
-        return transacDao.save(transac);
+        return transactionDao.save(transac);
     }
 
     public Transaction changeStatus(Long transactionId, String status){
-        Transaction transac;
-        return null;
+        Transaction transaction = transactionDao.findTransactionById(transactionId);
+        transaction.setStatus(Transaction.TransactionStatus.valueOf(status));
+        Timestamp d = new Timestamp(System.currentTimeMillis());
+        transaction.setUpdateTime(d);
+        transactionDao.save(transaction);
+        return transaction;
+    }
+
+    public Transaction findTransactionById(long transactionId){
+        return transactionDao.findTransactionById(transactionId);
+    }
+
+    public List<Transaction> getUserTransactions(String username){
+        UserAuth t_userAuth = userAuthDao.findUserAuthByUsername(username);
+        User t_user = t_userAuth.getUser();
+        List<Transaction> transactions = t_user.getUserTransec();
+        return transactions;
+    }
+
+    public List<Transaction> getUserProductsactions(long productId){
+        Product product = productDao.findProductByProductId(productId);
+        return product.getProductTransac();
+    }
+
+    public List<Transaction> getTransactionDetail(String username, long productId){
+        User user = userAuthDao.findUserAuthByUsername(username).getUser();
+        List<Product> products = user.getOwnedProducts();
+        Product t_product = new Product();
+        for (Product product : products){
+            if (productId == product.getProductId()){
+                t_product = product;
+                break;
+            }
+        }
+        if (t_product.getProductId() == productId){
+            return t_product.getProductTransac();
+        }
+        else return null;
     }
 }
