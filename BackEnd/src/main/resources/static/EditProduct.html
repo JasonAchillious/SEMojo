@@ -574,26 +574,14 @@
             },
 
 
-            //edit info
+            //edit info(待修改)
             submit: function () {
                 this.profileVisible = false;
 
-                //将用户修改后的表单信息更新到个人信息
-                this.product.name = this.edit.name;
-                this.product.description = this.edit.description;
-                this.product.tags = this.edit.tags;
-                this.product.status = this.edit.status;
-                this.product.contributor = this.edit.contributor;
-
                 //发送修改后的信息
-                let fd = new FormData();
-                fd.append("name", this.product.name);
-                fd.append("description", this.product.description);
-                fd.append("contributor", this.product.contributor);
-                fd.append("tags", this.product.tags);
-                fd.append("status", this.product.status);
 
-                axios.post('/productDetail', fd).then(res => {
+                axios.post('/productDetail', this.product).then(res => {
+                    //code需要修改
                     if (res.data.code === 200) {
                         //console.log(res);
                         this.$message('上传成功')
@@ -601,7 +589,6 @@
                         this.$message('失败')
                     }
                 })
-
             },
 
             cancel: function () {
