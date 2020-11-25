@@ -177,8 +177,7 @@
                             <li class="list-item" v-for="user in users">
                                 <div style="display: block;margin-left:5%;margin-top:2%;width: 60%">
                                     <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;">
-                                        <a
-                                                v-bind:href="user.url">{{user.name}}</a></h1>
+                                        <a v-bind:href="user.url">{{user.name}}</a></h1>
                                 </div>
                                 <div style="flex: right;display: block;width:40%;margin-left:0%;margin-top: 6px;margin-bottom: 5px">
                                     <el-button type="primary" size="mini">Approve</el-button>
@@ -272,6 +271,9 @@
                 squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
                 sizeList: ["large", "medium", "small"],
                 imageUrl: '',
+
+                //users list
+                users: [],
 
                 // 表单内容
                 profile: {
@@ -406,6 +408,36 @@
                 var ele = event.currentTarget.parentElement.parentElement.firstElementChild.getAttribute("class");
                 this.productname = ele;
             },
+
+        },
+
+        mouted() {
+
+            //获取所有users信息
+            axios({
+                method: 'get',
+                url: '/admin/' + store.getters.getUsername + '/userpage/authlist',
+                headers: {
+                    "authorization": 'Bearer ' + store.getters.getToken,
+                }
+            }).then(res => {  //res是返回结果
+                if (res.data['code'] == "200") {
+                    let datalist = res.data['data'];
+                    for (let i = 0, length = datalist.length; i < length; i++) {
+                        let user = {
+                            username: datalist[i].username,
+                            productName: datalist[i].productName,
+                            url: 'www.baidu.com',
+                        }
+                        this.products.push(user);
+                    }
+                } else {
+                    this.$message({
+                        message: 'connect wrong',
+                        type: 'warning'
+                    })
+                }
+            });
 
         }
 
