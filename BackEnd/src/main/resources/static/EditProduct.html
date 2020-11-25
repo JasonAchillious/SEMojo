@@ -263,10 +263,21 @@
                     <!--上传code文件-->
                     <el-dialog title="Uploads Files" :visible.sync="dialogCodeVisible">
                         <el-form :model="codeForm">
-                            <el-form-item label="活动名称" :label-width="formLabelWidth">
-                                <el-input v-model="codeForm.name" autocomplete="off"></el-input>
+                            <el-form-item label="Description">
+                                <el-input v-model="codeForm.description"></el-input>
                             </el-form-item>
-
+                            <el-form-item label="Language">
+                                <el-select v-model="codeForm.lang" placeholder="Please choose language">
+                                    <el-option label="C++" value="cplusplus"></el-option>
+                                    <el-option label="Java" value="java"></el-option>
+                                    <el-option label="Python" value="python"></el-option>
+                                    <el-option label="C" value="c"></el-option>
+                                    <el-option label="Golang" value="golang"></el-option>
+                                    <el-option label="Javascript" value="javascript"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <input type="file" @change="getFile($event)">
+                            <el-button @click="submitCodeForm($event)">Submit</el-button>
                         </el-form>
                     </el-dialog>
                 </div>
@@ -331,6 +342,10 @@
         store: store,
         data() {
             return {
+                //basic info
+                username: '',
+                productId: '',
+
                 //product info
                 product: {
                     name: 'ProductsName',
@@ -366,9 +381,8 @@
                 codeForm : {
                     productId: '',
                     description: '',
-                    version: '',
-                    status: '',
                     lang: '',
+                    file: '',
                 },
 
                 fileList: [{
@@ -495,6 +509,33 @@
             }
         },
         methods: {
+            // 上传文件
+            getFile(event) {
+                this.codeForm.file = event.target.files[0];
+                console.log(this.codeForm.file);
+            },
+
+            submitCodeForm(event) {
+                event.preventDefault();
+                let formData = new FormData();
+                formData.append('username', this.username);
+                formData.append('productId', this.productId);
+                formData.append('description', this.codeForm.description);
+                formData.append('lang', this.codeForm.lang);
+                formData.append('file', this.codeForm.file);
+
+                let config = {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }
+
+                this.$http.post('/upload', formData, config).then(function (res) {
+                    if (res.status === 2000) {
+
+                    }
+                })
+            },
             handleClick(tab, event) {
                 console.log(tab, event);
             },

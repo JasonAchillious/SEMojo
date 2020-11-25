@@ -190,9 +190,6 @@
                             <el-form-item label="Description" :label-width="formLabelWidth">
                                 <el-input v-model="newProduct.description" autocomplete="off"></el-input>
                             </el-form-item>
-                            <el-form-item label="Username" :label-width="formLabelWidth">
-                                <el-input v-model="newProduct.username" autocomplete="off"></el-input>
-                            </el-form-item>
                             <el-form-item label="Fixed Price" :label-width="formLabelWidth">
                                 <el-input v-model="newProduct.fixed_price" autocomplete="off"></el-input>
                             </el-form-item>
@@ -237,12 +234,11 @@
 <script src="https://lib.baomitu.com/vuex/2.0.0/vuex.js"></script>
 
 
-
 <script>
     const store = new Vuex.Store({
         state: {
-            token:'',  //初始化token
-            username:''  //初始化username
+            token: '',  //初始化token
+            username: ''  //初始化username
         },
         mutations: {
             //存储token方法
@@ -256,7 +252,7 @@
                 localStorage.username = username //同步存储username至localStorage
             },
         },
-        getters : {
+        getters: {
             //获取token方法
             //判断是否有token,如果没有重新赋值，返回给state的token
             getToken(state) {
@@ -272,15 +268,17 @@
                 return state.username
             }
         },
-        actions: {
-
-        }
+        actions: {}
     });
 
     var page = new Vue({
         el: '#app',
         data() {
             return {
+
+                //basic info
+                username: '',
+
                 search: '',
                 circleUrl: "./images/bg2.jpg",
                 squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
@@ -379,14 +377,9 @@
                     },
                 ],
 
-
-
                 newProduct: {
                     productName: '',
                     description: '',
-                    username: '',
-                    //creator从localstorage拿
-                    creator: '',
                     fixed_price: '',
                 },
 
@@ -408,6 +401,21 @@
 
             confirmForm: function () {
                 this.dialogFormVisible = false;
+                let fd = new FormData();
+                fd.append('productName', this.newProduct.productName);
+                fd.append('username', this.username);
+                fd.append('outline', this.newProduct.description);
+                fd.append('fixed_price', this.newProduct.fixed_price);
+
+                axios.post('/contributor/{username}/product', fd).then(res=>{
+                    if (res.data.code === 200) {
+                        //console.log(res);
+                        this.$message('上传成功')
+                    }else{
+                        this.$message('失败')
+                    }
+                    }
+                )
 
                 //axios传送数据
             },
@@ -492,7 +500,7 @@
         mounted() {
             axios({
                 method: 'get',
-                url: '/customer/' + store.getters.getUsername +'/portrait',
+                url: '/customer/' + store.getters.getUsername + '/portrait',
                 headers: {
                     "authorization": 'Bearer ' + store.getters.getToken,
                 }
