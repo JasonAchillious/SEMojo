@@ -8,6 +8,8 @@ import com.example.v1.semojo.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class TransactionController {
     @Autowired
@@ -51,17 +53,35 @@ public class TransactionController {
 
     @GetMapping("/customer/{username}/transactions")
     public WebRespResult getUserTransactions(@PathVariable String username){
-        return null;
+        try{
+            List<Transaction> transaction = transacService.getUserTransactions(username);
+            return new WebRespResult<>(200, "success", transaction);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new WebRespResult(400, e.getMessage());
+        }
     }
 
-    @GetMapping("/admin/project/{productId}/transactions")
-    public WebRespResult getUserProjectsactions(@PathVariable Long projectId){
-        return null;
+    @GetMapping("/admin/product/{productId}/transactions")
+    public WebRespResult getUserProductsactions(@PathVariable Long productId){
+        try{
+            List<Transaction> transaction = transacService.getUserProductsactions(productId);
+            return new WebRespResult<>(200, "success", transaction);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new WebRespResult(400, e.getMessage());
+        }
     }
 
     @GetMapping("/customer/{username}/transaction/{transactionId}")
     public WebRespResult getTransactionDetail(@PathVariable String username,
-                                              @PathVariable Long projectId){
-        return null;
+                                              @PathVariable Long productId){
+        try{
+            List<Transaction> transaction = transacService.getTransactionDetail(username, productId);
+            return new WebRespResult<>(200, "success", transaction);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new WebRespResult(400, e.getMessage());
+        }
     }
 }
