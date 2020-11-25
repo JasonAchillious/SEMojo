@@ -97,12 +97,6 @@
                     <el-dialog title="Profile" :visible.sync="profileVisible">
                         <el-form class="profile" ref="form" :model="origin" size="mini">
                             <el-form-item label="">
-                                <el-input v-model="origin.name" placeholder="Username">
-                                    <template slot="prepend">Username</template>
-                                </el-input>
-                            </el-form-item>
-                            
-                            <el-form-item label="">
                                 <el-input v-model="origin.description" placeholder="Description">
                                     <template slot="prepend">Description</template>
                                 </el-input>
@@ -304,7 +298,7 @@
                         console.log(res);
                         if (res.data['code'] == "200") {
                             let temp = res.data['data'];
-                            this.origin.name = temp.name;
+                            this.origin.name = store.getters.getUsername;
                             this.origin.email = temp.email;
                             this.origin.gender = temp.gender;
                             this.origin.phoneNum = temp.phoneNum;
@@ -453,6 +447,7 @@
             console.log(res);
             if (res.data['code'] == "200") {
                 let temp = res.data['data'];
+                this.origin.name = store.getters.getUsername;
                 this.origin.email = temp.email;
                 this.origin.gender = temp.gender;
                 this.origin.phoneNum = temp.phoneNum;
