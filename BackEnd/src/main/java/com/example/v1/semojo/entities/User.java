@@ -32,6 +32,30 @@ public class User {
     @OneToMany(mappedBy = "questioner", cascade = CascadeType.ALL)
     private List<Issue> issues;
 
+    public List<Product> getOwnedProducts() {
+        return ownedProducts;
+    }
+
+    public void setOwnedProducts(List<Product> ownedProducts) {
+        this.ownedProducts = ownedProducts;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public List<Issue> getIssues() {
+        return issues;
+    }
+
+    public void setIssues(List<Issue> issues) {
+        this.issues = issues;
+    }
+
     public UserAuth getAuth() {
         return auth;
     }
