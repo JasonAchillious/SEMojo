@@ -171,6 +171,25 @@
                 </div>
 
                 <div class="products">
+                    <h1 class="products-purchased">All Users List</h1>
+                    <div class="show-products" style="min-height:150px;overflow-y:auto;max-height:180px;">
+                        <ul class="list">
+                            <li class="list-item" v-for="user in users">
+                                <div style="display: block;margin-left:5%;margin-top:2%;width: 60%">
+                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;">
+                                        <a
+                                                v-bind:href="user.url">{{user.name}}</a></h1>
+                                </div>
+                                <div style="flex: right;display: block;width:40%;margin-left:0%;margin-top: 6px;margin-bottom: 5px">
+                                    <el-button type="primary" size="mini">Approve</el-button>
+                                    <el-button type="plain" size="mini">Disapprove</el-button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="products">
                     <h1 class="products-purchased">Manage Products</h1>
                     <div class="show-products" style="min-height:150px;overflow-y:auto;max-height:180px;">
                         <ul class="list">
