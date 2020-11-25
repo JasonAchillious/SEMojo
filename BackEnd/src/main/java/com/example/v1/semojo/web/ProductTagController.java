@@ -7,6 +7,7 @@ import com.example.v1.semojo.api.model.ProductPreviewModel;
 import com.example.v1.semojo.api.util.ProductRespResultUtil;
 import com.example.v1.semojo.api.util.UserRespResultUtil;
 import com.example.v1.semojo.entities.Product;
+import com.example.v1.semojo.services.ProductService;
 import com.example.v1.semojo.services.ProductTagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ProductTagController {
     @Autowired
     ProductTagService productTagService;
+    @Autowired
+    ProductService productService;
 
     @PostMapping("/admin")
     public WebRespResult createProductTag(@RequestParam Long id,
