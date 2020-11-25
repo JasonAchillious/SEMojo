@@ -11,8 +11,9 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private Timestamp createTime;
+    private Timestamp updateTime;
 
-    private static enum TransactionStatus {
+    public static enum TransactionStatus {
         NotSubmit,
         WaitingProcess,
         Processing,
@@ -27,6 +28,14 @@ public class Transaction {
 
     @ManyToMany(mappedBy = "productTransac")
     private List<Product> products;
+
+    public Timestamp getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public Long getId() {
         return id;

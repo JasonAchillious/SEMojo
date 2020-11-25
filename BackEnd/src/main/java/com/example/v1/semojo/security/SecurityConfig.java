@@ -33,13 +33,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public RoleHierarchy roleHierarchy(){
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_CONTRIBUTOR > ROLE_CUSTOMER");
+        roleHierarchy.setHierarchy("SUPER_ADMIN > ROLE_ADMIN > ROLE_CONTRIBUTOR > ROLE_CUSTOMER");
         return roleHierarchy;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService);
+        auth.userDetailsService(userService)
+                .and()
+                .inMemoryAuthentication()
+                .withUser("ZhaoZhixiang")
+                .password(new BCryptPasswordEncoder().encode("123456")).roles("SUPER_ADMIN")
+                .and()
+                .withUser("XuPingshen")
+                .password(new BCryptPasswordEncoder().encode("123456")).roles("ADMIN")
+                .and()
+                .withUser("ChengQianfan")
+                .password(new BCryptPasswordEncoder().encode("123456")).roles("CONTRIBUTOR")
+                .and()
+                .withUser("ZhuFang")
+                .password(new BCryptPasswordEncoder().encode("123456")).roles("CUSTOMER");
     }
 
     @Override
@@ -50,16 +63,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-//                .antMatchers("/admin/**").permitAll()
-//                .antMatchers("/contributor/**").hasRole("CONTRIBUTOR")
-//                .antMatchers("/customer/**").hasRole("CUSTOMER")
-//                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/contributor/**").hasRole("CONTRIBUTOR")
+                .antMatchers("/customer/**").hasRole("CUSTOMER")
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
 //                .antMatchers("/hello").permitAll()
 //                .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
 //                        "/swagger-resources", "/swagger-resources/configuration/security",
 //                        "/swagger-ui.html", "/webjars/**").permitAll()
 //                .antMatchers("/register").permitAll()
 //                .antMatchers("/info/**").permitAll()
+//                .anyRequest().authenticated();
                 .anyRequest().permitAll();
 
         http.formLogin()

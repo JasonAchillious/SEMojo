@@ -23,8 +23,8 @@ public class JwtAuthFilter extends GenericFilterBean {
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         String jwtToken = req.getHeader("authorization");
+        System.out.println(jwtToken);
         if (jwtToken != null && jwtToken.trim().length() > 0) {
-            System.out.println("jwtToken: " + jwtToken);
             try {
                 Claims claims = Jwts.parser()
                         .setSigningKey("zzx@11711621")

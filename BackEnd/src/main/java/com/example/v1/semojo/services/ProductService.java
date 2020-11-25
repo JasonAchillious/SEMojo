@@ -112,7 +112,7 @@ public class ProductService {
         return result;
     }
 
-    public void saveNewProduct(String productName, String outline, String authority, String creator, double fixed_price){
+    public void saveNewProduct(String productName, String outline, String creator, double fixed_price){
         Product n_product = new Product();
         n_product.setProductName(productName);
         n_product.setOutline(outline);

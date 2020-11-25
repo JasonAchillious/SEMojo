@@ -7,7 +7,7 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private long userId;
     @Column(unique = true, nullable = false, length = 100)
     private String email;
     private String gender;
@@ -24,7 +24,13 @@ public class User {
     private List<Transaction> userTransec;
 
     @ManyToMany
-    private List<Product> products;
+    private List<Product> ownedProducts;
+
+    @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL)
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "questioner", cascade = CascadeType.ALL)
+    private List<Issue> issues;
 
     public UserAuth getAuth() {
         return auth;
@@ -34,12 +40,12 @@ public class User {
         this.auth = auth;
     }
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getEmail() {

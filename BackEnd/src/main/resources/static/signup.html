@@ -155,7 +155,8 @@
 <script>
     const store = new Vuex.Store({
         state: {
-            token:''  //初始化token
+            token:'',  //初始化token
+            username:''  //初始化username
         },
         mutations: {
             //存储token方法
@@ -163,6 +164,10 @@
             setToken(state, token) {
                 state.token = token
                 localStorage.token = token //同步存储token至localStorage
+            },
+            setUsername(state, username) {
+                state.username = username
+                localStorage.username = username //同步存储username至localStorage
             },
         },
         getters : {
@@ -173,6 +178,12 @@
                     state.token = localStorage.getItem('token')
                 }
                 return state.token
+            },
+            getUsername(state) {
+                if (!state.username) {
+                    state.username = localStorage.getItem('username')
+                }
+                return state.username
             }
         },
         actions: {
@@ -210,6 +221,8 @@
             return {
                 labelPosition: 'top',
                 search: '',
+                is_login: false,
+                img_src: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
                 ruleForm: {
                     username: '',
                     password: '',
@@ -237,31 +250,25 @@
         },
         methods: {
             submitForm(formName) {
-                this.$message({
-                    message:'登录成功'+ store.getters.getToken,
-                    type:'success'
-                })
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         axios({
                             method: 'post',
-                            url: '/signup',
+                            url: '/register',
                             data: {
                                 'username': this.ruleForm.username,
                                 'password': this.ruleForm.password,
-                                'repeat_password': this.ruleForm.repeat_password,
+                                'confirmPassword': this.ruleForm.repeat_password,
                                 'email': this.ruleForm.email,
                             },
                         }).then(res => {  //res是返回结果
-                            if (res.data['code']===200){
+                            console.log(res);
+                            if (res.data['code']==10200){
                                 this.$message({
                                     message:'注册成功',
                                     type:'success'
-                                })
-                                axios({
-                                    method: 'post',
-                                    url: '/login',
-                                })
+                                });
+                                window.location.href="./login";
                             }else {
                                 this.$message({
                                     message:'注册失败',
@@ -291,7 +298,7 @@
                             'search': search,
                         },
                         headers:{
-                            "Authorization": 'Bearer '+store.getters.getToken,
+                            "authorization": 'Bearer '+store.getters.getToken,
                         }
                     })
                 } else {

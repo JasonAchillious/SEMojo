@@ -35,7 +35,7 @@ public class Product {
     @Enumerated(EnumType.STRING)
     private ProductStatus status;
 
-    @ManyToMany(mappedBy = "products")
+    @ManyToMany(mappedBy = "ownedProducts")
     private List<User> owners;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -53,8 +53,22 @@ public class Product {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<AdditionalFile> additionalFiles;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     private List<Transaction> productTransac;
+
+    @OneToMany(mappedBy = "reviewProduct")
+    private List<Review> reviewList;
+
+    @OneToMany(mappedBy = "issueProduct")
+    private List<Issue> issueList;
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
 
     public List<ProductTag> getTags() {
         return tags;

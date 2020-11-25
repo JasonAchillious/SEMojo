@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.persistence.EntityManager;
 import java.util.*;
@@ -26,6 +25,8 @@ public class UserService implements UserDetailsService {
     UserDao userDao;
     @Autowired
     EntityManager entityManager;
+
+    String defaultPortait = "/images/touxiang.png";
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -74,12 +75,13 @@ public class UserService implements UserDetailsService {
         n_auth.setCredentialsNonExpired(true);
         n_auth.setRole(1);
         n_user.setAuth(n_auth);
+        n_user.setPortrait(defaultPortait);
         userDao.save(n_user);
         userAuthDao.save(n_auth);
     }
 
     public User findUserByUserId(long userId){
-        return userDao.findUserById(userId);
+        return userDao.findUserByUserId(userId);
     }
 
     public void updateUser(String username, UserInfoModel userInfoModel){
@@ -95,7 +97,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void deleteUserByUserName(String username){
-        userDao.deleteById(findUserByUsername(username).getId());
+        userDao.deleteById(findUserByUsername(username).getUserId());
     }
 
     public List<UserAllInfoModel> getUserList(long limit, long start){
@@ -121,5 +123,13 @@ public class UserService implements UserDetailsService {
 //        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 //        String encodedPwd = encoder.encode(password);
 //        boolean bool = encoder.matches("1234569077", encodedPwd);
+    }
+
+    public String getPortrait(String username) throws Exception {
+        User user = findUserByUsername(username);
+        if (user == null){
+            throw new Exception("User is not exist");
+        }
+        return user.getPortrait();
     }
 }

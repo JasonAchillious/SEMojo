@@ -1,0 +1,134 @@
+div {
+    display: relative;
+}
+
+.el-header, .el-footer {
+    display: relative;
+    background-color: #150E4A;
+    background-size: 100% 100%;
+    color: #333;
+    text-align: center;
+    line-height: 60px;
+}
+
+
+.fullscreen {
+    background-color: #FFFFFF;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.navigation_fontsize {
+    font-size: 17px;
+}
+
+.input-with-select .el-input-group__prepend {
+    background-color: #fff;
+}
+
+h1 {
+    font-weight: 200;
+    font-size: 3rem;
+}
+
+.el-aside {
+    /*background-color: aquamarine;*/
+}
+
+.part {
+    height: 30rem;
+    /*background: #e8f3fe;*/
+    margin: 10px;
+    color: black;
+}
+
+.title {
+    display: flex;
+    height: 25%;
+    /*background: #8c939d;*/
+}
+
+.comments {
+    display: flex;
+    height: 22%;
+    /*background: #8c939d;*/
+}
+
+.productName {
+    display: block;
+    margin-left: 25%;
+    margin-top: 5%;
+    width: 30%;
+}
+
+
+.productName h1 {
+    font-weight: 200;
+    font-size: 3rem;
+    margin-left: 20%;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.el-avatar {
+    display: block;
+    margin-left: 25%;
+    margin-top: 2%;
+    width: 30%;
+}
+
+.information {
+    display: flex;
+}
+
+.el-main {
+    /*background: #1179e7;*/
+}
+
+.functionName {
+    display: block;
+    margin-left: 25%;
+    margin-top: 2%;
+    width: 50%;
+}
+
+.functionName h1 {
+    font-weight: 200;
+    font-size: 3rem;
+}
+
+
+.rightPart {
+    height: 30rem;
+    /*background: #e8f3fe;*/
+    color: black;
+}
+
+.viewPart {
+    height: 50rem;
+    /*background: #e8f3fe;*/
+    color: black;
+}
+
+.codePreview {
+    display: block;
+    margin-top: 2%;
+    width: 50%;
+}
+
+.comment {
+    display: block;
+    margin-top: 0.5%;
+    width: 50%;
+}
+
+.codePreview h1 {
+    font-weight: 200;
+    font-size: 3rem;
+}
+
+.viewPart .title {
+    display: flex;
+    height: 15%;
+    /*background: #8c939d;*/
+}

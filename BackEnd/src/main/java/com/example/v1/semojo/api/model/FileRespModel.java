@@ -1,29 +1,13 @@
-package com.example.v1.semojo.entities;
+package com.example.v1.semojo.api.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.sql.Timestamp;
 
-@Entity(name = "additional_file")
-public class AdditionalFile {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class FileRespModel {
     private Long id;
     private String uploader;
     private String description;
     private Timestamp uploadTime;
     private String location;
-    private String fileName;
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
 
     public Long getId() {
         return id;
@@ -64,4 +48,6 @@ public class AdditionalFile {
     public void setLocation(String location) {
         this.location = location;
     }
+
+
 }

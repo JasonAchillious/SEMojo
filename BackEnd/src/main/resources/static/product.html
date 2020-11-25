@@ -56,7 +56,7 @@
 				<div align="left" style="width:55%; display:inline-block;">
 					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 					<a href="homepage.html">
-						<img border="0" src="../images/logo.png" style="height:45px; width:75px"/>
+						<img border="0" src="./images/logo.png" style="height:45px; width:75px"/>
 						<p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
 					</a>
 					<el-link
@@ -82,7 +82,7 @@
 					</el-link>
 				</div>
 
-				<div align="right" style="width:40%; display:inline-block" >
+				<div align="right" style="width:40%; display:inline-block;" v-show="!is_login">
 					<el-input
 							placeholder="Search SEMojo"
 							v-model="search"
@@ -97,10 +97,31 @@
 					>Sign in
 					</el-link>
 					<el-link
-							href="signup.html"
-							:underline="false">
+						href="signup.html"
+						:underline="false">
 						<el-button type="primary">Sign up</el-button>
 					</el-link>
+				</div>
+				<div style="width: 20%; display: inline-block" v-show="is_login">&nbsp;</div>
+				<div align="right" style="width:20%; display:inline-flex;" v-show="is_login">
+					<el-input
+							placeholder="Search SEMojo"
+							v-model="search"
+							style="width: 80%">
+						<el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
+					</el-input>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+					<el-dropdown @command="handleCommand">
+							<span class="el-dropdown-link">
+								<el-avatar :src="img_src"></el-avatar>
+							</span>
+						<el-dropdown-menu slot="dropdown" style="margin-top: -10px">
+							<el-dropdown-item command="userpage">Your profile</el-dropdown-item>
+							<el-dropdown-item command="contributor">Your products</el-dropdown-item>
+							<el-dropdown-item command="logout">sign out</el-dropdown-item>
+						</el-dropdown-menu>
+					</el-dropdown>
 				</div>
 			</div>
 
@@ -184,7 +205,8 @@
 	var qs = Qs;
 	const store = new Vuex.Store({
 		state: {
-			token:''  //初始化token
+			token:'',  //初始化token
+			username:''  //初始化username
 		},
 		mutations: {
 			//存储token方法
@@ -192,6 +214,10 @@
 			setToken(state, token) {
 				state.token = token
 				localStorage.token = token //同步存储token至localStorage
+			},
+			setUsername(state, username) {
+				state.username = username
+				localStorage.username = username //同步存储username至localStorage
 			},
 		},
 		getters : {
@@ -202,6 +228,12 @@
 					state.token = localStorage.getItem('token')
 				}
 				return state.token
+			},
+			getUsername(state) {
+				if (!state.username) {
+					state.username = localStorage.getItem('username')
+				}
+				return state.username
 			}
 		},
 		actions: {
@@ -218,6 +250,8 @@
 			return {
 				product_detail_url: 'product_detail.html',
 				search: '',
+				is_login: false,
+				img_src: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
 				language: 'All Languages',
 				type: 'All Types',
 				loading: false,
@@ -281,6 +315,17 @@
 				}
 				this.total = this.conditional_list.length;
 				this.current_page = 1;
+			},
+			handleCommand(command) {
+				if (command=="userpage"){
+					window.location.href="./userpage.html";
+				}else if (command=="contributor"){
+					window.location.href="./contributor.html";
+				}else {
+					this.is_login = false;
+					localStorage.clear();
+					window.location.href="./homepage.html";
+				}
 			}
 		},
 		mounted() {

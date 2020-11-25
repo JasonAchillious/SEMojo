@@ -13,6 +13,7 @@ public class SourceCode {
     private Timestamp uploadTime;
     private String location;
     private Timestamp updateTime;
+    private String fileName;
 
     public static enum Lang{
         cplusplus,
@@ -25,6 +26,22 @@ public class SourceCode {
 
     @Enumerated(EnumType.STRING)
     private Lang lang;
+
+    public Timestamp getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
 
     public long getId() {
         return id;

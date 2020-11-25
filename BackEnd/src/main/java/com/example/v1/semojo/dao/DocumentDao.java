@@ -4,4 +4,5 @@ import com.example.v1.semojo.entities.Document;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DocumentDao extends JpaRepository<Document, Long> {
+    Document findDocumentById(Long id);
 }

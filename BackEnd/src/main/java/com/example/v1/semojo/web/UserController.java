@@ -11,10 +11,7 @@ import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 import java.util.List;
@@ -53,9 +50,7 @@ public class UserController {
     @ApiResponses({
             @ApiResponse(code=200, message="success", response= UserAuthModel.class),
     })
-    public WebRespResult register(String username, String password,
-                                  String confirmPassword, String email
-                                  ){
+    public WebRespResult register(@RequestBody RegisterModel model){
 //        try {
 //            User user = userService.saveUser(username, password, confirmPassword, email);
 //            UserAuth auth = user.getAuth();
@@ -72,6 +67,10 @@ public class UserController {
 //            }
 //        }
 //        return UserRespResultUtil.error(500, "Unknown Exception");
+        String username = model.getUsername();
+        String email = model.getEmail();
+        String password = model.getPassword();
+        String confirmPassword = model.getConfirmPassword();
 
         if (userService.findUserByUsername(username) != null || userService.findUserByEmail(email) != null){
             return UserRespResultUtil.error(UserResultEnum.USER_IS_EXISTS.getCode(), UserResultEnum.USER_IS_EXISTS.getMsg());
@@ -85,7 +84,7 @@ public class UserController {
             for (GrantedAuthority authority: auth.getAuthorities()){
                 roleStrBuf.append(authority.getAuthority()).append(",");
             }
-            UserAuthModel userAuthModel = new UserAuthModel(n_user.getId(), auth.getUsername(), roleStrBuf.toString());
+            UserAuthModel userAuthModel = new UserAuthModel(n_user.getUserId(), auth.getUsername(), roleStrBuf.toString());
             return UserRespResultUtil.success(userAuthModel);
         }
         // TODO: 2020/11/22 add judgement
@@ -135,6 +134,17 @@ public class UserController {
         }else {
             userService.deleteUserByUserName(username);
             return UserRespResultUtil.success(UserResultEnum.SUCCESS.getCode(), UserResultEnum.SUCCESS.getMsg());
+        }
+    }
+
+    @GetMapping("/customer/{username}/portrait")
+    public WebRespResult getPortrait(@PathVariable String username){
+        try {
+            String path = userService.getPortrait(username);
+            return new WebRespResult<>(200, "success", path);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new WebRespResult(400, e.getMessage());
         }
     }
 }

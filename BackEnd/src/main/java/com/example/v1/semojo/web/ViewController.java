@@ -18,4 +18,13 @@ public class ViewController {
     public String getProductPage(){
         return "product.html";
     }
+    @GetMapping("/")
+    public String getMainPage(){
+        return "homepage.html";
+    }
+
+    @GetMapping("/login")
+    public String getLoginPage(){
+        return "login.html";
+    }
 }
