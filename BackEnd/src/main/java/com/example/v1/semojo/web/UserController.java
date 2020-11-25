@@ -229,17 +229,17 @@ public class UserController {
 
     @GetMapping("/contributor/{username}/userpage/contributed_products")
     public WebRespResult getContributedProduct(@PathVariable String username){
-        try{
             List<Product> contributedProducts = userService.getContributedProducts(username);
             List<ProductPreviewModel> productPreviewModels = new ArrayList<>();
-            for (Product product : contributedProducts) {
-                productPreviewModels.add(new ProductPreviewModel(product));
+//            System.out.println(contributedProducts.size() + "-------------------");
+            if (!contributedProducts.isEmpty()) {
+                for (Product product : contributedProducts) {
+                    if (product != null) {
+                        productPreviewModels.add(new ProductPreviewModel(product));
+                    }
+                }
             }
             return new WebRespResult<>(200, "success", productPreviewModels);
-        }catch (NullPointerException e){
-            return new WebRespResult<>(400, "not such user");
-        }catch (Exception e){
-            return new WebRespResult<>(500, "unknown error");
-        }
+
     }
 }

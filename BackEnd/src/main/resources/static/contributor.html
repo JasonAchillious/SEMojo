@@ -421,11 +421,50 @@
                 fd.append('username', this.username);
                 fd.append('outline', this.newProduct.description);
                 fd.append('fixed_price', this.newProduct.fixed_price);
+                fd.append('authority', " ")
 
-                axios.post('/contributor/{username}/product', fd).then(res => {
-                    if (res.data.code === 200) {
-                        //console.log(res);
-                        this.$message('上传成功')
+                axios.post('./product', fd).then(res => {
+                    console.log(res)
+                    if (res.data['code'] == 20200) {
+                        axios({
+                            method: 'get',
+                            url: './userpage/contributed_products',
+                            headers: {
+                                "authorization": 'Bearer ' + store.getters.getToken,
+                            }
+                        }).then(res => {  //res是返回结果
+                            console.log(res);
+                            axios({
+                                method: 'get',
+                                url: './userpage/contributed_products',
+                                headers: {
+                                    "Authorization": 'Bearer ' + store.getters.getToken,
+                                }
+                            }).then(res => {  //res是返回结果
+                                console.log(res);
+                                if (res.data['code'] == 200) {
+                                    let datalist = res.data['data'];
+                                    for (let i = 0, length = datalist.length; i < length; i++) {
+                                        console.log(datalist[i]);
+                                        let product = {
+                                            name: datalist[i].productName,
+                                            url: "./product",
+                                        }
+                                        this.products.push(product);
+                                    }
+                                } else {
+                                    this.$message({
+                                        message: '更新失败',
+                                        type: 'warning'
+                                    })
+                                }
+                            }).catch(function (error) { // 请求失败处理
+                                console.log(error);
+                            });
+                        }).catch(function (error) { // 请求失败处理
+                            console.log(error);
+                        });
+
                     } else {
                         this.$message('失败')
                     }
@@ -483,7 +522,7 @@
                     method: 'get',
                     url: './userpage/contributed_products',
                     headers: {
-                        "authorization": 'Bearer ' + store.getters.getToken,
+                        "Authorization": 'Bearer ' + store.getters.getToken,
                     }
                 }).then(res => {  //res是返回结果
                     console.log(res);

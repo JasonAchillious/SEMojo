@@ -169,7 +169,7 @@ public class UserService implements UserDetailsService {
         userDao.save(user);
     }
 
-    public List<Product> getContributedProducts(String username) throws Exception{
+    public List<Product> getContributedProducts(String username){
         User user = findUserByUsername(username);
         ArrayList<Product> contributedProducts = new ArrayList<>();
         List<Authority> auths = user.getAuth().getAuthority();
