@@ -385,7 +385,7 @@
                 fd.append("phoneNum", this.origin.phoneNum);
                 fd.append("qqNum", this.origin.qqNum);
                 fd.append("weChatNum", this.origin.weChatNum);
-                axios.post('/userpage', fd).then(res => {
+                axios.put('/info/'+ store.getters.getUsername, fd).then(res => {
                     if (res.data.code === 200) {
                         //console.log(res);
                         this.$message('上传成功');
