@@ -153,7 +153,18 @@ public class UserService implements UserDetailsService {
         return products;
     }
 
-    public List<User> getNeedAuthUsers(){
-        return null;
+    public List<User> getNeededAuthUsers() throws Exception{
+        List<UserAuth> neededAuthUserAuths = userAuthDao.findUserAuthByRoleEquals(1000);
+        ArrayList<User> neededAuthUser = new ArrayList<>();
+        for (UserAuth auth: neededAuthUserAuths){
+            neededAuthUser.add(auth.getUser());
+        }
+        return neededAuthUser;
+    }
+
+    public void updateUserRole(String username, int role) throws Exception{
+        User user = findUserByUsername(username);
+        user.getAuth().setRole(role);
+        userDao.save(user);
     }
 }
