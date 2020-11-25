@@ -466,7 +466,31 @@
         mounted() {
             axios({
                 method: 'get',
-                url: '/customer/' + store.getters.getUsername + '/portrait',
+                url: '/customer/' + store.getters.getUsername + '/userpage/info',
+                headers: {
+                    "authorization": 'Bearer ' + store.getters.getToken,
+                }
+            }).then(res => {  //res是返回结果
+                console.log(res);
+                if (res.data['code'] == "200") {
+                    this.is_login = true;
+                    let temp = res.data['data'];
+                    this.origin.email = temp.email;
+                    this.origin.gender = temp.gender;
+                    this.origin.phoneNum = temp.phoneNum;
+                    this.origin.qqNum = temp.qqNum;
+                    this.origin.weChatNum = temp.weChatNum;
+                    this.origin.portrait = temp.portrait;
+                } else {
+                    this.$message({
+                        message: 'connect wrong',
+                        type: 'warning'
+                    })
+                }
+            });
+            axios({
+                method: 'get',
+                url: './contributed_products',
                 headers: {
                     "authorization": 'Bearer ' + store.getters.getToken,
                 }
