@@ -168,7 +168,11 @@ public class UserController {
     public WebRespResult getPurchasedProduct(@PathVariable String username){
         try{
             List<Product> products = userService.getPurchasedProduct(username);
-            return new WebRespResult<>(200, "success", products);
+            List<ProductPreviewModel> productPreviewModels = new ArrayList<>();
+            for (Product product: products){
+                productPreviewModels.add(new ProductPreviewModel(product));
+            }
+            return new WebRespResult<>(200, "success", productPreviewModels);
         }catch (NullPointerException e){
             return new WebRespResult<>(400, "not such user");
         }catch (Exception e){
