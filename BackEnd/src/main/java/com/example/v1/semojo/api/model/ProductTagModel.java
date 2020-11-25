@@ -1,18 +1,10 @@
-package com.example.v1.semojo.entities;
+package com.example.v1.semojo.api.model;
 
-import javax.persistence.*;
-import java.util.List;
-
-@Entity(name = "product_tag")
-public class ProductTag {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductTagModel {
     private Long id;
+    private Long productId;
     private String tag;
     private String detail;
-
-    @ManyToMany
-    private List<Product> products;
 
     public Long getId() {
         return id;
@@ -22,12 +14,12 @@ public class ProductTag {
         this.id = id;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Long getProductId() {
+        return productId;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public String getTag() {

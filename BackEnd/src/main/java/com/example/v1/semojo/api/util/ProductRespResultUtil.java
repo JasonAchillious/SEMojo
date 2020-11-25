@@ -4,8 +4,10 @@ import com.example.v1.semojo.api.WebRespResult;
 import com.example.v1.semojo.api.enums.ProductResultEnum;
 import com.example.v1.semojo.api.model.ProductDetailModel;
 import com.example.v1.semojo.api.model.ProductPreviewModel;
+import com.example.v1.semojo.api.model.ProductTagModel;
 import com.example.v1.semojo.api.model.UserAllInfoModel;
 import com.example.v1.semojo.entities.Product;
+import com.example.v1.semojo.entities.ProductTag;
 
 import java.util.List;
 
@@ -31,6 +33,14 @@ public class ProductRespResultUtil {
         result.setCode(ProductResultEnum.SUCCESS.getCode());
         result.setMsg(ProductResultEnum.SUCCESS.getMsg());
         result.setData(productPreviewModel);
+        return result;
+    }
+
+    public static WebRespResult<ProductTagModel> success(ProductTagModel productTag){
+        WebRespResult<ProductTagModel> result = new WebRespResult<>();
+        result.setCode(ProductResultEnum.SUCCESS.getCode());
+        result.setMsg(ProductResultEnum.SUCCESS.getMsg());
+        result.setData(productTag);
         return result;
     }
 

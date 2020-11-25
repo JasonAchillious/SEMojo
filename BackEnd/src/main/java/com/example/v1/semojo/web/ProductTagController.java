@@ -10,6 +10,7 @@ import com.example.v1.semojo.entities.Product;
 import com.example.v1.semojo.services.ProductService;
 import com.example.v1.semojo.services.ProductTagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,23 +22,19 @@ public class ProductTagController {
     @Autowired
     ProductService productService;
 
-    @PostMapping("/admin")
-    public WebRespResult createProductTag(@RequestParam Long id,
-                                          @RequestParam Long productId,
+    @PostMapping("/admin/{username}/tag")
+    public WebRespResult createProductTag(@PathVariable String username,
                                           @RequestParam String tag,
                                           @RequestParam String detail
     ){
-//        if (productTagService.findProductTagByTag(tag) != null){
-//            return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_IS_EXISTS.getCode(), ProductResultEnum.PRODUCT_IS_EXISTS.getMsg());
-//        }else if(userService.findUserByUsername(creator)==null){
-//            return UserRespResultUtil.error(UserResultEnum.USER_NOT_EXIST.getCode(), UserResultEnum.USER_NOT_EXIST.getMsg());
-//        }
-//        else {
-//            productService.saveNewProduct(productName, outline, authority, creator, fixed_price);
-//            Product n_product = productService.findProductByProductName(productName);
-//            ProductPreviewModel n_productModel = new ProductPreviewModel(n_product);
-//            return ProductRespResultUtil.success(n_productModel);
-//        }
-        return null;
+        if (productTagService.findProductTagByTag(tag) != null){
+            return ProductRespResultUtil.error(ProductResultEnum.TAG_IS_EXIST.getCode(), ProductResultEnum.TAG_IS_EXIST.getMsg());
+        }
+        else {
+            productTagService.saveNewProductTag(tag, detail);
+            return new WebRespResult<>(200, "success", tag);
+        }
     }
+
+
 }
