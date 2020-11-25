@@ -100,21 +100,7 @@ public class ProductService {
 
     public ProductDetailModel findProductDetailByProductId(long productId){
         Product product = productDao.findProductByProductId(productId);
-        ProductDetailModel result = new ProductDetailModel();
-        result.setArtifacts(product.getArtifacts());
-        result.setCreate_time(product.getCreate_time());
-        result.setCreator(product.getCreator());
-        result.setCurrentPrice(product.getCurrentPrice());
-        result.setDocs(product.getDocs());
-        result.setFixPrice(product.getFixPrice());
-        result.setOutline(product.getOutline());
-        result.setOwners(product.getOwners());
-        result.setProductName(product.getProductName());
-        result.setReviewStar(product.getReviewStar());
-        result.setSalesVolume(product.getSalesVolume());
-        result.setStatus(product.getStatus());
-        result.setTestCases(product.getTestCases());
-        result.setUpdate_time(product.getUpdate_time());
+        ProductDetailModel result = new ProductDetailModel(product);
         return result;
     }
 
@@ -172,7 +158,9 @@ public class ProductService {
         t_product.setCurrentPrice(currentPrice);
         t_product.setStatus(Product.ProductStatus.valueOf(status));
         t_product.setUpdate_time(d);
+        productDao.save(t_product);
         for (String contributor : contributors) {
+            System.out.println(contributor);
             UserAuth t_userAuth = userAuthDao.findUserAuthByUsername(contributor);
             Authority n_auth = new Authority();
             n_auth.setProductId(t_product.getProductId());
@@ -184,22 +172,51 @@ public class ProductService {
             }else {
                 userAuths = new ArrayList<>();
             }
-            userAuths.add(n_auth);
-            t_userAuth.setAuthorities(userAuths);
-            List<User> owners = t_product.getOwners();
-            owners.add(t_userAuth.getUser());
-            t_product.setOwners(owners);
+            if (!userAuths.contains(n_auth)){
+                System.out.println(n_auth.getName());
+                userAuths.add(n_auth);
+                t_userAuth.setAuthorities(userAuths);
+                List<User> owners = t_product.getOwners();
+                owners.add(t_userAuth.getUser());
+                t_product.setOwners(owners);
+                User user = t_userAuth.getUser();
+                List<Product> products ;
+                if (user.getOwnedProducts()!=null){
+                    products = user.getOwnedProducts();
+                }else {
+                    products = new ArrayList<>();
+                }
+                products.add(t_product);
+                user.setOwnedProducts(products);
+                productDao.save(t_product);
+                userAuthDao.save(t_userAuth);
+                userDao.save(user);
+            }
         }
         for (String tag : tags){
             List<ProductTag> t_tags;
+            System.out.println(tag);
             if (t_product.getTags()!=null){
                 t_tags = t_product.getTags();
             }else {
                 t_tags = new ArrayList<>();
             }
             ProductTag t_tag = productTagDao.findProductTagByTag(tag);
-            t_tags.add(t_tag);
-            t_product.setTags(t_tags);
+            System.out.println(t_tag.getTag());
+            if (!t_tags.contains(t_tag)){
+                t_tags.add(t_tag);
+                List<Product> products;
+                if (t_tag.getProducts()!= null){
+                    products = t_tag.getProducts();
+                }else {
+                    products = new ArrayList<>();
+                }
+                products.add(t_product);
+                t_tag.setProducts(products);
+                t_product.setTags(t_tags);
+                productTagDao.save(t_tag);
+                productDao.save(t_product);
+            }
         }
         productDao.save(t_product);
     }

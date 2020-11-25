@@ -405,99 +405,13 @@
                 //all file datas
                 dialogCodeVisible: false,
 
-                artifacts : [
-                    {
-                        name: 'artifact1.jar',
-                        url: '',
-                    },
-                    {
-                        name: 'artifact2.jar',
-                        url: '',
-                    },
-                    {
-                        name: 'artifact3.jar',
-                        url: '',
-                    },
-                    {
-                        name: 'artifact4.jar',
-                        url: '',
-                    },
-                ],
+                artifacts : [{name: 'artifact1.jar',url: '',},],
+                codes: [{name: 'code1.java',url: '',},],
+                tests: [{name: 'testcase1',url: '',},],
+                documents: [{name: 'doc1.txt',url: '',},],
+                others: [{name: 'product1.jar',url: '',},],
 
-                codes: [
-                    {
-                        name: 'code1.java',
-                        url: '',
-                    },
-                    {
-                        name: 'code2.java',
-                        url: '',
-                    },
-                    {
-                        name: 'code3.java',
-                        url: '',
-                    },
-                    {
-                        name: 'code4.java',
-                        url: '',
-                    },
-                ],
-                tests: [
-                    {
-                        name: 'testcase1',
-                        url: '',
-                    },
-                    {
-                        name: 'testcase2',
-                        url: '',
-                    },
-                    {
-                        name: 'testcase3',
-                        url: '',
-                    },
-                    {
-                        name: 'testcase4',
-                        url: '',
-                    },
-                ],
-                documents: [
-                    {
-                        name: 'doc1.txt',
-                        url: '',
-                    },
-                    {
-                        name: 'doc2.txt',
-                        url: '',
-                    },
-                    {
-                        name: 'doc3.txt',
-                        url: '',
-                    },
-                    {
-                        name: 'doc4.txt',
-                        url: '',
-                    },
-                ],
-                others: [
-                    {
-                        name: 'product1.jar',
-                        url: '',
-                    },
-                    {
-                        name: 'product2.jar',
-                        url: '',
-                    },
-                    {
-                        name: 'product3.jar',
-                        url: '',
-                    },
-                    {
-                        name: 'product4.jar',
-                        url: '',
-                    },
-                ],
                 activeName: 'first',
-
 
                 activeNames: ['1'],
 
@@ -631,9 +545,101 @@
                 this.edit.contributor = this.product.contributor;
             },
         },
-        mounted() {
+        mounted: function () {
             this.img_src = window.localStorage.getItem('img_src');
             this.img_src = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+            //获取productid
+            var htmlHref = window.location.href;
+            htmlHref = htmlHref.replace(/^http:\/\/[^/]+/, "");
+            var addr = htmlHref.substr(htmlHref.lastIndexOf('/', htmlHref.lastIndexOf('/') - 1) + 1);
+            var index = addr.lastIndexOf("\/");
+            this.productId = decodeURI(addr.substring(index + 1, addr.length));
+
+            //获取product基本信息
+            axios({
+                method: 'get',
+                url: '/EditProduct/' + this.productId,
+            }).then(res => {  //res是返回结果
+                if (res.data['code'] == 10200) {
+                    var data = res.data['data'];
+                    this.product.name = data.productName;
+                    this.product.price = data.fixPrice;
+                    this.product.currentPrice = data.currentPrice;
+                    this.product.contributor = toString(data.owners);
+                    this.product.tags = toString(data.tags);
+                    this.product.status = data.status;
+                    this.product.saleVolume = data.salesVolume;
+                    this.product.releaseDate = data.create_time;
+                    this.product.recentUpdateDate = data.update_time;
+                    this.product.description = data.outline;
+                    this.product.rating = data.reviewStar;
+                }
+            });
+
+            //获取artifacts
+            axios({
+                method: 'get',
+                url: '/EditProduct/' + this.productId + '/artifacts',
+            }).then(res => {  //res是返回结果
+                if (res.data['code'] == 10200) {
+                    var data = res.data['data'];
+                    for (let i = 0; i < data.length; i++) {
+                        let artifact = {
+                            name: data[i].name,
+                            url: data[i].url,
+                        }
+                        this.artifacts.push(artifact);
+                    }
+                }
+            })
+            //获取codes
+            axios({
+                method: 'get',
+                url: '/EditProduct/' + this.productId + '/codes',
+            }).then(res => {  //res是返回结果
+                if (res.data['code'] == 10200) {
+                    var data = res.data['data'];
+                    for (let i = 0; i < data.length; i++) {
+                        let code = {
+                            name: data[i].name,
+                            url: data[i].url,
+                        }
+                        this.codes.push(code);
+                    }
+                }
+            })
+            //获取documents
+            axios({
+                method: 'get',
+                url: '/EditProduct/' + this.productId + '/docs',
+            }).then(res => {  //res是返回结果
+                if (res.data['code'] == 10200) {
+                    var data = res.data['data'];
+                    for (let i = 0; i < data.length; i++) {
+                        let doc = {
+                            name: data[i].name,
+                            url: data[i].url,
+                        }
+                        this.documents.push(doc);
+                    }
+                }
+            })
+            //获取testcases
+            axios({
+                method: 'get',
+                url: '/EditProduct/' + this.productId + '/testcases',
+            }).then(res => {  //res是返回结果
+                if (res.data['code'] == 10200) {
+                    var data = res.data['data'];
+                    for (let i = 0; i < data.length; i++) {
+                        let testcase = {
+                            name: data[i].name,
+                            url: data[i].url,
+                        }
+                        this.tests.push(testcase);
+                    }
+                }
+            })
         },
     });
 
