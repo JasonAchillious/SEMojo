@@ -155,14 +155,13 @@
                         <ul class="list">
                             <li class="list-item" v-for="(product, index) in products">
                                 <div style="display: block;margin-left:5%;margin-top:2%;width: 60%"
-                                     v-bind:class="product.name">
+                                     v-bind:class="product.productId">
                                     <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;">
-                                        <a
-                                                v-bind:href="product.url">{{product.name}}</a></h1>
+                                        <a @click="enterProductDetail(index)">{{product.name}}</a></h1>
                                 </div>
                                 <div style="display: block;width:40%;margin-left:15%;margin-top: 6px;margin-bottom: 5px">
-                                    <a v-bind:href="product.url">
-                                        <el-button v-bind:href="product.url" type="primary" size="mini">Edit</el-button>
+                                    <a>
+                                        <el-button type="primary" size="mini" @click="edit(index)">Edit</el-button>
                                     </a>
                                     <el-button type="plain" size='mini' @click="clickReview($event)"
                                     >Delete
@@ -448,7 +447,7 @@
                                         console.log(datalist[i]);
                                         let product = {
                                             name: datalist[i].productName,
-                                            url: "./product",
+                                            url: "./product/" + datalist[i].productId,
                                         }
                                         this.products.push(product);
                                     }
@@ -503,10 +502,15 @@
                 this.profileVisible = false;
             },
 
-            edit: function () {
-                this.profileVisible = true;
+            edit: function (index) {
+                //this.profileVisible = true;
+                //console.log(index);
+                window.location.href="./product/" + this.products[index].productId + '/edit_page';
             },
 
+            enterProductDetail(index){
+                window.location.href="./product/" + this.products[index].productId + '/info_page';
+            },
 
             //review
             clickReview: function (event) {
@@ -533,6 +537,7 @@
                             let product = {
                                 name: datalist[i].productName,
                                 url: "www.baidu.com",
+                                productId: datalist[i].productId
                             }
                             this.products.push(product);
                         }

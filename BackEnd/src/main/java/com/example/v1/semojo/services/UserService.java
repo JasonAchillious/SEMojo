@@ -176,7 +176,7 @@ public class UserService implements UserDetailsService {
         if (auths != null) {
             ArrayList<Long> productIds = new ArrayList<>();
             for (Authority au : auths) {
-                productIds.add(au.getId());
+                productIds.add(au.getProductId());
             }
             for (Long id: productIds){
                 contributedProducts.add(productDao.findProductByProductId(id));

@@ -65,4 +65,24 @@ public class ViewController {
     public String getAdminPage(@PathVariable String username){
         return "forward:/administrator.html";
     }
+
+    @GetMapping("/contributor/{username}/product/{productId}/info_page")
+    public String getProductInfoPage(@PathVariable String username,
+                                 @PathVariable String productId){
+        System.out.println(username + "---------------------------");
+        return "forward:/ProductDetail.html";
+    }
+
+    @GetMapping("/contributor/{username}/product/{productId}/edit_page")
+    public String getProductPage(@PathVariable String username,
+                                 @PathVariable String productId){
+        System.out.println(productId + "++++++++++++++++++++++++++");
+        return "forward:/EditProduct.html";
+    }
+
+    @GetMapping("/product/{productId}/info_page)")
+    public String getProductInfoPage(@PathVariable String productId){
+        return "forward:/ProductDetail.html";
+    }
+
 }
