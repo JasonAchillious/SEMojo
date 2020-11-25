@@ -373,7 +373,6 @@
                 this.profileVisible = false;
                 console.log(origin);
                 //发送修改后的信息
-                axios.post('/userpage', this.origin).then(res => {
                     if (res.data.code === 10200) {
                         //console.log(res);
                         this.$message('上传成功');

@@ -3,13 +3,13 @@ package com.example.v1.semojo.services;
 import com.example.v1.semojo.api.model.ProductDetailModel;
 import com.example.v1.semojo.api.model.ProductPreviewModel;
 import com.example.v1.semojo.dao.ProductDao;
+import com.example.v1.semojo.dao.ProductTagDao;
 import com.example.v1.semojo.dao.UserAuthDao;
 import com.example.v1.semojo.dao.UserDao;
 import com.example.v1.semojo.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.HTML;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -17,7 +17,8 @@ import java.util.*;
 public class ProductService {
     @Autowired
     ProductDao productDao;
-
+    @Autowired
+    ProductTagDao productTagDao;
     @Autowired
     UserAuthDao userAuthDao;
 
@@ -57,7 +58,7 @@ public class ProductService {
                 }
             }
             for (int i = 0; i < tags.size(); i++){
-                String Tag_temp = tags.get(i).getTag().toString();
+                String Tag_temp = tags.get(i).getTag();
                 if (tagMap.containsKey(Tag_temp)){
                     tagMap.put(Tag_temp, tagMap.get(Tag_temp) + 1);
                     if (tagMap.get(Tag_temp) > maxTag){
@@ -91,8 +92,11 @@ public class ProductService {
             return result;
         }
     }
+    public Product findProductByProductId(long productId){
+        return productDao.findProductByProductId(productId);
+    }
 
-    public ProductDetailModel findProductByProductId(long productId){
+    public ProductDetailModel findProductDetailByProductId(long productId){
         Product product = productDao.findProductByProductId(productId);
         ProductDetailModel result = new ProductDetailModel();
         result.setArtifacts(product.getArtifacts());
@@ -112,7 +116,7 @@ public class ProductService {
         return result;
     }
 
-    public void saveNewProduct(String productName, String outline, String creator, double fixed_price){
+    public void saveNewProduct(String productName, String outline,String authority, String creator, double fixed_price){
         Product n_product = new Product();
         n_product.setProductName(productName);
         n_product.setOutline(outline);
@@ -126,22 +130,61 @@ public class ProductService {
         n_product.setFixPrice(fixed_price);
         List<User> owners = new ArrayList<>();
         UserAuth t_userAuth = userAuthDao.findUserAuthByUsername(creator);
-
-//        t_userAuth.setAuthorities();
+        Authority n_auth = new Authority();
+        n_auth.setProductId(n_product.getProductId());
+        n_auth.setName(Authority.AuthType.all);
+        List<Authority> n_authorities = new ArrayList<>();
+        n_authorities.add(n_auth);
+        t_userAuth.setAuthorities(n_authorities);
         User t_creator = t_userAuth.getUser();
+//        t_creator.setAuth(t_userAuth);
         owners.add(t_creator);
         n_product.setOwners(owners);
         n_product.setStatus(Product.ProductStatus.developing);
         productDao.save(n_product);
-
     }
 
     public Product findProductByProductName(String productName){
         return productDao.findProductByProductName(productName);
     }
 
-    public void updateProduct(){
+    public void updateProduct(long productId, String productName, String outline, double currentPrice, String status, List<String> contributors, List<String> tags){
+        Timestamp d = new Timestamp(System.currentTimeMillis());
+        Product t_product = findProductByProductId(productId);
+        t_product.setProductName(productName);
+        t_product.setOutline(outline);
+        t_product.setCurrentPrice(currentPrice);
+        t_product.setStatus(Product.ProductStatus.valueOf(status));
+        t_product.setUpdate_time(d);
+        for (String contributor : contributors) {
+            UserAuth t_userAuth = userAuthDao.findUserAuthByUsername(contributor);
+            Authority n_auth = new Authority();
+            n_auth.setProductId(t_product.getProductId());
+            n_auth.setName(Authority.AuthType.all);
 
+            List<Authority> userAuths;
+            if (t_userAuth.getAuthorities()!=null){
+                userAuths = t_userAuth.getAuthority();
+            }else {
+                userAuths = new ArrayList<>();
+            }
+            userAuths.add(n_auth);
+            t_userAuth.setAuthorities(userAuths);
+            List<User> owners = t_product.getOwners();
+            owners.add(t_userAuth.getUser());
+            t_product.setOwners(owners);
+        }
+        for (String tag : tags){
+            List<ProductTag> t_tags;
+            if (t_product.getTags()!=null){
+                t_tags = t_product.getTags();
+            }else {
+                t_tags = new ArrayList<>();
+            }
+            ProductTag t_tag = productTagDao.findProductTagByTag(tag);
+            t_tags.add(t_tag);
+            t_product.setTags(t_tags);
+        }
     }
 
     public void deleteProductByProductId(long productId){
