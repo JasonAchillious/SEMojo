@@ -4,10 +4,12 @@ import com.example.v1.semojo.api.WebRespResult;
 import com.example.v1.semojo.api.enums.UserResultEnum;
 import com.example.v1.semojo.api.model.*;
 import com.example.v1.semojo.api.util.UserRespResultUtil;
+import com.example.v1.semojo.entities.Product;
 import com.example.v1.semojo.entities.User;
 import com.example.v1.semojo.entities.UserAuth;
 import com.example.v1.semojo.services.UserService;
 import io.swagger.annotations.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.GrantedAuthority;
@@ -148,7 +150,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("customer/{username}/info")
+    @GetMapping("/customer/{username}/userpage/info")
     public WebRespResult getUserInfo(@PathVariable String username){
         try{
             UserInfoModel info = userService.getUserInfo(username);
@@ -158,5 +160,24 @@ public class UserController {
         }catch (Exception e){
             return new WebRespResult<>(500, "unknown error");
         }
+    }
+
+    @GetMapping("/customer/{username}/userpage/products")
+    public WebRespResult getPurchasedProduct(@PathVariable String username){
+        try{
+            List<Product> products = userService.getPurchasedProduct(username);
+            return new WebRespResult<>(200, "success", products);
+        }catch (NullPointerException e){
+            return new WebRespResult<>(400, "not such user");
+        }catch (Exception e){
+            return new WebRespResult<>(500, "unknown error");
+        }
+    }
+
+    @GetMapping("/admin/{username}/userpage/authlist")
+    public WebRespResult updateAuthority(
+            @PathVariable String username,
+            @RequestParam String userId){
+        return null;
     }
 }

@@ -4,6 +4,7 @@ import com.example.v1.semojo.api.model.UserAllInfoModel;
 import com.example.v1.semojo.api.model.UserInfoModel;
 import com.example.v1.semojo.dao.UserAuthDao;
 import com.example.v1.semojo.dao.UserDao;
+import com.example.v1.semojo.entities.Product;
 import com.example.v1.semojo.entities.User;
 import com.example.v1.semojo.entities.UserAuth;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,5 +145,15 @@ public class UserService implements UserDetailsService {
         info.setPortrait(user.getPortrait());
         info.setQqNum(user.getQqNum());
         return info;
+    }
+
+    public List<Product> getPurchasedProduct(String username) throws Exception{
+        User user = findUserByUsername(username);
+        List<Product> products = user.getOwnedProducts();
+        return products;
+    }
+
+    public List<User> getNeedAuthUsers(){
+        return null;
     }
 }

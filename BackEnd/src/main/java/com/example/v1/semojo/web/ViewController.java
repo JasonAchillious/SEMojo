@@ -38,11 +38,15 @@ public class ViewController {
     public String getUserPage(@PathVariable String username){
         User user = userService.findUserByUsername(username);
         UserAuth auth = user.getAuth();
-        switch (auth.getRole()){
-            case 1: return "redirect:/customer/"+ username +"/userpage";
-            case 2: return "redirect:/contributor/" + username +"/userpage";
-            case 3: return "redirect:/admin/"+ username + "/userpage";
-            default: return "redirect: /";
+        int role = auth.getRole();
+        if (role == 1 || 1000 <= role && role < 1010){
+            return "redirect:/customer/"+ username +"/userpage";
+        }else if (role == 2){
+            return "redirect:/contributor/" + username +"/userpage";
+        }else if (role == 3){
+            return "redirect:/admin/"+ username + "/userpage";
+        }else {
+            return "wrong username";
         }
     }
 
