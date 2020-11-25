@@ -2,7 +2,7 @@ package com.example.v1.semojo.web;
 
 import com.example.v1.semojo.api.WebRespResult;
 import com.example.v1.semojo.api.model.ProductID;
-import com.example.v1.semojo.entities.Product;
+
 import com.example.v1.semojo.entities.Transaction;
 import com.example.v1.semojo.services.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;

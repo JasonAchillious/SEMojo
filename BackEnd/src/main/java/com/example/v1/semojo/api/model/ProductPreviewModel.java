@@ -19,6 +19,7 @@ public class ProductPreviewModel {
     private double currentPrice;
     private Product.ProductStatus status;
 
+
     public long getProductId() {
         return productId;
     }

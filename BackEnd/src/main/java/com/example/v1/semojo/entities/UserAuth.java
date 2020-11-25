@@ -1,5 +1,6 @@
 package com.example.v1.semojo.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,9 +24,10 @@ public class UserAuth implements UserDetails {
     private boolean credentialsNonExpired;
     private boolean enabled;
     private int role;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Authority> authorities;
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "auth")
+
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "auth")
     private User user;
 
 

@@ -1,6 +1,6 @@
 package com.example.v1.semojo.entities;
 
-import org.hibernate.annotations.GeneratorType;
+
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -30,10 +30,10 @@ public class Product {
         alpha,
         beta,
         finalVersion,
-        deprecated;
+        deprecated
     }
     @Enumerated(EnumType.STRING)
-    private ProductStatus status;
+    private  ProductStatus status;
 
     @ManyToMany(mappedBy = "ownedProducts")
     private List<User> owners;

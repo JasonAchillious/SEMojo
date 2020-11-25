@@ -16,6 +16,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -225,7 +227,11 @@ public class UserController {
     public WebRespResult getContributedProduct(@PathVariable String username){
         try{
             List<Product> contributedProducts = userService.getContributedProducts(username);
-            return new WebRespResult<>(200, "success",contributedProducts);
+            List<ProductPreviewModel> productPreviewModels = new ArrayList<>();
+            for (Product product : contributedProducts) {
+                productPreviewModels.add(new ProductPreviewModel(product));
+            }
+            return new WebRespResult<>(200, "success", productPreviewModels);
         }catch (NullPointerException e){
             return new WebRespResult<>(400, "not such user");
         }catch (Exception e){

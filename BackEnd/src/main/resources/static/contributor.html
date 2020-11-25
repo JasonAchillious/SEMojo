@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/theme-chalk/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/userpage.css">
+    <link rel="stylesheet" type="text/css" href="./css/userpage.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contributor</title>
 </head>
@@ -18,7 +18,7 @@
                 <div align="left" style="width:55%; display:inline-block;">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="homepage.html">
-                        <img border="0" src="./images/logo.png" style="height:45px; width:75px"/>
+                        <img border="0" src="/images/logo.png" style="height:45px; width:75px"/>
                         <p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
                     </a>
                     <el-link
@@ -280,7 +280,7 @@
                 username: '',
 
                 search: '',
-                circleUrl: "./images/bg2.jpg",
+                circleUrl: "/images/bg2.jpg",
                 squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
                 sizeList: ["large", "medium", "small"],
                 imageUrl: '',
@@ -441,11 +441,11 @@
                 fd.append('outline', this.newProduct.description);
                 fd.append('fixed_price', this.newProduct.fixed_price);
 
-                axios.post('/contributor/{username}/product', fd).then(res=>{
+                axios.post('/contributor/{username}/product', fd).then(res => {
                     if (res.data.code === 200) {
                         //console.log(res);
                         this.$message('上传成功')
-                    }else{
+                    } else {
                         this.$message('失败')
                     }
                     }
@@ -494,63 +494,62 @@
                 this.productname = ele;
             },
 
-        mounted() {
-            axios({
-                method: 'get',
-                url: '/customer/' + store.getters.getUsername + '/userpage/info',
-                headers: {
-                    "authorization": 'Bearer ' + store.getters.getToken,
-                }
-            }).then(res => {  //res是返回结果
-                console.log(res);
-                if (res.data['code'] == "200") {
-                    this.is_login = true;
-                    let temp = res.data['data'];
-                    this.origin.email = temp.email;
-                    this.origin.gender = temp.gender;
-                    this.origin.phoneNum = temp.phoneNum;
-                    this.origin.qqNum = temp.qqNum;
-                    this.origin.weChatNum = temp.weChatNum;
-                    this.origin.portrait = temp.portrait;
-                } else {
-                    this.$message({
-                        message: 'connect wrong',
-                        type: 'warning'
-                    })
-                }
-            });
-            axios({
-                method: 'get',
-                url: './contributed_products',
-                headers: {
-                    "authorization": 'Bearer ' + store.getters.getToken,
-                }
-            }).then(res => {  //res是返回结果
-                console.log(res);
-                if (res.data['code'] == "200") {
-                    this.is_login = true;
-                    let temp = res.data['data'];
-                    this.origin.email = temp.email;
-                    this.origin.gender = temp.gender;
-                    this.origin.phoneNum = temp.phoneNum;
-                    this.origin.qqNum = temp.qqNum;
-                    this.origin.weChatNum = temp.weChatNum;
-                    this.origin.portrait = temp.portrait;
-                } else {
-                    this.$message({
-                        message: 'connect wrong',
-                        type: 'warning'
-                    })
-                }
-            })
+            mounted() {
+                this.img_src = window.localStorage.getItem('img_src');
+                axios({
+                    method: 'get',
+                    url: '/customer/' + store.getters.getUsername + '/userpage/info',
+                    headers: {
+                        "authorization": 'Bearer ' + store.getters.getToken,
+                    }
+                }).then(res => {  //res是返回结果
+                    console.log(res);
+                    if (res.data['code'] == "200") {
+                        this.is_login = true;
+                        let temp = res.data['data'];
+                        this.origin.email = temp.email;
+                        this.origin.gender = temp.gender;
+                        this.origin.phoneNum = temp.phoneNum;
+                        this.origin.qqNum = temp.qqNum;
+                        this.origin.weChatNum = temp.weChatNum;
+                        this.origin.portrait = temp.portrait;
+                    } else {
+                        this.$message({
+                            message: 'connect wrong',
+                            type: 'warning'
+                        })
+                    }
+                });
+                axios({
+                    method: 'get',
+                    url: './contributed_products',
+                    headers: {
+                        "authorization": 'Bearer ' + store.getters.getToken,
+                    }
+                }).then(res => {  //res是返回结果
+                    console.log(res);
+                    if (res.data['code'] == "200") {
+                        this.is_login = true;
+                        let temp = res.data['data'];
+                        this.origin.email = temp.email;
+                        this.origin.gender = temp.gender;
+                        this.origin.phoneNum = temp.phoneNum;
+                        this.origin.qqNum = temp.qqNum;
+                        this.origin.weChatNum = temp.weChatNum;
+                        this.origin.portrait = temp.portrait;
+                    } else {
+                        this.$message({
+                            message: 'connect wrong',
+                            type: 'warning'
+                        })
+                    }
+                })
 
-        },
+            }
 
-        mounted() {
-            this.img_src = window.localStorage.getItem('img_src');
         }
-
     })
+
 </script>
 </body>
 

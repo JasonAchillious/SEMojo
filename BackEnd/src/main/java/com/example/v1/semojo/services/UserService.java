@@ -158,7 +158,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<UserAuth> getNeededAuthUsers() throws Exception{
-        List<UserAuth> neededAuthUserAuths = userAuthDao.findUserAuthByRoleEquals(1000);
+        List<UserAuth> neededAuthUserAuths = userAuthDao.findUserAuthsByRoleEquals(1000);
 
         return neededAuthUserAuths;
     }
