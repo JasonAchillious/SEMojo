@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("ZhaoZhixiang")
                 .password(new BCryptPasswordEncoder().encode("123456")).roles("SUPER_ADMIN")
                 .and()
-                .withUser("XuPingshen")
+                .withUser("XuPinshen")
                 .password(new BCryptPasswordEncoder().encode("123456")).roles("ADMIN")
                 .and()
                 .withUser("ChengQianfan")

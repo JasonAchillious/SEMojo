@@ -22,7 +22,7 @@ public class Product {
     private double fixPrice;
     private double currentPrice;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "products", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<ProductTag> tags;
 
     public static enum ProductStatus {

@@ -7,7 +7,8 @@ public enum ProductResultEnum {
     SUCCESS(20200,"success"),
     PRODUCT_NOT_EXIST(20401,"product not exist"),
     PRODUCT_IS_EXIST(20402,"product has existed"),
-    NO_AUTHORITY(20403, "No authority")
+    NO_AUTHORITY(20403, "No authority"),
+    TAG_IS_EXIST(20404, "tag has existed")
     ;
     private Integer code;
     private String msg;

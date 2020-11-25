@@ -2,12 +2,10 @@ package com.example.v1.semojo.services;
 
 import com.example.v1.semojo.api.model.ProductDetailModel;
 import com.example.v1.semojo.api.model.ProductPreviewModel;
-import com.example.v1.semojo.dao.ProductDao;
-import com.example.v1.semojo.dao.ProductTagDao;
-import com.example.v1.semojo.dao.UserAuthDao;
-import com.example.v1.semojo.dao.UserDao;
+import com.example.v1.semojo.dao.*;
 import com.example.v1.semojo.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -21,6 +19,10 @@ public class ProductService {
     ProductTagDao productTagDao;
     @Autowired
     UserAuthDao userAuthDao;
+    @Autowired
+    UserDao userDao;
+    @Autowired
+    AuthorityDao authorityDao;
 
     public List<ProductPreviewModel> getProductList( int limit, int start, String tag, String lang){
         List<ProductPreviewModel> result = new ArrayList<>();
@@ -123,21 +125,34 @@ public class ProductService {
         Timestamp d = new Timestamp(System.currentTimeMillis());
         n_product.setCreate_time(d);
         n_product.setUpdate_time(d);
-        Authority n_authority = new Authority();
-        n_authority.setProductId(n_product.getProductId());
         n_product.setSalesVolume(0);
         n_product.setCreator(creator);
         n_product.setFixPrice(fixed_price);
+        productDao.save(n_product);
         List<User> owners = new ArrayList<>();
         UserAuth t_userAuth = userAuthDao.findUserAuthByUsername(creator);
         Authority n_auth = new Authority();
         n_auth.setProductId(n_product.getProductId());
         n_auth.setName(Authority.AuthType.all);
-        List<Authority> n_authorities = new ArrayList<>();
+        List<Authority> n_authorities;
+        if (t_userAuth.getAuthority()!=null){
+            n_authorities = t_userAuth.getAuthority();
+        }else {
+            n_authorities = new ArrayList<>();
+        }
         n_authorities.add(n_auth);
         t_userAuth.setAuthorities(n_authorities);
         User t_creator = t_userAuth.getUser();
-//        t_creator.setAuth(t_userAuth);
+        List<Product> products;
+        if (t_creator.getOwnedProducts()!=null){
+            products = t_creator.getOwnedProducts();
+        }else {
+            products = new ArrayList<>();
+        }
+        products.add(n_product);
+        t_creator.setOwnedProducts(products);
+        userAuthDao.save(t_userAuth);
+        userDao.save(t_creator);
         owners.add(t_creator);
         n_product.setOwners(owners);
         n_product.setStatus(Product.ProductStatus.developing);
@@ -185,9 +200,19 @@ public class ProductService {
             t_tags.add(t_tag);
             t_product.setTags(t_tags);
         }
+        productDao.save(t_product);
     }
 
     public void deleteProductByProductId(long productId){
+        Product t_product = findProductByProductId(productId);
+        List<User> users = t_product.getOwners();
+        for (User user: users){
+            List<Authority> authorities = user.getAuth().getAuthority();
+            for (Authority authority : authorities){
+                authorities.remove(authority);
+                authorityDao.delete(authority);
+            }
+        }
         productDao.deleteById(productId);
     }
 }

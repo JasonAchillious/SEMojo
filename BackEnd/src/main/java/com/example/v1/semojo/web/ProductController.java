@@ -19,6 +19,7 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.OutputStream;
 import java.util.List;
 
 @RestController
@@ -97,10 +98,13 @@ public class ProductController {
                         .parseClaimsJws(jwtToken.replace("Bearer", ""))
                         .getBody();
                 String username = claims.getSubject();
+                System.out.println(username);
+
                 List<GrantedAuthority> authorities = AuthorityUtils
                         .commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
                 boolean hasAuth = false;
                 for (GrantedAuthority auth: authorities){
+                    System.out.println(authorities);
                     if (auth.getAuthority().equals(productId + "-" + Authority.AuthType.delete.toString())
                     || auth.getAuthority().equals(productId + "-" + Authority.AuthType.all.toString())){
                         hasAuth = true;
