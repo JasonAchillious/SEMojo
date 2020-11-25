@@ -156,7 +156,13 @@
 															v-bind:href="item.href">
 														{{item.name}}
 													</el-link>
-													<el-progress style="width: 40%" :percentage="item.star">star</el-progress>
+													<el-rate
+															v-model="item.star"
+															disabled
+															show-score
+															text-color="#ff9900"
+															score-template="{value}">
+													</el-rate>
 													<div> Price: {{item.price}}</div>
 													<div> Contributors: {{item.contributors}}</div>
 													<div> Tags:{{item.tags}} </div>
@@ -244,16 +250,16 @@
 					value: 'score',
 
 					show_list: [],
-					list: [{id:1, name:"cqfwuwuwu", star:"80", price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
-						{id:2, name:"cqfwuwuwu", star:"85", price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
-						{id:3, name:"cqfwuwuwu", star:"75", price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
-						{id:4, name:"cqfwuwuwu", star:"56", price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
-						{id:5, name:"cqfwuwuwu", star:"95", price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
-						{id:6, name:"cqfwuwuwu", star:"100", price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
-						{id:7, name:"cqfwuwuwu", star:"50", price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
-						{id:8, name:"cqfwuwuwu", star:"40", price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
-						{id:9, name:"cqfwuwuwu", star:"81", price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
-						{id:10, name:"cqfwuwuwu", star:"40", price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},],
+					list: [{id:1, name:"cqfwuwuwu", star:4.5, price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
+						{id:2, name:"cqfwuwuwu", star:5, price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
+						{id:3, name:"cqfwuwuwu", star:3, price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
+						{id:4, name:"cqfwuwuwu", star:2, price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
+						{id:5, name:"cqfwuwuwu", star:4, price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
+						{id:6, name:"cqfwuwuwu", star:3, price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
+						{id:7, name:"cqfwuwuwu", star:4.5, price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
+						{id:8, name:"cqfwuwuwu", star:5, price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
+						{id:9, name:"cqfwuwuwu", star:5, price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},
+						{id:10, name:"cqfwuwuwu", star:4, price:"50", contributors:"cqf,zf", tags:"Java", description:"this is my final ripple, JOJO", DBid:5,update_time:2020/11/24,score:82},],
 
 					options: [{
 						value: 'score',
@@ -314,7 +320,7 @@
 			},
 			mounted() {
 				this.total = 10;
-				this.img_src = window.localStorage.getItem("img_src");
+				this.img_src = window.localStorage.getItem('img_src')
 				axios({
 					method: 'get',
 					url: '/products',

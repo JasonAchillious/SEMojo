@@ -78,39 +78,50 @@
                         </div>
 
                         <el-dialog title="Profile" :visible.sync="profileVisible">
-                            <el-form class="product" ref="form" :model="edit" size="mini">
+                            <el-form class="product" ref="form" :model="editForm" size="mini">
                                 <el-form-item label="">
-                                    <el-input v-model="edit.name" placeholder="Product Name">
+                                    <el-input v-model="editForm.name" placeholder="Product Name">
                                         <template slot="prepend">Product Name</template>
                                     </el-input>
                                 </el-form-item>
 
                                 <el-form-item label="">
-                                    <el-input v-model="edit.currentPrice" placeholder="Current Price">
+                                    <el-input v-model="editForm.currentPrice" placeholder="Current Price">
                                         <template slot="prepend">Current Price</template>
                                     </el-input>
                                 </el-form-item>
 
-                                <el-form-item label="">
-                                    <el-input v-model="edit.contributor" placeholder="Contributor">
-                                        <template slot="prepend">Contributor</template>
-                                    </el-input>
+                                <el-form-item label="Contributor:">
+                                    <el-checkbox-group v-model="editForm.contributor">
+                                        <el-checkbox-button label="ZHAO" name="ZHAO"></el-checkbox-button>
+                                        <el-checkbox-button label="XU" name="XU"></el-checkbox-button>
+                                        <el-checkbox-button label="ZHU" name="ZHU"></el-checkbox-button>
+                                        <el-checkbox-button label="CHEN" name="CHEN"></el-checkbox-button>
+                                    </el-checkbox-group>
                                 </el-form-item>
 
-                                <el-form-item label="">
-                                    <el-input v-model="edit.tags" placeholder="Product Tags">
-                                        <template slot="prepend">Tags</template>
-                                    </el-input>
+                                <el-form-item label="Tags:">
+                                    <el-checkbox-group v-model="editForm.tags">
+                                        <el-checkbox-button label="Java" name="Java"></el-checkbox-button>
+                                        <el-checkbox-button label="Python" name="Python"></el-checkbox-button>
+                                        <el-checkbox-button label="AI" name="AI"></el-checkbox-button>
+                                        <el-checkbox-button label="Javascript" name="Javascript"></el-checkbox-button>
+                                    </el-checkbox-group>
                                 </el-form-item>
 
-                                <el-form-item label="">
-                                    <el-input v-model="edit.status" placeholder="Product Status">
-                                        <template slot="prepend">Status</template>
-                                    </el-input>
+                                <el-form-item label="status">
+                                    <el-select v-model="editForm.status" placeholder="Please choose status">
+                                        <el-option label="developing" value="developing"></el-option>
+                                        <el-option label="alpha" value="alpha"></el-option>
+                                        <el-option label="beta" value="beta"></el-option>
+                                        <el-option label="final Version" value="finalVersion"></el-option>
+                                        <el-option label="deprecated" value="deprecated"></el-option>
+                                    </el-select>
                                 </el-form-item>
 
+
                                 <el-form-item label="">
-                                    <el-input v-model="edit.description" placeholder="Description">
+                                    <el-input v-model="editForm.description" placeholder="Description">
                                         <template slot="prepend">Description</template>
                                     </el-input>
                                 </el-form-item>
@@ -367,11 +378,11 @@
                 },
 
                 //编辑信息
-                edit: {
+                editForm: {
                     name: 'ProductsName',
                     currentPrice: '3.2',
-                    contributor: 'CHEN XU ZHU ZHAO',
-                    tags: 'Python Java JavaScript',
+                    contributor: [],
+                    tags: [],
                     status: 'final version',
                     description: 'This is about AI',
                 },
@@ -402,13 +413,99 @@
                 //all file datas
                 dialogCodeVisible: false,
 
-                artifacts : [{name: 'artifact1.jar',url: '',},],
-                codes: [{name: 'code1.java',url: '',},],
-                tests: [{name: 'testcase1',url: '',},],
-                documents: [{name: 'doc1.txt',url: '',},],
-                others: [{name: 'product1.jar',url: '',},],
+                artifacts : [
+                    {
+                        name: 'artifact1.jar',
+                        url: '',
+                    },
+                    {
+                        name: 'artifact2.jar',
+                        url: '',
+                    },
+                    {
+                        name: 'artifact3.jar',
+                        url: '',
+                    },
+                    {
+                        name: 'artifact4.jar',
+                        url: '',
+                    },
+                ],
 
+                codes: [
+                    {
+                        name: 'code1.java',
+                        url: '',
+                    },
+                    {
+                        name: 'code2.java',
+                        url: '',
+                    },
+                    {
+                        name: 'code3.java',
+                        url: '',
+                    },
+                    {
+                        name: 'code4.java',
+                        url: '',
+                    },
+                ],
+                tests: [
+                    {
+                        name: 'testcase1',
+                        url: '',
+                    },
+                    {
+                        name: 'testcase2',
+                        url: '',
+                    },
+                    {
+                        name: 'testcase3',
+                        url: '',
+                    },
+                    {
+                        name: 'testcase4',
+                        url: '',
+                    },
+                ],
+                documents: [
+                    {
+                        name: 'doc1.txt',
+                        url: '',
+                    },
+                    {
+                        name: 'doc2.txt',
+                        url: '',
+                    },
+                    {
+                        name: 'doc3.txt',
+                        url: '',
+                    },
+                    {
+                        name: 'doc4.txt',
+                        url: '',
+                    },
+                ],
+                others: [
+                    {
+                        name: 'product1.jar',
+                        url: '',
+                    },
+                    {
+                        name: 'product2.jar',
+                        url: '',
+                    },
+                    {
+                        name: 'product3.jar',
+                        url: '',
+                    },
+                    {
+                        name: 'product4.jar',
+                        url: '',
+                    },
+                ],
                 activeName: 'first',
+
 
                 activeNames: ['1'],
 
@@ -503,24 +600,51 @@
                 this.profileVisible = false;
 
                 //将用户修改后的表单信息更新到个人信息
-                this.product.name = this.edit.name;
-                this.product.description = this.edit.description;
-                this.product.tags = this.edit.tags;
-                this.product.status = this.edit.status;
-                this.product.contributor = this.edit.contributor;
+                this.product.name = this.editForm.name;
+                this.product.description = this.editForm.description;
+
+                this.product.tags = "";
+                for (let i = 0; i < this.editForm.tags.length; i++){
+                    this.product.tags += this.editForm.tags[i] + " ";
+                };
+                this.product.status = this.editForm.status;
+                this.product.contributor = "";
+                for (let i = 0; i < this.editForm.contributor.length; i++){
+                    this.product.contributor += this.editForm.contributor[i] + " ";
+                }
 
                 //发送修改后的信息
                 let fd = new FormData();
-                fd.append("name", this.product.name);
-                fd.append("description", this.product.description);
-                fd.append("contributor", this.product.contributor);
-                fd.append("tags", this.product.tags);
-                fd.append("status", this.product.status);
+                fd.append("productName", this.editForm.name);
+                fd.append("outline", this.editForm.description);
+                fd.append("owners", this.editForm.contributor);
+                fd.append("tags", this.editForm.tags);
+                fd.append("status", this.editForm.status);
 
                 axios.post('/productDetail', fd).then(res => {
                     if (res.data.code === 200) {
                         //console.log(res);
-                        this.$message('上传成功')
+                        this.$message('上传成功');
+                        //重新获取信息
+                        axios({
+                            method: 'get',
+                            url: '/EditProduct/' + this.productId,
+                        }).then(res => {  //res是返回结果
+                            if (res.data['code'] == 10200) {
+                                var data = res.data['data'];
+                                this.product.name = data.productName;
+                                this.product.price = data.fixPrice;
+                                this.product.currentPrice = data.currentPrice;
+                                this.product.contributor = toString(data.owners);
+                                this.product.tags = toString(data.tags);
+                                this.product.status = data.status;
+                                this.product.saleVolume = data.salesVolume;
+                                this.product.releaseDate = data.create_time;
+                                this.product.recentUpdateDate = data.update_time;
+                                this.product.description = data.outline;
+                                this.product.rating = data.reviewStar;
+                            }
+                        });
                     } else {
                         this.$message('失败')
                     }
@@ -542,9 +666,10 @@
                 this.edit.contributor = this.product.contributor;
             },
         },
-        mounted: function () {
+        mounted() {
             this.img_src = window.localStorage.getItem('img_src');
             this.img_src = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+
             //获取productid
             var htmlHref = window.location.href;
             htmlHref = htmlHref.replace(/^http:\/\/[^/]+/, "");
