@@ -319,7 +319,6 @@
                             "authorization": 'Bearer ' + store.getters.getToken,
                         }
                     }).then(res => {  //res是返回结果
-                        console.log(res);
                         if (res.data['code'] == "200") {
                             let datalist = res.data['data'];
                             for (let i = 0, length = datalist.length; i < length; i++) {
@@ -421,7 +420,7 @@
                         this.$message('失败')
                     }
                 })
-            },
+            }
 
         },
         mounted() {
