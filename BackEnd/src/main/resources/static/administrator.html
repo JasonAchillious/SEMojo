@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/theme-chalk/index.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="userpage.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator</title>
+</head>
+
+<body>
+<div id="app" class="fullscreen">
+    <el-container>
+        <el-header>
+            <div align="left" style="width:100%;">
+                <div align="left" style="width:55%; display:inline-block;">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="homepage.html">
+                        <img border="0" src="./picture/logo.png" style="height:45px; width:75px"/>
+                        <p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
+                    </a>
+                    <el-link
+                            href="product.html"
+                            target="_blank"
+                            style="color:#FFFFFF; text-decoration:none; width:10%"
+                            class=navigation_fontsize
+                    >Products
+                    </el-link>
+                    <el-link
+                            href="support.html"
+                            target="_blank"
+                            style="color:#FFFFFF; text-decoration:none; width:10%"
+                            class=navigation_fontsize
+                    >Support
+                    </el-link>
+                    <el-link
+                            href="forum.html"
+                            target="_blank"
+                            style="color:#FFFFFF; text-decoration:none; width:10%"
+                            class=navigation_fontsize
+                    >Forum
+                    </el-link>
+                </div>
+
+                <div align="right" style="width:40%; display:inline-block">
+                    <el-input
+                            placeholder="Search SEMojo"
+                            v-model="search"
+                            class="input-with-select"
+                            style="width: 40%">
+                        <el-button slot="append" icon="el-icon-search"></el-button>
+                    </el-input>
+                    <el-link
+                            href="login.html"
+                            target="_blank"
+                            style="color:#FFFFFF; width:15%;text-decoration:none"
+                            class=navigation_fontsize
+                    >Sign in
+                    </el-link>
+                    <el-link
+                            href="signup.html"
+                            :underline="false">
+                        <el-button type="primary">Sign up</el-button>
+                    </el-link>
+                </div>
+            </div>
+
+        </el-header>
+
+        <el-container>
+            <el-aside width="40%">
+                <div class="avatar-image">
+                    <el-avatar :size="200" :src="circleUrl"></el-avatar>
+                </div>
+
+                <!-- 上传用户头像 -->
+                <!-- <div class="personal-info">
+                <el-upload
+                    class="avatar-uploader"
+                    action="https://jsonplaceholder.typicode.com/posts/"
+                    :show-file-list="false"
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload">
+                    <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                </el-upload>
+            </div> -->
+
+                <div class="personal-info">
+                    <h1 class="username">{{origin.name}}</h1>
+                    <el-button type="primary" style="width: 50%;height: 40px;margin-left: 40%;" v-on:click="edit">EDIT
+                        PROFILE
+                    </el-button>
+
+                    <el-dialog title="Profile" :visible.sync="profileVisible">
+                        <el-form class="profile" ref="form" :model="profile" size="mini">
+                            <el-form-item label="">
+                                <el-input v-model="profile.description" placeholder="Description">
+                                    <template slot="prepend">Description</template>
+                                </el-input>
+                            </el-form-item>
+
+                            <el-form-item label="">
+                                <el-input v-model="profile.name" placeholder="Username">
+                                    <template slot="prepend">Username</template>
+                                </el-input>
+                            </el-form-item>
+
+                            <el-form-item label="">
+                                <el-input v-model="profile.address" placeholder="Address">
+                                    <template slot="prepend">Address</template>
+                                </el-input>
+                            </el-form-item>
+
+                            <el-form-item label="">
+                                <el-input v-model="profile.email" placeholder="E-mail">
+                                    <template slot="prepend">Email</template>
+                                </el-input>
+                            </el-form-item>
+
+                            <el-form-item label="">
+                                <el-input v-model="profile.phoneNum" placeholder="Phone Number">
+                                    <template slot="prepend">Phone Num</template>
+                                </el-input>
+                            </el-form-item>
+
+                            <el-form-item label="">
+                                <el-input v-model="profile.qqNum" placeholder="QQ Number">
+                                    <template slot="prepend">QQ Num</template>
+                                </el-input>
+                            </el-form-item>
+
+                            <el-form-item label="">
+                                <el-input v-model="profile.weChatNum" placeholder="WeChat Number">
+                                    <template slot="prepend">WeChat Num</template>
+                                </el-input>
+                            </el-form-item>
+
+
+                            <el-form-item size="large">
+                                <el-button type="primary" @click="submit">Save</el-button>
+                                <el-button type="info" @click="cancel">Cancel</el-button>
+                            </el-form-item>
+                        </el-form>
+                    </el-dialog>
+                </div>
+            </el-aside>
+
+            <el-main>
+                <div class="products">
+                    <h1 class="products-purchased">Contributor Permission Application</h1>
+                    <div class="show-products" style="min-height:150px;overflow-y:auto;max-height:180px;">
+                        <ul class="list">
+                            <li class="list-item" v-for="(permission, index) in permissions">
+                                <div style="display: block;margin-left:5%;margin-top:2%;width: 60%" v-bind:class="permission.name">
+                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;">
+                                        <a v-bind:href="permission.url">{{permission.name}}</a></h1>
+                                </div>
+                                <div style="display: block;width:40%;margin-left:0%;margin-top: 6px;margin-bottom: 5px">
+                                    <el-button type="primary" size="mini" @click="clickDownload($event)">Approve
+                                    </el-button>
+                                    <el-button type="plain" size='mini' @click="clickReview($event)"
+                                    >Disapprove
+                                    </el-button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="products">
+                    <h1 class="products-purchased">Manage Products</h1>
+                    <div class="show-products" style="min-height:150px;overflow-y:auto;max-height:180px;">
+                        <ul class="list">
+                            <li class="list-item" v-for="product in shoppingCarts">
+                                <div style="display: block;margin-left:5%;margin-top:2%;width: 60%">
+                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;">
+                                        <a
+                                                v-bind:href="product.url">{{product.name}}</a></h1>
+                                </div>
+                                <div style="flex: right;display: block;width:40%;margin-left:0%;margin-top: 6px;margin-bottom: 5px">
+                                    <el-button type="primary" size="mini">Approve</el-button>
+                                    <el-button type="plain" size="mini">Disapprove</el-button>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </el-main>
+
+        </el-container>
+    </el-container>
+</div>
+
+<!-- import Vue before Element -->
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+<!-- import JavaScript -->
+<script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/index.js"></script>
+
+<script src="https://cdn.staticfile.org/axios/0.18.0/axios.min.js"></script>
+
+<script src="https://lib.baomitu.com/vuex/2.0.0/vuex.js"></script>
+
+
+<script>
+    const store = new Vuex.Store({
+        state: {
+            token:'',  //初始化token
+            username:''  //初始化username
+        },
+        mutations: {
+            //存储token方法
+            //设置token等于外部传递进来的值
+            setToken(state, token) {
+                state.token = token
+                localStorage.token = token //同步存储token至localStorage
+            },
+            setUsername(state, username) {
+                state.username = username
+                localStorage.username = username //同步存储username至localStorage
+            },
+        },
+        getters : {
+            //获取token方法
+            //判断是否有token,如果没有重新赋值，返回给state的token
+            getToken(state) {
+                if (!state.token) {
+                    state.token = localStorage.getItem('token')
+                }
+                return state.token
+            },
+            getUsername(state) {
+                if (!state.username) {
+                    state.username = localStorage.getItem('username')
+                }
+                return state.username
+            }
+        },
+        actions: {
+
+        }
+    });
+
+    var page = new Vue({
+        el: '#app',
+
+        data() {
+            return {
+                search: '',
+                circleUrl: "./picture/bg2.jpg",
+                squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+                sizeList: ["large", "medium", "small"],
+                imageUrl: '',
+
+                // 表单内容
+                profile: {
+                    name: '',
+                    description: '',
+                    email: '',
+                    gender: '',
+                    address: '',
+                    phoneNum: '',
+                    qqNum: '',
+                    weChatNum: ''
+                },
+
+                // 原始个人信息
+                origin: {
+                    name: '赵志翔',
+                    description: 'He is a boy',
+                    email: '2222123@qq.com',
+                    gender: '',
+                    address: 'SUSTECH',
+                    phoneNum: '213123',
+                    qqNum: '23123',
+                    weChatNum: '213124'
+                },
+
+                // products purchased
+                permissions: [
+                    {
+                        name: 'Paul',
+                        url: '',
+                    },
+                    {
+                        name: 'Zhao',
+                        url: '',
+                    },
+                    {
+                        name: 'CQF',
+                        url: '',
+                    },
+                    {
+                        name: 'Pin Shen',
+                        url: '',
+                    },
+                    {
+                        name: 'Zhu',
+                        url: '',
+                    },
+                ],
+
+                shoppingCarts: [
+                    {
+                        name: 'product1',
+                        url: 'https://www.baidu.com',
+                    },
+                    {
+                        name: 'product2',
+                        url: 'https://www.baidu.com',
+                    },
+                    {
+                        name: 'product3',
+                        url: 'https://www.baidu.com',
+                    },
+                    {
+                        name: 'product4',
+                        url: 'https://www.baidu.com',
+                    },
+                ],
+                count: 0,
+                profileVisible: false,
+
+                // review dialog
+                productname: '',
+                review: '',
+                dialogTableVisible: false,
+                dialogFormVisible: false,
+                formLabelWidth: '120px',
+            }
+        },
+        methods: {
+            submit: function () {
+                this.profileVisible = false;
+
+                //将用户修改后的表单信息更新到个人信息
+                this.origin.name = this.profile.name;
+                this.origin.description = this.profile.description;
+                this.origin.email = this.profile.email;
+                this.origin.gender = this.profile.gender;
+                this.origin.address = this.profile.address;
+                this.origin.phoneNum = this.profile.phoneNum;
+                this.origin.qqNum = this.profile.qqNum;
+                this.origin.weChatNum = this.profile.weChatNum;
+                //发送修改后的信息
+                let fd = new FormData();
+                fd.append("name", this.profile.name);
+                fd.append("description", this.profile.description);
+                fd.append("email", this.profile.email);
+                fd.append("gender", this.profile.gender);
+                fd.append("address", this.profile.address);
+                fd.append("phoneNum", this.profile.phoneNum);
+                fd.append("qqNum", this.profile.qqNum);
+                fd.append("weChatNum", this.profile.weChatNum);
+                axios.post('/userpage', fd).then(res => {
+                    if (res.data.code === 200) {
+                        //console.log(res);
+                        this.$message('上传成功')
+                    } else {
+                        this.$message('失败')
+                    }
+                })
+
+            },
+
+            cancel: function () {
+                this.profileVisible = false;
+            },
+
+            edit: function () {
+                this.profileVisible = true;
+                // 将原始个人信息显示在表单上
+                this.profile.name = this.origin.name;
+                this.profile.description = this.origin.description;
+                this.profile.email = this.origin.email;
+                this.profile.gender = this.origin.gender;
+                this.profile.address = this.origin.address;
+                this.profile.phoneNum = this.origin.phoneNum;
+                this.profile.qqNum = this.origin.qqNum;
+                this.profile.weChatNum = this.origin.weChatNum;
+            },
+
+            //download
+            clickDownload: function (event) {
+                var ele = event.currentTarget.parentElement.parentElement.firstElementChild.getAttribute("class");
+                this.productname = ele;
+            },
+
+        }
+
+    })
+</script>
+</body>
+
+</html>
