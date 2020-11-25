@@ -76,8 +76,8 @@ public class ProductController {
                                            @RequestParam String outline,
                                            @RequestParam double currentPrice,
                                            @RequestParam String status,
-                                           @RequestParam("contributors[]") List<String> contributors,
-                                           @RequestParam("tags[]") List<String> tags){
+                                           @RequestParam List<String> contributors,
+                                           @RequestParam List<String> tags){
         if (productService.findProductByProductId(productId) == null){
             return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_NOT_EXIST.getCode(), ProductResultEnum.PRODUCT_NOT_EXIST.getMsg());
         }else{

@@ -3,6 +3,7 @@ package com.example.v1.semojo.api.model;
 import com.example.v1.semojo.entities.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProductDetailModel {
@@ -17,10 +18,11 @@ public class ProductDetailModel {
     private double currentPrice;
     private Product.ProductStatus status;
 
-    private List<User> owners;
-    private List<Artifact> artifacts;
-    private List<Document> docs;
-    private List<TestCase> testCases;
+    private List<String> tags;
+    private List<String> owners;
+    private List<String> artifacts;
+    private List<String> docs;
+    private List<String> testCases;
 
     public String getProductName() {
         return productName;
@@ -102,36 +104,86 @@ public class ProductDetailModel {
         this.status = status;
     }
 
-    public List<User> getOwners() {
+    public List<String> getOwners() {
         return owners;
     }
 
-    public void setOwners(List<User> owners) {
+    public void setOwners(List<String> owners) {
         this.owners = owners;
     }
 
-    public List<Artifact> getArtifacts() {
+    public List<String> getArtifacts() {
         return artifacts;
     }
 
-    public void setArtifacts(List<Artifact> artifacts) {
+    public void setArtifacts(List<String> artifacts) {
         this.artifacts = artifacts;
     }
 
-    public List<Document> getDocs() {
+    public List<String> getDocs() {
         return docs;
     }
 
-    public void setDocs(List<Document> docs) {
+    public void setDocs(List<String> docs) {
         this.docs = docs;
     }
 
-    public List<TestCase> getTestCases() {
+    public List<String> getTestCases() {
         return testCases;
     }
 
-    public void setTestCases(List<TestCase> testCases) {
+    public void setTestCases(List<String> testCases) {
         this.testCases = testCases;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
+
+    public ProductDetailModel() {
+
+    }
+
+    public ProductDetailModel(Product product) {
+        this.productName = product.getProductName();
+        this.outline = product.getOutline();
+        this.reviewStar = product.getReviewStar();
+        this.salesVolume = product.getSalesVolume();
+        this.create_time = product.getCreate_time();
+        this.update_time = product.getUpdate_time();
+        this.creator = product.getCreator();
+        this.fixPrice = product.getFixPrice();
+        this.currentPrice = product.getCurrentPrice();
+        this.status = product.getStatus();
+        List<String> owners = new ArrayList<>();
+        List<String> artifacts = new ArrayList<>();
+        List<String> docs = new ArrayList<>();
+        List<String> testCases = new ArrayList<>();
+        List<String> tags = new ArrayList<>();
+        for (User user:product.getOwners()){
+            owners.add(user.getAuth().getUsername());
+        }
+        for (Artifact artifact: product.getArtifacts()){
+            artifacts.add(artifact.getFileName());
+        }
+        for (Document document: product.getDocs()){
+            docs.add(document.getFileName());
+        }
+        for (TestCase testCase: product.getTestCases()){
+            testCases.add(testCase.getFileName());
+        }
+        for (ProductTag tag: product.getTags()){
+            tags.add(tag.getTag());
+        }
+        this.owners = owners;
+        this.artifacts = artifacts;
+        this.docs = docs;
+        this.testCases = testCases;
+        this.tags = tags;
     }
 
     @Override
