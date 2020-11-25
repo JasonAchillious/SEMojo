@@ -82,8 +82,9 @@ public class ProductController {
             return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_NOT_EXIST.getCode(), ProductResultEnum.PRODUCT_NOT_EXIST.getMsg());
         }else{
             productService.updateProduct(productId, productName, outline, currentPrice, status, contributors, tags);
+            return new WebRespResult<>(200, "success");
         }
-        return null;
+
     }
 
     @DeleteMapping("/contributor/product/{productId}")
