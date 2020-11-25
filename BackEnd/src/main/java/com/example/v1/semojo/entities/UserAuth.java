@@ -32,7 +32,7 @@ public class UserAuth implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        if (role == 1){
+        if (role == 1 || role == 1000){
            authorities.add(new SimpleGrantedAuthority("ROLE_CUSTOMER"));
         }else if (role == 2){
             authorities.add(new SimpleGrantedAuthority("ROLE_CONTRIBUTOR"));

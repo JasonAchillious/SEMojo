@@ -175,9 +175,48 @@ public class UserController {
     }
 
     @GetMapping("/admin/{username}/userpage/authlist")
-    public WebRespResult updateAuthority(
-            @PathVariable String username,
-            @RequestParam String userId){
-        return null;
+    public WebRespResult getNeededAuthUserList(
+            @PathVariable String username){
+        try{
+            List<User> neededAuthUsers = userService.getNeededAuthUsers();
+            return new WebRespResult<>(200, "success", neededAuthUsers);
+        }catch (NullPointerException e){
+            return new WebRespResult<>(400, "not such user");
+        }catch (Exception e){
+            return new WebRespResult<>(500, "unknown error");
+        }
     }
+
+    @PutMapping("/customer/{username}/userpage/auth")
+    public WebRespResult askAuthAsContributor(@PathVariable String username){
+        try{
+            userService.updateUserRole(username, 1000);
+            return new WebRespResult(200, "success");
+        }catch (NullPointerException e){
+            return new WebRespResult<>(400, "not such user");
+        }catch (Exception e){
+            return new WebRespResult<>(500, "unknown error");
+        }
+    }
+
+    @PutMapping("/admin/{username}/userpage/auth")
+    public WebRespResult improveAuth(@PathVariable String username,
+                                     @RequestParam String requiredUser,
+                                     @RequestParam String updateType){
+        try{
+            switch (updateType) {
+                case "contributor": userService.updateUserRole(requiredUser, 2);
+                    return new WebRespResult(200, "success");
+                case "admin": userService.updateUserRole(requiredUser, 3);
+                    return new WebRespResult(200, "success");
+                default: return new WebRespResult(400, "Wrong Role Type");
+            }
+        }catch (NullPointerException e){
+            return new WebRespResult<>(400, "not such user");
+        }catch (Exception e){
+            return new WebRespResult<>(500, "unknown error");
+        }
+    }
+
+
 }

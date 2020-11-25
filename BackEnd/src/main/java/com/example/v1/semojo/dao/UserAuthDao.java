@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface UserAuthDao extends JpaRepository<UserAuth, Long> {
     UserAuth findUserAuthByUsername(String username);
-    List<UserAuth> findUserAuthByRoleBetween(Long start, Long end);
+    List<UserAuth> findUserAuthByRoleBetween(int start, int end);
+    List<UserAuth> findUserAuthByRoleEquals(int role);
 }
