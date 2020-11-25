@@ -147,4 +147,16 @@ public class UserController {
             return new WebRespResult(400, e.getMessage());
         }
     }
+
+    @GetMapping("customer/{username}/info")
+    public WebRespResult getUserInfo(@PathVariable String username){
+        try{
+            UserInfoModel info = userService.getUserInfo(username);
+            return new WebRespResult<>(200, "success", info);
+        }catch (NullPointerException e){
+            return new WebRespResult<>(400, "not such user");
+        }catch (Exception e){
+            return new WebRespResult<>(500, "unknown error");
+        }
+    }
 }

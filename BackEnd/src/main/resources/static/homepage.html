@@ -55,12 +55,12 @@
             <div align="left" style="width:100%;">
                 <div align="left" style="width:55%; display:inline-block;">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="homepage.html">
+                    <a href="/">
                         <img border="0" src="./images/logo.png" style="height:45px; width:75px"/>
                         <p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
                     </a>
                     <el-link
-                            href="product.html"
+                            href="/product"
                             target="_blank"
                             style="color:#FFFFFF; text-decoration:none; width:10%"
                             class=navigation_fontsize
@@ -97,14 +97,14 @@
                         <el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
                     </el-input>
                     <el-link
-                            href="login.html"
+                            href="/login"
                             target="_blank"
                             style="color:#FFFFFF; width:15%;text-decoration:none"
                             class=navigation_fontsize
                     >Sign in
                     </el-link>
                     <el-link
-                            href="signup.html"
+                            href="/register"
                             :underline="false">
                         <el-button type="primary">Sign up</el-button>
                     </el-link>
@@ -233,12 +233,12 @@
                         message:'Please login first',
                         type:'warning'
                     });
-                    window.location.href="./login.html";
+                    window.location.href="./login";
                 }
             },
             handleCommand(command) {
                 if (command=="userpage"){
-                    window.location.href="./userpage.html";
+                    window.location.href="./"+ store.getters.getUsername + "/userpage";
                 }else if (command=="contributor"){
                     window.location.href="./contributor.html";
                 }else {
@@ -249,24 +249,26 @@
             }
         },
         mounted() {
-            axios({
-                method: 'get',
-                url: '/customer/' + store.getters.getUsername +'/portrait',
-                headers: {
-                    "authorization": 'Bearer ' + store.getters.getToken,
-                }
-            }).then(res => {  //res是返回结果
-                console.log(res);
-                if (res.data['code'] == "200") {
-                    this.is_login = true;
-                    this.img_src = res.data['data'];
-                } else {
-                    this.$message({
-                        message: 'connect wrong',
-                        type: 'warning'
-                    })
-                }
-            });
+            if (store.getters.getUsername != null) {
+                axios({
+                    method: 'get',
+                    url: '/customer/' + store.getters.getUsername + '/portrait',
+                    headers: {
+                        "authorization": 'Bearer ' + store.getters.getToken,
+                    }
+                }).then(res => {  //res是返回结果
+                    console.log(res);
+                    if (res.data['code'] == "200") {
+                        this.is_login = true;
+                        this.img_src = res.data['data'];
+                    } else {
+                        this.$message({
+                            message: 'connect wrong',
+                            type: 'warning'
+                        })
+                    }
+                });
+            }
         }
     })
 </script>

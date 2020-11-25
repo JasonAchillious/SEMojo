@@ -7,7 +7,7 @@ public class UserInfoModel {
     private String phoneNum;
     private String qqNum;
     private String weChatNum;
-//    private String portrait;
+    private String portrait;
 
     public String getEmail() {
         return email;
@@ -57,11 +57,11 @@ public class UserInfoModel {
         this.weChatNum = weChatNum;
     }
 
-//    public String getPortrait() {
-//        return portrait;
-//    }
-//
-//    public void setPortrait(String portrait) {
-//        this.portrait = portrait;
-//    }
+    public String getPortrait() {
+        return portrait;
+    }
+
+    public void setPortrait(String portrait) {
+        this.portrait = portrait;
+    }
 }

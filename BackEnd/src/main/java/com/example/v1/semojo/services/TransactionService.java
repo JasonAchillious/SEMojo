@@ -63,4 +63,9 @@ public class TransactionService {
         transac.setProducts(perchasedProducts);
         return transacDao.save(transac);
     }
+
+    public Transaction changeStatus(Long transactionId, String status){
+        Transaction transac;
+        return null;
+    }
 }
