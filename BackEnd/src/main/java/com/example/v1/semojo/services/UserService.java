@@ -2,8 +2,10 @@ package com.example.v1.semojo.services;
 
 import com.example.v1.semojo.api.model.UserAllInfoModel;
 import com.example.v1.semojo.api.model.UserInfoModel;
+import com.example.v1.semojo.dao.ProductDao;
 import com.example.v1.semojo.dao.UserAuthDao;
 import com.example.v1.semojo.dao.UserDao;
+import com.example.v1.semojo.entities.Authority;
 import com.example.v1.semojo.entities.Product;
 import com.example.v1.semojo.entities.User;
 import com.example.v1.semojo.entities.UserAuth;
@@ -26,6 +28,8 @@ public class UserService implements UserDetailsService {
     UserDao userDao;
     @Autowired
     EntityManager entityManager;
+    @Autowired
+    ProductDao productDao;
 
     String defaultPortait = "/images/touxiang.png";
 
@@ -166,5 +170,21 @@ public class UserService implements UserDetailsService {
         User user = findUserByUsername(username);
         user.getAuth().setRole(role);
         userDao.save(user);
+    }
+
+    public List<Product> getContributedProducts(String username) throws Exception{
+        User user = findUserByUsername(username);
+        ArrayList<Product> contributedProducts = new ArrayList<>();
+        List<Authority> auths = user.getAuth().getAuthority();
+        if (auths != null) {
+            ArrayList<Long> productIds = new ArrayList<>();
+            for (Authority au : auths) {
+                productIds.add(au.getId());
+            }
+            for (Long id: productIds){
+                contributedProducts.add(productDao.findProductByProductId(id));
+            }
+        }
+        return contributedProducts;
     }
 }

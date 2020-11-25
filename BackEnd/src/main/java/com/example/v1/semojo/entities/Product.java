@@ -62,6 +62,8 @@ public class Product {
     @OneToMany(mappedBy = "issueProduct")
     private List<Issue> issueList;
 
+
+
     public List<Review> getReviewList() {
         return reviewList;
     }

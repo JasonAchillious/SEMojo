@@ -209,6 +209,7 @@ public class UserController {
                     return new WebRespResult(200, "success");
                 case "admin": userService.updateUserRole(requiredUser, 3);
                     return new WebRespResult(200, "success");
+                case "customer": userService.updateUserRole(requiredUser, 1);
                 default: return new WebRespResult(400, "Wrong Role Type");
             }
         }catch (NullPointerException e){
@@ -218,5 +219,15 @@ public class UserController {
         }
     }
 
-
+    @GetMapping("/contributor/{username}/userpage/contributed_products")
+    public WebRespResult getContributedProduct(@PathVariable String username){
+        try{
+            List<Product> contributedProducts = userService.getContributedProducts(username);
+            return new WebRespResult<>(200, "success",contributedProducts);
+        }catch (NullPointerException e){
+            return new WebRespResult<>(400, "not such user");
+        }catch (Exception e){
+            return new WebRespResult<>(500, "unknown error");
+        }
+    }
 }
