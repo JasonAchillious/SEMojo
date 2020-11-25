@@ -44,7 +44,7 @@
                     </el-link>
                 </div>
 
-                <div align="right" style="width:40%; display:inline-block" >
+                <div align="right" style="width:40%; display:inline-block">
                     <el-input
                             placeholder="Search SEMojo"
                             v-model="search"
@@ -95,45 +95,45 @@
                     </el-button>
 
                     <el-dialog title="Profile" :visible.sync="profileVisible">
-                        <el-form class="profile" ref="form" :model="profile" size="mini">
+                        <el-form class="profile" ref="form" :model="origin" size="mini">
                             <el-form-item label="">
-                                <el-input v-model="profile.description" placeholder="Description">
+                                <el-input v-model="origin.description" placeholder="Description">
                                     <template slot="prepend">Description</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="profile.name" placeholder="Username">
+                                <el-input v-model="origin.name" placeholder="Username">
                                     <template slot="prepend">Username</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="profile.address" placeholder="Address">
+                                <el-input v-model="origin.address" placeholder="Address">
                                     <template slot="prepend">Address</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="profile.email" placeholder="E-mail">
+                                <el-input v-model="origin.email" placeholder="E-mail">
                                     <template slot="prepend">Email</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="profile.phoneNum" placeholder="Phone Number">
+                                <el-input v-model="origin.phoneNum" placeholder="Phone Number">
                                     <template slot="prepend">Phone Num</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="profile.qqNum" placeholder="QQ Number">
+                                <el-input v-model="origin.qqNum" placeholder="QQ Number">
                                     <template slot="prepend">QQ Num</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="profile.weChatNum" placeholder="WeChat Number">
+                                <el-input v-model="origin.weChatNum" placeholder="WeChat Number">
                                     <template slot="prepend">WeChat Num</template>
                                 </el-input>
                             </el-form-item>
@@ -220,8 +220,8 @@
 <script>
     const store = new Vuex.Store({
         state: {
-            token:'',  //初始化token
-            username:''  //初始化username
+            token: '',  //初始化token
+            username: ''  //初始化username
         },
         mutations: {
             //存储token方法
@@ -235,7 +235,7 @@
                 localStorage.username = username //同步存储username至localStorage
             },
         },
-        getters : {
+        getters: {
             //获取token方法
             //判断是否有token,如果没有重新赋值，返回给state的token
             getToken(state) {
@@ -251,132 +251,137 @@
                 return state.username
             }
         },
-        actions: {
-
-        }
+        actions: {}
     });
 
     var page = new Vue({
-        el: '#app',
+            el: '#app',
 
-        data() {
-            return {
-                search: '',
-                circleUrl: "/images/bg2.jpg",
-                squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
-                sizeList: ["large", "medium", "small"],
-                imageUrl: '',
+            data() {
+                return {
+                    search: '',
+                    circleUrl: "/images/bg2.jpg",
+                    squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
+                    sizeList: ["large", "medium", "small"],
+                    imageUrl: '',
 
-                // 表单内容
-                profile: {
-                    name: '',
-                    description: '',
-                    email: '',
-                    gender: '',
-                    address: '',
-                    phoneNum: '',
-                    qqNum: '',
-                    weChatNum: ''
+
+                    // 原始个人信息
+                    origin: {},
+
+                    // products purchased
+                    products: [],
+
+                    shoppingCarts: [],
+                    count: 0,
+                    profileVisible: false,
+
+                    // review dialog
+                    productname: '',
+                    review: '',
+                    dialogTableVisible: false,
+                    dialogFormVisible: false,
+                    formLabelWidth: '120px',
+                }
+            },
+            methods: {
+                getProfile: function () {
+                    axios({
+                        method: 'get',
+                        url: '/customer/' + store.getters.getUsername + '/info',
+                        headers: {
+                            "authorization": 'Bearer ' + store.getters.getToken,
+                        }
+                    }).then(res => {  //res是返回结果
+                        console.log(res);
+                        if (res.data['code'] == "200") {
+                            let temp = res.data['data'];
+                            this.origin.email = temp.email;
+                            this.origin.gender = temp.gender;
+                            this.origin.phoneNum = temp.phoneNum;
+                            this.origin.qqNum = temp.qqNum;
+                            this.origin.weChatNum = temp.weChatNum;
+                            this.origin.portrait = temp.portrait;
+                        } else {
+                            this.$message({
+                                message: 'connect wrong',
+                                type: 'warning'
+                            })
+                        }
+                    });
                 },
 
-                // 原始个人信息
-                origin: {
-                    name: '赵志翔',
-                    description: 'He is a boy',
-                    email: '2222123@qq.com',
-                    gender: '',
-                    address: 'SUSTECH',
-                    phoneNum: '213123',
-                    qqNum: '23123',
-                    weChatNum: '213124'
+                getPurchased: function () {
+                    axios({
+                        method: 'get',
+                        url: '/customer/' + store.getters.getUsername + '/info',
+                        headers: {
+                            "authorization": 'Bearer ' + store.getters.getToken,
+                        }
+                    }).then(res => {  //res是返回结果
+                        console.log(res);
+                        if (res.data['code'] == "200") {
+                            let datalist = res.data['data'];
+                            for (let i = 0, length = datalist.length; i < length; i++) {
+                                let product = {
+                                    productId: datalist[i].productId,
+                                    productName: datalist[i].productName,
+                                    url: 'www.baidu.com',
+                                }
+                                this.products.push(product);
+                            }
+                        } else {
+                            this.$message({
+                                message: 'connect wrong',
+                                type: 'warning'
+                            })
+                        }
+                    });
                 },
 
-                // products purchased
-                products: [
-                    {
-                        name: 'product1',
-                        url: 'https://www.baidu.com',
-                        src: '',
-                        review: ''
-                    },
-                    {
-                        name: 'product2',
-                        url: 'https://www.baidu.com',
-                        src: '',
-                        review: ''
-                    },
-                    {
-                        name: 'product3',
-                        url: 'https://www.baidu.com',
-                        src: '',
-                        review: ''
-                    },
-                    {
-                        name: 'product4',
-                        url: 'https://www.baidu.com',
-                        src: '',
-                        review: ''
-                    },
-                    {
-                        name: 'product5',
-                        url: 'https://www.baidu.com',
-                        src: '',
-                        review: ''
-                    },
-                ],
+                getShoppingCart: function () {
+                    axios({
+                        method: 'get',
+                        url: '/customer/' + store.getters.getUsername + '/info',
+                        headers: {
+                            "authorization": 'Bearer ' + store.getters.getToken,
+                        }
+                    }).then(res => {  //res是返回结果
+                        console.log(res);
+                        if (res.data['code'] == "200") {
+                            let datalist = res.data['data'];
+                            for (let i = 0, length = datalist.length; i < length; i++) {
+                                let product = {
+                                    productId: datalist[i].productId,
+                                    productName: datalist[i].productName,
+                                    url: 'www.baidu.com'
+                                }
+                                this.shoppingCarts.push(product);
+                            }
+                        } else {
+                            this.$message({
+                                message: 'connect wrong',
+                                type: 'warning'
+                            })
+                        }
+                    });
+                },
 
-                shoppingCarts: [
-                    {
-                        name: 'product1',
-                        url: 'https://www.baidu.com',
-                    },
-                    {
-                        name: 'product2',
-                        url: 'https://www.baidu.com',
-                    },
-                    {
-                        name: 'product3',
-                        url: 'https://www.baidu.com',
-                    },
-                    {
-                        name: 'product4',
-                        url: 'https://www.baidu.com',
-                    },
-                ],
-                count: 0,
-                profileVisible: false,
 
-                // review dialog
-                productname: '',
-                review: '',
-                dialogTableVisible: false,
-                dialogFormVisible: false,
-                formLabelWidth: '120px',
-            }
-        },
-        methods: {
+
             submit: function () {
                 this.profileVisible = false;
 
-                //将用户修改后的表单信息更新到个人信息
-                this.origin.name = this.profile.name;
-                this.origin.description = this.profile.description;
-                this.origin.email = this.profile.email;
-                this.origin.gender = this.profile.gender;
-                this.origin.address = this.profile.address;
-                this.origin.phoneNum = this.profile.phoneNum;
-                this.origin.qqNum = this.profile.qqNum;
-                this.origin.weChatNum = this.profile.weChatNum;
                 //发送修改后的信息
                 let fd = new FormData();
-                fd.append("name", this.profile.name);
-                fd.append("description", this.profile.description);
-                fd.append("email", this.profile.email);
-                fd.append("gender", this.profile.gender);
-                fd.append("address", this.profile.address);
-                fd.append("phoneNum", this.profile.phoneNum);
-                fd.append("qqNum", this.profile.qqNum);
-                fd.append("weChatNum", this.profile.weChatNum);
+                fd.append("name", this.origin.name);
+                fd.append("description", this.origin.description);
+                fd.append("email", this.origin.email);
+                fd.append("gender", this.origin.gender);
+                fd.append("address", this.origin.address);
+                fd.append("phoneNum", this.origin.phoneNum);
+                fd.append("qqNum", this.origin.qqNum);
+                fd.append("weChatNum", this.origin.weChatNum);
                 axios.post('/userpage', fd).then(res => {
                     if (res.data.code === 200) {
                         //console.log(res);
@@ -394,15 +399,6 @@
 
             edit: function () {
                 this.profileVisible = true;
-                // 将原始个人信息显示在表单上
-                this.profile.name = this.origin.name;
-                this.profile.description = this.origin.description;
-                this.profile.email = this.origin.email;
-                this.profile.gender = this.origin.gender;
-                this.profile.address = this.origin.address;
-                this.profile.phoneNum = this.origin.phoneNum;
-                this.profile.qqNum = this.origin.qqNum;
-                this.profile.weChatNum = this.origin.weChatNum;
             },
 
             //download
@@ -412,13 +408,13 @@
             },
 
             //review
-            clickReview: function(event){
+            clickReview: function (event) {
                 this.dialogFormVisible = true;
                 var ele = event.currentTarget.parentElement.parentElement.firstElementChild.getAttribute("class");
                 this.productname = ele;
             },
 
-            reviewConfirm: function() {
+            reviewConfirm: function () {
                 this.dialogFormVisible = false;
 
                 let fd = new FormData();
@@ -436,32 +432,33 @@
             },
 
         },
-        mounted() {
-            axios({
-                method: 'get',
-                url: '/customer/' + store.getters.getUsername +'/info',
-                headers: {
-                    "authorization": 'Bearer ' + store.getters.getToken,
-                }
-            }).then(res => {  //res是返回结果
-                console.log(res);
-                if (res.data['code'] == "200") {
-                    let temp = res.data['data'];
-                    this.origin.email = temp.email;
-                    this.origin.gender = temp.gender;
-                    this.origin.phoneNum = temp.phoneNum;
-                    this.origin.qqNum = temp.qqNum;
-                    this.origin.weChatNum = temp.weChatNum;
-                    this.origin.portrait = temp.portrait;
-                } else {
-                    this.$message({
-                        message: 'connect wrong',
-                        type: 'warning'
-                    })
-                }
-            });
+        mounted()
+    {
+        axios({
+            method: 'get',
+            url: '/customer/' + store.getters.getUsername + '/info',
+            headers: {
+                "authorization": 'Bearer ' + store.getters.getToken,
+            }
+        }).then(res => {  //res是返回结果
+            console.log(res);
+            if (res.data['code'] == "200") {
+                let temp = res.data['data'];
+                this.origin.email = temp.email;
+                this.origin.gender = temp.gender;
+                this.origin.phoneNum = temp.phoneNum;
+                this.origin.qqNum = temp.qqNum;
+                this.origin.weChatNum = temp.weChatNum;
+                this.origin.portrait = temp.portrait;
+            } else {
+                this.$message({
+                    message: 'connect wrong',
+                    type: 'warning'
+                })
+            }
+        });
 
-        }
+    }
 
     })
 </script>
