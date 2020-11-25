@@ -159,9 +159,9 @@
                                         <a v-bind:href="permission.url">{{permission.name}}</a></h1>
                                 </div>
                                 <div style="display: block;width:40%;margin-left:0%;margin-top: 6px;margin-bottom: 5px">
-                                    <el-button type="primary" size="mini" @click="clickDownload($event)">Approve
+                                    <el-button type="primary" size="mini" @click="clickApprove($event)">Approve
                                     </el-button>
-                                    <el-button type="plain" size='mini' @click="clickReview($event)"
+                                    <el-button type="plain" size='mini' @click="clickDisapprove($event)"
                                     >Disapprove
                                     </el-button>
                                 </div>
@@ -367,6 +367,82 @@
                 var ele = event.currentTarget.parentElement.parentElement.firstElementChild.getAttribute("class");
                 this.productname = ele;
             },
+
+
+            //approve and disapprove
+
+            clickApprove: function(event){
+                let temp = event.currentTarget.parentElement.parentElement.firstElementChild.getAttribute("class");
+                this.permissionUser = temp;
+                axios({
+                    method: 'put',
+                    url: '/admin/' + store.getters.getUsername + '/userpage/auth',
+                    params: {
+                        updateType: 'contributor',
+                        requiredUser: this.permissionUser
+                    },
+                    headers: {
+                        "authorization": 'Bearer ' + store.getters.getToken,
+                    }
+                }).then(res => {
+                    if (res.data['code'] == 200) {
+                        this.$message('更新成功')
+                    } else {
+                        this.$message('更新失败')
+                    }
+
+                })
+            },
+
+            clickDisapprove: function(event){
+                let temp = event.currentTarget.parentElement.parentElement.firstElementChild.getAttribute("class");
+                this.permissionUser = temp;
+                axios({
+                    method: 'put',
+                    url: '/admin/' + store.getters.getUsername + '/userpage/auth',
+                    params: {
+                        updateType: 'customer',
+                        requiredUser: this.permissionUser
+                    },
+                    headers: {
+                        "authorization": 'Bearer ' + store.getters.getToken,
+                    }
+                }).then(res => {
+                    if (res.data['code'] == 200) {
+                        this.$message('更新成功');
+                        // 刷新页面
+                        axios({
+                            method: 'get',
+                            url: '/admin/' + store.getters.getUsername + '/userpage/authlist',
+                            headers: {
+                                "Authorization": 'Bearer ' + store.getters.getToken,
+                            }
+                        }).then(res => {  //res是返回结果
+                            console.log(res);
+                            if (res.data['code'] == 200) {
+                                let datalist = res.data['data'];
+                                for (let i = 0, length = datalist.length; i < length; i++) {
+                                    console.log(datalist[i]);
+                                    let user = {
+                                        name: datalist[i].username,
+                                        url: "www.baidu.com"
+                                    }
+                                    this.permissions.push(user);
+                                }
+                            } else {
+                                this.$message({
+                                    message: 'connect wrong',
+                                    type: 'warning'
+                                })
+                            }
+                        });
+                    } else {
+                        this.$message('更新失败')
+                    }
+
+                })
+            },
+
             handleCommand(command) {
                 if (command == "userpage") {
                     window.location.href = "./" + store.getters.getUsername + "/userpage";
@@ -380,7 +456,7 @@
             }
         },
         mounted() {
-            //获取auth users信息
+            //获取 贡献的 product 信息
             axios({
                 method: 'get',
                 url: '/admin/' + store.getters.getUsername + '/userpage/authlist',
@@ -393,11 +469,11 @@
                     let datalist = res.data['data'];
                     for (let i = 0, length = datalist.length; i < length; i++) {
                         console.log(datalist[i]);
-                        let user = {
+                        let product = {
                             name: datalist[i].username,
                             url: "www.baidu.com"
                         }
-                        this.permissions.push(user);
+                        this.product.push(product);
                     }
                 } else {
                     this.$message({

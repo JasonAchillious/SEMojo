@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/theme-chalk/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="./css/userpage.css">
+    <link rel="stylesheet" type="text/css" href="/css/userpage.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contributor</title>
 </head>
@@ -150,7 +150,7 @@
 
             <el-main>
                 <div class="products">
-                    <h1 class="products-purchased">Products Updated</h1>
+                    <h1 class="products-purchased">Products Contributed</h1>
                     <div class="show-products" style="min-height:150px;overflow-y:auto;max-height:180px;">
                         <ul class="list">
                             <li class="list-item" v-for="(product, index) in products">
@@ -310,38 +310,9 @@
                     portrait: '',
                 },
 
-                // products purchased
+                // products contributed
                 products: [
-                    {
-                        name: 'product1',
-                        url: 'https://www.baidu.com',
-                        src: '',
-                        review: ''
-                    },
-                    {
-                        name: 'product2',
-                        url: 'https://www.baidu.com',
-                        src: '',
-                        review: ''
-                    },
-                    {
-                        name: 'product3',
-                        url: 'https://www.baidu.com',
-                        src: '',
-                        review: ''
-                    },
-                    {
-                        name: 'product4',
-                        url: 'https://www.baidu.com',
-                        src: '',
-                        review: ''
-                    },
-                    {
-                        name: 'product5',
-                        url: 'https://www.baidu.com',
-                        src: '',
-                        review: ''
-                    },
+
                 ],
 
                 // to uploads
@@ -396,6 +367,16 @@
             }
         },
         methods: {
+            handleCommand(command) {
+                if (command == "userpage") {
+                    window.location.href = "./" + store.getters.getUsername + "/userpage";
+                } else if (command == "contributor") {
+                    window.location.href = "./contributor.html";
+                } else {
+                    localStorage.clear();
+                    window.location.href = "./homepage.html";
+                }
+            },
 
             //需要修改参数
             getProfile: function () {
@@ -454,6 +435,7 @@
                 //axios传送数据
             },
 
+
             submit: function () {
                 this.profileVisible = false;
 
@@ -492,62 +474,41 @@
                 this.dialogFormVisible = true;
                 var ele = event.currentTarget.parentElement.parentElement.firstElementChild.getAttribute("class");
                 this.productname = ele;
-            },
+            }
+        },
 
-            mounted() {
+        mounted() {
                 this.img_src = window.localStorage.getItem('img_src');
                 axios({
                     method: 'get',
-                    url: '/customer/' + store.getters.getUsername + '/userpage/info',
+                    url: './userpage/contributed_products',
                     headers: {
                         "authorization": 'Bearer ' + store.getters.getToken,
                     }
                 }).then(res => {  //res是返回结果
                     console.log(res);
-                    if (res.data['code'] == "200") {
-                        this.is_login = true;
-                        let temp = res.data['data'];
-                        this.origin.email = temp.email;
-                        this.origin.gender = temp.gender;
-                        this.origin.phoneNum = temp.phoneNum;
-                        this.origin.qqNum = temp.qqNum;
-                        this.origin.weChatNum = temp.weChatNum;
-                        this.origin.portrait = temp.portrait;
+                    if (res.data['code'] == 200) {
+                        let datalist = res.data['data'];
+                        for (let i = 0, length = datalist.length; i < length; i++) {
+                            console.log(datalist[i]);
+                            let product = {
+                                name: datalist[i].productName,
+                                url: "www.baidu.com",
+                            }
+                            this.products.push(product);
+                        }
                     } else {
                         this.$message({
                             message: 'connect wrong',
                             type: 'warning'
                         })
                     }
+                }).catch(function (error) { // 请求失败处理
+                    console.log(error);
                 });
-                axios({
-                    method: 'get',
-                    url: './contributed_products',
-                    headers: {
-                        "authorization": 'Bearer ' + store.getters.getToken,
-                    }
-                }).then(res => {  //res是返回结果
-                    console.log(res);
-                    if (res.data['code'] == "200") {
-                        this.is_login = true;
-                        let temp = res.data['data'];
-                        this.origin.email = temp.email;
-                        this.origin.gender = temp.gender;
-                        this.origin.phoneNum = temp.phoneNum;
-                        this.origin.qqNum = temp.qqNum;
-                        this.origin.weChatNum = temp.weChatNum;
-                        this.origin.portrait = temp.portrait;
-                    } else {
-                        this.$message({
-                            message: 'connect wrong',
-                            type: 'warning'
-                        })
-                    }
-                })
 
             }
 
-        }
     })
 
 </script>
