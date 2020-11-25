@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/theme-chalk/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="/css/userpage.css">
+    <link rel="stylesheet" type="text/css" href="./css/userpage.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Userpage</title>
 </head>
@@ -93,6 +93,11 @@
                     <h1 class="username">{{origin.name}}</h1>
                     <el-button type="primary" style="width: 50%;height: 40px;margin-left: 40%;" v-on:click="edit">EDIT
                         PROFILE
+                    </el-button>
+                    </br>
+                    </br>
+                    <el-button type="success" style="width: 50%;height: 40px;margin-left: 40%;" v-on:click="permission">
+                        APPLY FOR CONTRIBUTOR
                     </el-button>
 
                     <el-dialog title="Profile" :visible.sync="profileVisible">
@@ -393,6 +398,19 @@
 
             edit: function () {
                 this.profileVisible = true;
+            },
+
+            permission: function () {
+                //发送请求
+                axios.get('./auth').then(res => {
+                    if (res.data.code === 200) {
+                        //console.log(res);
+                        this.$message('上传成功');
+                        this.getProfile;
+                    } else {
+                        this.$message('失败')
+                    }
+                })
             },
 
             //download

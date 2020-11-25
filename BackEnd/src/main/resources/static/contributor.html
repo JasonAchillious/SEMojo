@@ -95,45 +95,34 @@
                     </el-button>
 
                     <el-dialog title="Profile" :visible.sync="profileVisible">
-                        <el-form class="profile" ref="form" :model="profile" size="mini">
-                            <el-form-item label="">
-                                <el-input v-model="profile.description" placeholder="Description">
-                                    <template slot="prepend">Description</template>
-                                </el-input>
-                            </el-form-item>
+                        <el-form class="profile" ref="form" :model="origin" size="mini">
 
                             <el-form-item label="">
-                                <el-input v-model="profile.name" placeholder="Username">
-                                    <template slot="prepend">Username</template>
-                                </el-input>
-                            </el-form-item>
-
-                            <el-form-item label="">
-                                <el-input v-model="profile.address" placeholder="Address">
+                                <el-input v-model="origin.address" placeholder="Address">
                                     <template slot="prepend">Address</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="profile.email" placeholder="E-mail">
+                                <el-input v-model="origin.email" placeholder="E-mail">
                                     <template slot="prepend">Email</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="profile.phoneNum" placeholder="Phone Number">
+                                <el-input v-model="origin.phoneNum" placeholder="Phone Number">
                                     <template slot="prepend">Phone Num</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="profile.qqNum" placeholder="QQ Number">
+                                <el-input v-model="origin.qqNum" placeholder="QQ Number">
                                     <template slot="prepend">QQ Num</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="profile.weChatNum" placeholder="WeChat Number">
+                                <el-input v-model="origin.weChatNum" placeholder="WeChat Number">
                                     <template slot="prepend">WeChat Num</template>
                                 </el-input>
                             </el-form-item>
@@ -299,14 +288,13 @@
 
                 // 原始个人信息
                 origin: {
-                    name: '赵志翔',
-                    description: 'He is a boy',
-                    email: '2222123@qq.com',
+                    name: '',
+                    address: '',
+                    email: '',
                     gender: '',
-                    address: 'SUSTECH',
-                    phoneNum: '213123',
-                    qqNum: '23123',
-                    weChatNum: '213124',
+                    phoneNum: '',
+                    qqNum: '',
+                    weChatNum: '',
                     portrait: '',
                 },
 
@@ -396,7 +384,37 @@
             }
         },
         methods: {
-            //获取已购买的产品
+
+            //需要修改参数
+            getProfile: function () {
+                axios({
+                    method: 'get',
+                    url: '/customer/' + store.getters.getUsername + '/info',
+                    headers: {
+                        "authorization": 'Bearer ' + store.getters.getToken,
+                    }
+                }).then(res => {  //res是返回结果
+                    console.log(res);
+                    if (res.data['code'] == "200") {
+                        let temp = res.data['data'];
+                        this.origin.name = store.getters.getUsername;
+                        this.origin.address = temp.address;
+                        this.origin.email = temp.email;
+                        this.origin.gender = temp.gender;
+                        this.origin.phoneNum = temp.phoneNum;
+                        this.origin.qqNum = temp.qqNum;
+                        this.origin.weChatNum = temp.weChatNum;
+                        this.origin.portrait = temp.portrait;
+                    } else {
+                        this.$message({
+                            message: 'connect wrong',
+                            type: 'warning'
+                        })
+                    }
+                });
+            },
+
+            //获取已上传的产品
 
 
             createProduct: function () {
