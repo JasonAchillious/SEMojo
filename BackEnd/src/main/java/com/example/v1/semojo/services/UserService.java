@@ -132,4 +132,17 @@ public class UserService implements UserDetailsService {
         }
         return user.getPortrait();
     }
+
+    public UserInfoModel getUserInfo(String username) throws Exception{
+        User user = findUserByUsername(username);
+        UserInfoModel info = new UserInfoModel();
+        info.setAddress(user.getAddress());
+        info.setEmail(user.getEmail());
+        info.setGender(user.getGender());
+        info.setPhoneNum(user.getPhoneNum());
+        info.setWeChatNum(user.getWeChatNum());
+        info.setPortrait(user.getPortrait());
+        info.setQqNum(user.getQqNum());
+        return info;
+    }
 }

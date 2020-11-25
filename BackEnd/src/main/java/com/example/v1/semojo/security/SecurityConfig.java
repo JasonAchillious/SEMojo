@@ -63,10 +63,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/contributor/**").hasRole("CONTRIBUTOR")
-                .antMatchers("/customer/**").hasRole("CUSTOMER")
-                .antMatchers(HttpMethod.POST, "/login").permitAll()
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .antMatchers("/contributor/**").hasRole("CONTRIBUTOR")
+//                .antMatchers("/customer/**").hasRole("CUSTOMER")
+//                .antMatchers(HttpMethod.POST, "/login").permitAll()
 //                .antMatchers("/hello").permitAll()
 //                .antMatchers("/v2/api-docs", "/swagger-resources/configuration/ui",
 //                        "/swagger-resources", "/swagger-resources/configuration/security",
