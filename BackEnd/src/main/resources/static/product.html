@@ -97,8 +97,8 @@
 					>Sign in
 					</el-link>
 					<el-link
-						href="signup.html"
-						:underline="false">
+							href="signup.html"
+							:underline="false">
 						<el-button type="primary">Sign up</el-button>
 					</el-link>
 				</div>
@@ -155,21 +155,26 @@
 						<ul	class="list"
 							   style="list-style:none;">
 							<li v-for="item in show_list" class="list-item">
-								<div align="left" style="margin-left: 25px;">
-									<i class="el-icon-notebook-2"></i>
-									<el-link
-											target="_blank"
-											style="color:#000000;text-decoration:none;"
-											class=navigation_fontsize
-											v-bind:href="product_detail_url">
-										{{item.name}}
-									</el-link>
-									<el-progress style="width: 40%" :percentage="item.satisfaction">satisfaction</el-progress>
-									<div> Price: {{item.price}}</div>
-									<div> Contributors: {{item.contributors}}</div>
-									<div> Language: {{item.language}}</div>
-									<div> Tags:{{item.tags}} </div>
-									<div> Destribution: {{item.destribution}}</div>
+								<div align="left" style="margin-left: 25px; display: flex">
+									<div style="width: 80%">
+										<i class="el-icon-notebook-2"></i>
+										<el-link
+												target="_blank"
+												style="color:#000000;text-decoration:none;"
+												class=navigation_fontsize
+												@click="linkDetail(item.DBid)">
+											{{item.name}}
+										</el-link>
+										<el-progress style="width: 40%" :percentage="item.satisfaction">satisfaction</el-progress>
+										<div> Price: {{item.price}}</div>
+										<div> Contributors: {{item.contributors}}</div>
+										<div> Language: {{item.language}}</div>
+										<div> Tags:{{item.tags}} </div>
+										<div> Destribution: {{item.destribution}}</div>
+									</div>
+									<div style="width: 15%;" align="right">
+										<el-button type="primary" style="margin-top: 30%" @click="purchase(item.DBid)">purchase</el-button>
+									</div>
 								</div>
 							</li>
 						</ul>
@@ -248,7 +253,6 @@
 		el: '#app',
 		data () {
 			return {
-				product_detail_url: 'product_detail.html',
 				search: '',
 				is_login: false,
 				img_src: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
@@ -326,6 +330,12 @@
 					localStorage.clear();
 					window.location.href="./homepage.html";
 				}
+			},
+			linkDetail(DBid) {
+				window.location.href="/ProductDetail/"+DBid;
+			},
+			purchase(DBid){
+				window.location.href="/Purchase/"+DBid;
 			}
 		},
 		mounted() {
