@@ -10,6 +10,7 @@ import com.example.v1.semojo.api.util.UserRespResultUtil;
 import com.example.v1.semojo.entities.Authority;
 import com.example.v1.semojo.entities.Product;
 import com.example.v1.semojo.services.ProductService;
+import com.example.v1.semojo.services.ProductTagService;
 import com.example.v1.semojo.services.UserService;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import java.util.List;
 public class ProductController {
     @Autowired
     ProductService productService;
+    @Autowired
+    ProductTagService productTagService;
     @Autowired
     UserService userService;
 
@@ -42,23 +45,24 @@ public class ProductController {
 
     @GetMapping("/product/{productId}")
     public WebRespResult getProductInfo(@PathVariable Long productId){
-        ProductDetailModel product = productService.findProductByProductId(productId);
+        ProductDetailModel product = productService.findProductDetailByProductId(productId);
         return ProductRespResultUtil.success(product);
     }
 
     @PostMapping("/contributor/{username}/product")
-    public WebRespResult createProduct(@RequestParam String productName,
+    public WebRespResult createProduct(@PathVariable String username,
+                                       @RequestParam String productName,
                                        @RequestParam String outline,
-                                       @RequestParam String username,
+                                       @RequestParam String authority,
                                        @RequestParam double fixed_price
     ){
         if (productService.findProductByProductName(productName) != null){
-            return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_IS_EXISTS.getCode(), ProductResultEnum.PRODUCT_IS_EXISTS.getMsg());
+            return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_IS_EXIST.getCode(), ProductResultEnum.PRODUCT_IS_EXIST.getMsg());
         }else if(userService.findUserByUsername(username)==null){
             return UserRespResultUtil.error(UserResultEnum.USER_NOT_EXIST.getCode(), UserResultEnum.USER_NOT_EXIST.getMsg());
         }
         else {
-            productService.saveNewProduct(productName, outline, username, fixed_price);
+            productService.saveNewProduct(productName, outline, authority, username, fixed_price);
             Product n_product = productService.findProductByProductName(productName);
             ProductPreviewModel n_productModel = new ProductPreviewModel(n_product);
             return ProductRespResultUtil.success(n_productModel);
@@ -66,11 +70,22 @@ public class ProductController {
     }
 
     @PutMapping("/product/{productId}")
-    public WebRespResult updateProductInfo(){
+    public WebRespResult updateProductInfo(@PathVariable long productId,
+                                           @RequestParam String productName,
+                                           @RequestParam String outline,
+                                           @RequestParam double currentPrice,
+                                           @RequestParam String status,
+                                           @RequestParam("contributors[]") List<String> contributors,
+                                           @RequestParam("tags[]") List<String> tags){
+        if (productService.findProductByProductId(productId) == null){
+            return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_NOT_EXIST.getCode(), ProductResultEnum.PRODUCT_NOT_EXIST.getMsg());
+        }else{
+            productService.updateProduct(productId, productName, outline, currentPrice, status, contributors, tags);
+        }
         return null;
     }
 
-    @DeleteMapping("contributor/product/{productId}")
+    @DeleteMapping("/contributor/product/{productId}")
     public WebRespResult deleteProduct(@PathVariable Long productId,
                                        HttpServletRequest req){
         String jwtToken = req.getHeader("authorization");

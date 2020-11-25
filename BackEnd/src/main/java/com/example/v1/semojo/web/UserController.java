@@ -93,7 +93,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/info/{username}", method = PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ApiOperation(value = "updateInfo", notes = "update the Info", httpMethod = "POST")
+    @ApiOperation(value = "updateInfo", notes = "update the Info", httpMethod = "PUT")
     @ApiImplicitParams(
             @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
     )

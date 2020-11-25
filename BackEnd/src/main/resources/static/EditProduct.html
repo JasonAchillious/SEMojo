@@ -89,6 +89,12 @@
                                 </el-form-item>
 
                                 <el-form-item label="">
+                                    <el-input v-model="edit.currentPrice" placeholder="Current Price">
+                                        <template slot="prepend">Current Price</template>
+                                    </el-input>
+                                </el-form-item>
+
+                                <el-form-item label="">
                                     <el-input v-model="edit.contributor" placeholder="Contributor">
                                         <template slot="prepend">Contributor</template>
                                     </el-input>
@@ -123,8 +129,8 @@
 
                     <div class="information">
                         <div class="info" style="display: block;margin-top:2%;line-height:10px;font-size: 8px;">
-                            <p><b>Current Price: </b>{{product.currentPrice}}</p>
-                            <p><s><b>Price: </b>{{product.price}}</s></p>
+                            <p><b>Current Price: $</b>{{product.currentPrice}}</p>
+                            <p><s><b>Price: $</b>{{product.price}}</s></p>
                             <p><b>Rating: </b>{{product.rating}}</p>
                             <p><b>Contributor: </b>{{product.contributor}}</p>
                             <p><b>Tags: </b>{{product.tags}}</p>
@@ -349,8 +355,8 @@
                 //product info
                 product: {
                     name: 'ProductsName',
-                    price: '$5.40',
-                    currentPrice: '$3.2',
+                    price: '5.40',
+                    currentPrice: '3.2',
                     contributor: 'CHEN XU ZHU ZHAO',
                     tags: 'Python Java JavaScript',
                     status: 'final version',
@@ -364,7 +370,7 @@
                 //编辑信息
                 edit: {
                     name: 'ProductsName',
-                    currentPrice: '$3.2',
+                    currentPrice: '3.2',
                     contributor: 'CHEN XU ZHU ZHAO',
                     tags: 'Python Java JavaScript',
                     status: 'final version',
