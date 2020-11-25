@@ -44,26 +44,26 @@
                     </el-link>
                 </div>
 
-                <div align="right" style="width:40%; display:inline-block">
+                <div style="width: 20%; display: inline-block">&nbsp;</div>
+                <div align="right" style="width:20%; display:inline-flex;">
                     <el-input
                             placeholder="Search SEMojo"
                             v-model="search"
-                            class="input-with-select"
-                            style="width: 40%">
-                        <el-button slot="append" icon="el-icon-search"></el-button>
+                            style="width: 80%">
+                        <el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
                     </el-input>
-                    <el-link
-                            href="login.html"
-                            target="_blank"
-                            style="color:#FFFFFF; width:15%;text-decoration:none"
-                            class=navigation_fontsize
-                    >Sign in
-                    </el-link>
-                    <el-link
-                            href="signup.html"
-                            :underline="false">
-                        <el-button type="primary">Sign up</el-button>
-                    </el-link>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <el-dropdown @command="handleCommand">
+							<span class="el-dropdown-link">
+								<el-avatar :src="img_src"></el-avatar>
+							</span>
+                        <el-dropdown-menu slot="dropdown" style="margin-top: -10px">
+                            <el-dropdown-item command="userpage">Your profile</el-dropdown-item>
+                            <el-dropdown-item command="contributor">Your products</el-dropdown-item>
+                            <el-dropdown-item command="logout">sign out</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </div>
             </div>
 
@@ -95,34 +95,45 @@
                     </el-button>
 
                     <el-dialog title="Profile" :visible.sync="profileVisible">
-                        <el-form class="profile" ref="form" :model="origin" size="mini">
+                        <el-form class="profile" ref="form" :model="profile" size="mini">
+                            <el-form-item label="">
+                                <el-input v-model="profile.description" placeholder="Description">
+                                    <template slot="prepend">Description</template>
+                                </el-input>
+                            </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="origin.address" placeholder="Address">
+                                <el-input v-model="profile.name" placeholder="Username">
+                                    <template slot="prepend">Username</template>
+                                </el-input>
+                            </el-form-item>
+
+                            <el-form-item label="">
+                                <el-input v-model="profile.address" placeholder="Address">
                                     <template slot="prepend">Address</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="origin.email" placeholder="E-mail">
+                                <el-input v-model="profile.email" placeholder="E-mail">
                                     <template slot="prepend">Email</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="origin.phoneNum" placeholder="Phone Number">
+                                <el-input v-model="profile.phoneNum" placeholder="Phone Number">
                                     <template slot="prepend">Phone Num</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="origin.qqNum" placeholder="QQ Number">
+                                <el-input v-model="profile.qqNum" placeholder="QQ Number">
                                     <template slot="prepend">QQ Num</template>
                                 </el-input>
                             </el-form-item>
 
                             <el-form-item label="">
-                                <el-input v-model="origin.weChatNum" placeholder="WeChat Number">
+                                <el-input v-model="profile.weChatNum" placeholder="WeChat Number">
                                     <template slot="prepend">WeChat Num</template>
                                 </el-input>
                             </el-form-item>
@@ -264,7 +275,7 @@
         el: '#app',
         data() {
             return {
-
+                img_src: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
                 //basic info
                 username: '',
 
@@ -274,16 +285,28 @@
                 sizeList: ["large", "medium", "small"],
                 imageUrl: '',
 
+                // 表单内容
+                profile: {
+                    name: '',
+                    description: '',
+                    email: '',
+                    gender: '',
+                    address: '',
+                    phoneNum: '',
+                    qqNum: '',
+                    weChatNum: ''
+                },
 
                 // 原始个人信息
                 origin: {
-                    name: '',
-                    address: '',
-                    email: '',
+                    name: '赵志翔',
+                    description: 'He is a boy',
+                    email: '2222123@qq.com',
                     gender: '',
-                    phoneNum: '',
-                    qqNum: '',
-                    weChatNum: '',
+                    address: 'SUSTECH',
+                    phoneNum: '213123',
+                    qqNum: '23123',
+                    weChatNum: '213124',
                     portrait: '',
                 },
 
@@ -359,7 +382,6 @@
                     productName: '',
                     description: '',
                     fixed_price: '',
-                    authority: '',
                 },
 
                 count: 0,
@@ -374,37 +396,7 @@
             }
         },
         methods: {
-
-            //需要修改参数
-            getProfile: function () {
-                axios({
-                    method: 'get',
-                    url: '/customer/' + store.getters.getUsername + '/info',
-                    headers: {
-                        "authorization": 'Bearer ' + store.getters.getToken,
-                    }
-                }).then(res => {  //res是返回结果
-                    console.log(res);
-                    if (res.data['code'] == "200") {
-                        let temp = res.data['data'];
-                        this.origin.name = store.getters.getUsername;
-                        this.origin.address = temp.address;
-                        this.origin.email = temp.email;
-                        this.origin.gender = temp.gender;
-                        this.origin.phoneNum = temp.phoneNum;
-                        this.origin.qqNum = temp.qqNum;
-                        this.origin.weChatNum = temp.weChatNum;
-                        this.origin.portrait = temp.portrait;
-                    } else {
-                        this.$message({
-                            message: 'connect wrong',
-                            type: 'warning'
-                        })
-                    }
-                });
-            },
-
-            //获取已上传的产品
+            //获取已购买的产品
 
 
             createProduct: function () {
@@ -413,40 +405,42 @@
 
             confirmForm: function () {
                 this.dialogFormVisible = false;
+                let fd = new FormData();
+                fd.append('productName', this.newProduct.productName);
+                fd.append('username', this.username);
+                fd.append('outline', this.newProduct.description);
+                fd.append('fixed_price', this.newProduct.fixed_price);
 
-                //发送修改后的信息
-                axios({
-                    method: 'get',
-                    url: '/products',
-                    params: {
-                        prodcutName: this.newProduct.productName,
-                        outline: this.newProduct.description,
-                        fixed_price: this.newProduct.fixed_price,
-                        authority: this.newProduct.authority,
-                        username: store.getters.getUsername,
-                    },
-                }).then(res => {
-                    if (res.data.code === 10200) {
+                axios.post('/contributor/{username}/product', fd).then(res=>{
+                    if (res.data.code === 200) {
                         //console.log(res);
-                        this.$message('创建成功');
-                    } else {
+                        this.$message('上传成功')
+                    }else{
                         this.$message('失败')
                     }
-                })
+                    }
+                )
 
+                //axios传送数据
             },
 
             submit: function () {
                 this.profileVisible = false;
 
                 //发送修改后的信息
-
-                //需要修改url参数 和 返回的成功码
-                axios.put('/info/' + store.getters.getUsername, this.origin).then(res => {
-                    if (res.data.code === 10200) {
+                let fd = new FormData();
+                fd.append("name", this.origin.name);
+                fd.append("description", this.origin.description);
+                fd.append("email", this.origin.email);
+                fd.append("gender", this.origin.gender);
+                fd.append("address", this.origin.address);
+                fd.append("phoneNum", this.origin.phoneNum);
+                fd.append("qqNum", this.origin.qqNum);
+                fd.append("weChatNum", this.origin.weChatNum);
+                axios.post('/userpage', fd).then(res => {
+                    if (res.data.code === 200) {
                         //console.log(res);
-                        this.$message('上传成功');
-                        this.getProfile;
+                        this.$message('上传成功')
                     } else {
                         this.$message('失败')
                     }
@@ -461,34 +455,46 @@
             edit: function () {
                 this.profileVisible = true;
             },
+
+
+            //review
+            clickReview: function (event) {
+                this.dialogFormVisible = true;
+                var ele = event.currentTarget.parentElement.parentElement.firstElementChild.getAttribute("class");
+                this.productname = ele;
+            },
+
+            reviewConfirm: function () {
+                this.dialogFormVisible = false;
+
+                let fd = new FormData();
+                fd.append("name", this.productname);
+                fd.append("review", this.review);
+                this.review = '';
+                axios.post('/userpage', fd).then(res => {
+                    if (res.data.code === 200) {
+                        //console.log(res);
+                        this.$message('上传成功')
+                    } else {
+                        this.$message('失败')
+                    }
+                })
+            },
+            handleCommand(command) {
+                if (command=="userpage"){
+                    window.location.href="./"+ store.getters.getUsername + "/userpage";
+                }else if (command=="contributor"){
+                    window.location.href="./contributor.html";
+                }else {
+                    localStorage.clear();
+                    window.location.href="./homepage.html";
+                }
+            },
+
         },
 
         mounted() {
-            axios({
-                method: 'get',
-                url: '/customer/' + store.getters.getUsername + '/portrait',
-                headers: {
-                    "authorization": 'Bearer ' + store.getters.getToken,
-                }
-            }).then(res => {  //res是返回结果
-                console.log(res);
-                if (res.data['code'] == "200") {
-                    this.is_login = true;
-                    let temp = res.data['data'];
-                    this.origin.email = temp.email;
-                    this.origin.gender = temp.gender;
-                    this.origin.phoneNum = temp.phoneNum;
-                    this.origin.qqNum = temp.qqNum;
-                    this.origin.weChatNum = temp.weChatNum;
-                    this.origin.portrait = temp.portrait;
-                } else {
-                    this.$message({
-                        message: 'connect wrong',
-                        type: 'warning'
-                    })
-                }
-            });
-
+            this.img_src = window.localStorage.getItem('img_src');
         }
 
     })

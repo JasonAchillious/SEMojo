@@ -318,7 +318,7 @@
 			},
 			handleCommand(command) {
 				if (command=="userpage"){
-					window.location.href="customer.html";
+					window.location.href="./"+ store.getters.getUsername + "/userpage";
 				}else if (command=="contributor"){
 					window.location.href="./contributor.html";
 				}else {
@@ -329,6 +329,26 @@
 			}
 		},
 		mounted() {
+			if (store.getters.getUsername != null) {
+				axios({
+					method: 'get',
+					url: '/customer/' + store.getters.getUsername + '/portrait',
+					headers: {
+						"authorization": 'Bearer ' + store.getters.getToken,
+					}
+				}).then(res => {  //res是返回结果
+					console.log(res);
+					if (res.data['code'] == "200") {
+						this.is_login = true;
+						this.img_src = res.data['data'];
+					} else {
+						this.$message({
+							message: 'connect wrong',
+							type: 'warning'
+						})
+					}
+				});
+			}
 			axios({
 				method: 'get',
 				url: '/products',

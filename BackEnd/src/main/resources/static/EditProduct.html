@@ -43,26 +43,26 @@
                     </el-link>
                 </div>
 
-                <div align="right" style="width:40%; display:inline-block">
+                <div style="width: 20%; display: inline-block">&nbsp;</div>
+                <div align="right" style="width:20%; display:inline-flex;">
                     <el-input
                             placeholder="Search SEMojo"
                             v-model="search"
-                            class="input-with-select"
-                            style="width: 40%">
-                        <el-button slot="append" icon="el-icon-search"></el-button>
+                            style="width: 80%">
+                        <el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
                     </el-input>
-                    <el-link
-                            href="login.html"
-                            target="_blank"
-                            style="color:#FFFFFF; width:15%;text-decoration:none"
-                            class=navigation_fontsize
-                    >Sign in
-                    </el-link>
-                    <el-link
-                            href="signup.html"
-                            :underline="false">
-                        <el-button type="primary">Sign up</el-button>
-                    </el-link>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <el-dropdown @command="handleCommand">
+							<span class="el-dropdown-link">
+								<el-avatar :src="img_src"></el-avatar>
+							</span>
+                        <el-dropdown-menu slot="dropdown" style="margin-top: -10px">
+                            <el-dropdown-item command="userpage">Your profile</el-dropdown-item>
+                            <el-dropdown-item command="contributor">Your products</el-dropdown-item>
+                            <el-dropdown-item command="logout">sign out</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </div>
             </div>
 
@@ -350,6 +350,8 @@
             return {
                 //basic info
                 username: '',
+                is_login: false,
+                img_src: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
                 productId: '',
 
                 //product info
@@ -555,6 +557,17 @@
                 this.fileList = fileList;
                 console.log(fileList)
             },
+            handleCommand(command) {
+                if (command=="userpage"){
+                    window.location.href="./"+ store.getters.getUsername + "/userpage";
+                }else if (command=="contributor"){
+                    window.location.href="./contributor.html";
+                }else {
+                    this.is_login = false;
+                    localStorage.clear();
+                    window.location.href="./homepage.html";
+                }
+            },
 
             upload(){
                 let fd = new FormData();
@@ -574,14 +587,26 @@
             },
 
 
-            //edit info(待修改)
+            //edit info
             submit: function () {
                 this.profileVisible = false;
 
-                //发送修改后的信息
+                //将用户修改后的表单信息更新到个人信息
+                this.product.name = this.edit.name;
+                this.product.description = this.edit.description;
+                this.product.tags = this.edit.tags;
+                this.product.status = this.edit.status;
+                this.product.contributor = this.edit.contributor;
 
-                axios.post('/productDetail', this.product).then(res => {
-                    //code需要修改
+                //发送修改后的信息
+                let fd = new FormData();
+                fd.append("name", this.product.name);
+                fd.append("description", this.product.description);
+                fd.append("contributor", this.product.contributor);
+                fd.append("tags", this.product.tags);
+                fd.append("status", this.product.status);
+
+                axios.post('/productDetail', fd).then(res => {
                     if (res.data.code === 200) {
                         //console.log(res);
                         this.$message('上传成功')
@@ -589,6 +614,7 @@
                         this.$message('失败')
                     }
                 })
+
             },
 
             cancel: function () {
@@ -604,49 +630,11 @@
                 this.edit.status = this.product.status;
                 this.edit.contributor = this.product.contributor;
             },
-
-            submitForm(formName) {
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        axios({
-                            method: 'post',
-                            url: '/login_2.0',
-                            data: qs.stringify({
-                                'username': this.ruleForm.username,
-                                'password': this.ruleForm.password,
-                            }),
-                            headers: {
-                                'Content-type': 'application/x-www-form-urlencoded;charset=utf-8',
-                                "token": " "
-                            }
-                        }).then(res => {  //res是返回结果
-                            if (res.data['code'] === 200) {
-                                this.$store.commit('setToken', JSON.stringify(res.data.token));
-                                this.$message({
-                                    message: '登录成功' + store.getters.getToken,
-                                    type: 'success'
-                                })
-                            } else {
-                                this.$message({
-                                    message: '用户名或者密码错误',
-                                    type: 'warning'
-                                })
-                            }
-                        }).catch(err => { //请求失败就会捕获报错信息
-                            console.log('服务器连接失败');
-                            console.log(err);
-                            this.$message({
-                                message: '服务器连接失败',
-                                type: 'warning'
-                            })
-                        })
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                });
-            },
-        }
+        },
+        mounted() {
+            this.img_src = window.localStorage.getItem('img_src');
+            this.img_src = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+        },
     });
 
 </script>

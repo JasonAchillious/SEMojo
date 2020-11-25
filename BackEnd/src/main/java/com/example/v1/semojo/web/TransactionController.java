@@ -40,7 +40,13 @@ public class TransactionController {
     public WebRespResult changeTransactionStatus(@PathVariable String username,
                                                  @PathVariable Long transactionId,
                                                  @RequestParam String status){
-        return null;
+        try{
+            Transaction transaction = transacService.changeStatus(transactionId, status);
+            return new WebRespResult<>(200, "success", transaction);
+        }catch (Exception e){
+            e.printStackTrace();
+            return new WebRespResult(400, e.getMessage());
+        }
     }
 
     @GetMapping("/customer/{username}/transactions")

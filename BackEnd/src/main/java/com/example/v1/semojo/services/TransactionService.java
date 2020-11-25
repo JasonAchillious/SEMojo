@@ -18,7 +18,7 @@ import java.util.List;
 @Service
 public class TransactionService {
     @Autowired
-    TransactionDao transacDao;
+    TransactionDao transactionDao;
     @Autowired
     UserDao userDao;
     @Autowired
@@ -41,7 +41,7 @@ public class TransactionService {
         transac.setStatus(Transaction.TransactionStatus.WaitingProcess);
         transac.setCreateTime(new Timestamp(System.currentTimeMillis()));
         transac.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-        return transacDao.save(transac);
+        return transactionDao.save(transac);
     }
 
     public Transaction createTransaction(List<Long> productIds, String username) throws Exception {
@@ -61,11 +61,17 @@ public class TransactionService {
             perchasedProducts.add(product);
         }
         transac.setProducts(perchasedProducts);
-        return transacDao.save(transac);
+        return transactionDao.save(transac);
     }
 
     public Transaction changeStatus(Long transactionId, String status){
-        Transaction transac;
+        Transaction transaction = transactionDao.findTransactionById(transactionId);
+        transaction.setStatus(Transaction.TransactionStatus.valueOf(status));
+        transactionDao.save(transaction);
+        return transaction;
+    }
+
+    public Transaction findTransactionById(long transactionId){
         return null;
     }
 }

@@ -22,18 +22,21 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="84db6368-e17d-4731-9d52-1847d851e967" name="Default Changelist" comment="create productTag">
-      <change afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/api/model/ProductTagModel.java" afterDir="false" />
+    <list default="true" id="84db6368-e17d-4731-9d52-1847d851e967" name="Default Changelist" comment="complete Product">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/api/enums/ProductResultEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/api/enums/ProductResultEnum.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/api/util/ProductRespResultUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/api/util/ProductRespResultUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/entities/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/entities/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/entities/ProductTag.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/entities/ProductTag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/security/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/security/SecurityConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/services/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/services/ProductService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/services/ProductTagService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/services/ProductTagService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/web/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/web/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/web/ProductTagController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/web/ProductTagController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/dao/TransactionDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/dao/TransactionDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/services/TransactionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/services/TransactionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/web/TransactionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/java/com/example/v1/semojo/web/TransactionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/resources/static/EditProduct.html" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/resources/static/EditProduct.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/resources/static/ProductDetail.html" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/resources/static/ProductDetail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/resources/static/administrator.html" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/resources/static/administrator.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/resources/static/contributor.html" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/resources/static/contributor.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/resources/static/customer.html" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/resources/static/customer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/resources/static/homepage.html" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/resources/static/homepage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/resources/static/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/resources/static/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/resources/static/product.html" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/resources/static/product.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/resources/static/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/resources/static/search.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/main/resources/static/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/main/resources/static/signup.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,6 +86,14 @@
     </recent_temporary>
   </component>
   <component name="TaskManager">
+    <task id="LOCAL-00001" summary="complete Product">
+      <created>1606300943458</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1606300943458</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -96,6 +107,10 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="complete Product" />
+    <option name="LAST_COMMIT_MESSAGE" value="complete Product" />
   </component>
   <component name="WindowStateProjectService">
     <state x="97" y="29" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1606296068547">
@@ -138,9 +153,13 @@
       <screen x="0" y="0" width="1280" height="760" />
     </state>
     <state width="1141" height="174" key="GridCell.Tab.1.right/0.0.1280.760@0.0.1280.760" timestamp="1606299715996" />
-    <state x="444" y="298" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606299709081">
+    <state x="233" y="120" key="Vcs.Push.Dialog.v2" timestamp="1606300948847">
       <screen x="0" y="0" width="1280" height="760" />
     </state>
-    <state x="444" y="298" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.760@0.0.1280.760" timestamp="1606299709081" />
+    <state x="233" y="120" key="Vcs.Push.Dialog.v2/0.0.1280.760@0.0.1280.760" timestamp="1606300948847" />
+    <state x="444" y="298" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606301377097">
+      <screen x="0" y="0" width="1280" height="760" />
+    </state>
+    <state x="444" y="298" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1280.760@0.0.1280.760" timestamp="1606301377097" />
   </component>
 </project>
