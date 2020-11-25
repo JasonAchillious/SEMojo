@@ -50,10 +50,10 @@ public class ProductController {
     }
 
     @PostMapping("/contributor/{username}/product")
-    public WebRespResult createProduct(@RequestParam String productName,
+    public WebRespResult createProduct(@PathVariable String username,
+                                       @RequestParam String productName,
                                        @RequestParam String outline,
                                        @RequestParam String authority,
-                                       @RequestParam String username,
                                        @RequestParam double fixed_price
     ){
         if (productService.findProductByProductName(productName) != null){
