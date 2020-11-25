@@ -97,14 +97,14 @@
                     <el-dialog title="Profile" :visible.sync="profileVisible">
                         <el-form class="profile" ref="form" :model="origin" size="mini">
                             <el-form-item label="">
-                                <el-input v-model="origin.description" placeholder="Description">
-                                    <template slot="prepend">Description</template>
-                                </el-input>
-                            </el-form-item>
-
-                            <el-form-item label="">
                                 <el-input v-model="origin.name" placeholder="Username">
                                     <template slot="prepend">Username</template>
+                                </el-input>
+                            </el-form-item>
+                            
+                            <el-form-item label="">
+                                <el-input v-model="origin.description" placeholder="Description">
+                                    <template slot="prepend">Description</template>
                                 </el-input>
                             </el-form-item>
 
@@ -267,7 +267,15 @@
 
 
                     // 原始个人信息
-                    origin: {},
+                    origin: {
+                        name: '',
+                        email: '',
+                        gender: '',
+                        phoneNum: '',
+                        qqNum: '',
+                        weChatNum: '',
+                        portrait: '',
+                    },
 
                     // products purchased
                     products: [],
@@ -296,6 +304,7 @@
                         console.log(res);
                         if (res.data['code'] == "200") {
                             let temp = res.data['data'];
+                            this.origin.name = temp.name;
                             this.origin.email = temp.email;
                             this.origin.gender = temp.gender;
                             this.origin.phoneNum = temp.phoneNum;
