@@ -43,11 +43,10 @@ public class ProductService {
             n_product.setStatus(productsTemp.getStatus());
             n_product.setUpdate_time(productsTemp.getUpdate_time());
             Map<String, Integer> languageMap = new HashMap<>();
-            Map<String, Integer> tagMap = new HashMap<>();
             List<Artifact> languages = productsTemp.getArtifacts();
             List<ProductTag> tags = productsTemp.getTags();
+            List<String> tagList = new ArrayList<>();
             int maxLang = 0;
-            int maxTag = 0;
             for (int i = 0; i < languages.size(); i++){
                 String Lang_temp = languages.get(i).getLang().toString();
                 if (languageMap.containsKey(Lang_temp)){
@@ -60,29 +59,14 @@ public class ProductService {
                 }
             }
             for (int i = 0; i < tags.size(); i++){
-                String Tag_temp = tags.get(i).getTag();
-                if (tagMap.containsKey(Tag_temp)){
-                    tagMap.put(Tag_temp, tagMap.get(Tag_temp) + 1);
-                    if (tagMap.get(Tag_temp) > maxTag){
-                        maxTag = tagMap.get(Tag_temp);
-                    }
-                }else {
-                    tagMap.put(Tag_temp, 1);
-                }
+                tagList.add(tags.get(i).getTag());
             }
+            n_product.setTags(tagList);
             Iterator<Map.Entry<String, Integer>> lang_it = languageMap.entrySet().iterator();
-            Iterator<Map.Entry<String, Integer>> tag_it = tagMap.entrySet().iterator();
             while(lang_it.hasNext()){
                 Map.Entry<String, Integer> entry = lang_it.next();
                 if(entry.getValue().equals(maxLang)){
                     n_product.setLanguage(entry.getKey());
-                    break;
-                }
-            }
-            while(tag_it.hasNext()){
-                Map.Entry<String, Integer> entry = tag_it.next();
-                if(entry.getValue().equals(maxTag)){
-                    n_product.setTags(entry.getKey());
                     break;
                 }
             }
