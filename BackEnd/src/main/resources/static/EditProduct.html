@@ -169,7 +169,7 @@
                                     <li class="list-item" v-for="artifact in artifacts">
                                         <div style="display: block;margin-left:5%;margin-top:2%;width: 60%">
                                             <h1 style="font-size: 1.5rem;display:table-cell;"><a
-                                                    v-bind:href="artifact.url">{{artifact.name}}</a></h1>
+                                                    v-bind:href="artifact.url">{{artifact.fileName}}</a></h1>
                                         </div>
                                         <div style="flex: right;display: block;width:40%;margin-left:15%;margin-top: 6px;margin-bottom: 5px">
                                             <el-button type="primary" size="mini">Update</el-button>
@@ -192,7 +192,7 @@
                                     <li class="list-item" v-for="code in codes">
                                         <div style="display: block;margin-left:5%;margin-top:2%;width: 60%">
                                             <h1 style="font-size: 1.5rem;display:table-cell;"><a
-                                                    v-bind:href="code.url">{{code.name}}</a></h1>
+                                                    v-bind:href="code.url">{{code.fileName}}</a></h1>
                                         </div>
                                         <div style="flex: right;display: block;width:40%;margin-left:15%;margin-top: 6px;margin-bottom: 5px">
                                             <el-button type="primary" size="mini">Update</el-button>
@@ -215,7 +215,7 @@
                                     <li class="list-item" v-for="test in tests">
                                         <div style="display: block;margin-left:5%;margin-top:2%;width: 60%">
                                             <h1 style="font-size: 1.5rem;display:table-cell;"><a
-                                                    v-bind:href="test.url">{{test.name}}</a></h1>
+                                                    v-bind:href="test.url">{{test.fileName}}</a></h1>
                                         </div>
                                         <div style="flex: right;display: block;width:40%;margin-left:15%;margin-top: 6px;margin-bottom: 5px">
                                             <el-button type="primary" size="mini">Update</el-button>
@@ -238,7 +238,7 @@
                                     <li class="list-item" v-for="document in documents">
                                         <div style="display: block;margin-left:5%;margin-top:2%;width: 60%">
                                             <h1 style="font-size: 1.5rem;display:table-cell;"><a
-                                                    v-bind:href="document.url">{{document.name}}</a></h1>
+                                                    v-bind:href="document.url">{{document.fileName}}</a></h1>
                                         </div>
                                         <div style="flex: right;display: block;width:40%;margin-left:15%;margin-top: 6px;margin-bottom: 5px">
                                             <el-button type="primary" size="mini">Update</el-button>
@@ -261,7 +261,7 @@
                                     <li class="list-item" v-for="other in others">
                                         <div style="display: block;margin-left:5%;margin-top:2%;width: 60%">
                                             <h1 style="font-size: 1.5rem;display:table-cell;"><a
-                                                    v-bind:href="other.url">{{other.name}}</a></h1>
+                                                    v-bind:href="other.url">{{other.fileName}}</a></h1>
                                         </div>
                                         <div style="flex: right;display: block;width:40%;margin-left:15%;margin-top: 6px;margin-bottom: 5px">
                                             <el-button type="primary" size="mini">Update</el-button>
@@ -413,43 +413,9 @@
                 //all file datas
                 dialogCodeVisible: false,
 
-                artifacts : [
-                    {
-                        name: 'artifact1.jar',
-                        url: '',
-                    },
-                    {
-                        name: 'artifact2.jar',
-                        url: '',
-                    },
-                    {
-                        name: 'artifact3.jar',
-                        url: '',
-                    },
-                    {
-                        name: 'artifact4.jar',
-                        url: '',
-                    },
-                ],
+                artifacts : [],
 
-                codes: [
-                    {
-                        name: 'code1.java',
-                        url: '',
-                    },
-                    {
-                        name: 'code2.java',
-                        url: '',
-                    },
-                    {
-                        name: 'code3.java',
-                        url: '',
-                    },
-                    {
-                        name: 'code4.java',
-                        url: '',
-                    },
-                ],
+                codes: [],
                 tests: [
                     {
                         name: 'testcase1',
@@ -525,6 +491,7 @@
             }
         },
         methods: {
+
             // 上传文件
             getFile(event) {
                 this.codeForm.file = event.target.files[0];
@@ -538,22 +505,54 @@
                 formData.append('productId', this.productId);
                 formData.append('description', this.codeForm.description);
                 formData.append('lang', this.codeForm.lang);
-                formData.append('file', this.codeForm.file);
+                formData.append('sourceCode', this.codeForm.file);
 
                 let config = {
                     headers: {
                         'Content-Type': 'multipart/form-data'
                     }
                 }
+                this.dialogCodeVisible = false;
+                axios.post('./code', formData, config).then(res => {
+                    if (res.status == 200) {
+                        console.log(res)
+                        console.log("上传成功");
+                        axios({
+                            method: 'get',
+                            url: './codes',
+                        }).then(resp => {  //res是返回结果
+                            if (resp.data['code'] == 200) {
+                                var data = resp.data['data'];
+                                console.log(data);
 
-                this.$http.post('/upload', formData, config).then(function (res) {
-                    if (res.status === 2000) {
+                                var that = this;
+                                that.codes.splice(0, that.codes.length);
+
+                                for (let i = 0; i < data.length; i++) {
+
+                                    let code = {
+                                        id : data[i].id,
+                                        uploader : data[i].uploader,
+                                        description : data[i].description,
+                                        uploadTime : data[i].uploadTime,
+                                        updateTime : data[i].updateTime,
+                                        location : data[i].location,
+                                        fileName : data[i].fileName,
+                                        lang: data[i].lang
+                                    }
+                                    that.codes.push(code);
+                                }
+                            }
+                        })
+                    }else{
 
                     }
-                })
+                }).catch(function (error) { // 请求失败处理
+                    console.log(error);
+                });
             },
             handleClick(tab, event) {
-                console.log(tab, event);
+                //console.log(tab, event);
             },
             //上传source code
             clickAdd: function () {
@@ -630,7 +629,7 @@
                             method: 'get',
                             url: '/EditProduct/' + this.productId,
                         }).then(res => {  //res是返回结果
-                            if (res.data['code'] == 10200) {
+                            if (res.data['code'] == 200) {
                                 var data = res.data['data'];
                                 this.product.name = data.productName;
                                 this.product.price = data.fixPrice;
@@ -675,20 +674,26 @@
             htmlHref = htmlHref.replace(/^http:\/\/[^/]+/, "");
             var addr = htmlHref.substr(htmlHref.lastIndexOf('/', htmlHref.lastIndexOf('/') - 1) + 1);
             var index = addr.lastIndexOf("\/");
-            this.productId = decodeURI(addr.substring(index + 1, addr.length));
+            this.productId = decodeURI(addr.substring(0, index));
+            console.log(addr);
+            console.log(index);
+            console.log(this.productId);
 
             //获取product基本信息
             axios({
                 method: 'get',
-                url: '/EditProduct/' + this.productId,
+                url: '/product/' + this.productId
             }).then(res => {  //res是返回结果
-                if (res.data['code'] == 10200) {
+                console.log(res);
+                if (res.data['code'] == 20200) {
                     var data = res.data['data'];
                     this.product.name = data.productName;
                     this.product.price = data.fixPrice;
                     this.product.currentPrice = data.currentPrice;
-                    this.product.contributor = toString(data.owners);
-                    this.product.tags = toString(data.tags);
+                    // object
+                    this.product.contributor = data.owners;
+                    this.product.tags = data.tags;
+
                     this.product.status = data.status;
                     this.product.saleVolume = data.salesVolume;
                     this.product.releaseDate = data.create_time;
@@ -701,30 +706,47 @@
             //获取artifacts
             axios({
                 method: 'get',
-                url: '/EditProduct/' + this.productId + '/artifacts',
+                url: "/product/" + this.productId + "/artifacts",
             }).then(res => {  //res是返回结果
-                if (res.data['code'] == 10200) {
+                console.log(res);
+                if (res.data['code'] == 200) {
                     var data = res.data['data'];
                     for (let i = 0; i < data.length; i++) {
                         let artifact = {
-                            name: data[i].name,
-                            url: data[i].url,
+                            id : data[i].id,
+                            uploader : data[i].uploader,
+                            description : data[i].description,
+                            upload_time : data[i].upload_time,
+                            update_time : data[i].update_time,
+                            location : data[i].location,
+                            version : data[i].version,
+                            fileName : data[i].fileName,
+                            status : data[i].status,
+                            lang: data[i].lang
                         }
                         this.artifacts.push(artifact);
+                        console.log(artifacts[i]);
                     }
                 }
             })
             //获取codes
             axios({
                 method: 'get',
-                url: '/EditProduct/' + this.productId + '/codes',
+                url: '/product/' + this.productId + '/codes',
             }).then(res => {  //res是返回结果
-                if (res.data['code'] == 10200) {
+                if (res.data['code'] == 200) {
+                    console.log(res);
                     var data = res.data['data'];
                     for (let i = 0; i < data.length; i++) {
                         let code = {
-                            name: data[i].name,
-                            url: data[i].url,
+                            id : data[i].id,
+                            uploader : data[i].uploader,
+                            description : data[i].description,
+                            uploadTime : data[i].uploadTime,
+                            updateTime : data[i].updateTime,
+                            location : data[i].location,
+                            fileName : data[i].fileName,
+                            lang: data[i].lang
                         }
                         this.codes.push(code);
                     }
@@ -733,14 +755,20 @@
             //获取documents
             axios({
                 method: 'get',
-                url: '/EditProduct/' + this.productId + '/docs',
+                url: '/product/' + this.productId + '/docs',
             }).then(res => {  //res是返回结果
-                if (res.data['code'] == 10200) {
+                console.log(res);
+                if (res.data['code'] == 200) {
                     var data = res.data['data'];
                     for (let i = 0; i < data.length; i++) {
                         let doc = {
-                            name: data[i].name,
-                            url: data[i].url,
+                            id : data[i].id,
+                            uploader : data[i].uploader,
+                            description : data[i].description,
+                            uploadTime : data[i].uploadTime,
+                            updateTime : data[i].updateTime,
+                            location : data[i].location,
+                            fileName : data[i].fileName
                         }
                         this.documents.push(doc);
                     }
@@ -749,14 +777,20 @@
             //获取testcases
             axios({
                 method: 'get',
-                url: '/EditProduct/' + this.productId + '/testcases',
+                url: '/product/' + this.productId + '/testcases',
             }).then(res => {  //res是返回结果
-                if (res.data['code'] == 10200) {
+                console.log(res);
+                if (res.data['code'] == 200) {
                     var data = res.data['data'];
                     for (let i = 0; i < data.length; i++) {
                         let testcase = {
-                            name: data[i].name,
-                            url: data[i].url,
+                            id : data[i].id,
+                            uploader : data[i].uploader,
+                            description : data[i].description,
+                            uploadTime : data[i].uploadTime,
+                            updateTime : data[i].updateTime,
+                            location : data[i].location,
+                            fileName : data[i].fileName
                         }
                         this.tests.push(testcase);
                     }

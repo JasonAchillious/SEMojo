@@ -5,7 +5,7 @@
     <!-- import CSS -->
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/theme-chalk/index.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/ProductDetail.css">
+    <link rel="stylesheet" type="text/css" href="/css/ProductDetail.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
@@ -17,7 +17,7 @@
                 <div align="left" style="width:55%; display:inline-block;">
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <a href="homepage.html">
-                        <img border="0" src="./images/logo.png" style="height:45px; width:75px"/>
+                        <img border="0" src="/images/logo.png" style="height:45px; width:75px"/>
                         <p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
                     </a>
                     <el-link
@@ -77,7 +77,7 @@
                         </div>
                         <div style="display: block;width:40%;margin-left:5%;margin-top: 5%;margin-bottom: 5%">
                             <el-button type="primary" size="mini">Purchase</el-button>
-                            <el-button type="plain" size='mini'>Add to Shopping Cart</el-button>
+<!--                            <el-button type="plain" size='mini'>Add to Shopping Cart</el-button>-->
                         </div>
                     </div>
 
@@ -215,21 +215,21 @@
             return {
                 img_src: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
                 //avatar
-                avatarUrl: './images/bg3.jpg',
+                avatarUrl: '/images/bg3.jpg',
                 //comments
                 comments: [
                     {
-                        username: 'user0',
+                        username: 'cqf',
                         content:'This is a good product.',
                         rating:4.0,
                     },
                     {
-                        username: 'user1',
+                        username: 'xps',
                         content: 'bad',
                         rating: 3.8,
                     },
                     {
-                        username: 'user2',
+                        username: 'zf',
                         content: 'bad',
                         rating: 2.0,
                     },
@@ -276,13 +276,34 @@
                     window.location.href="./contributor.html";
                 }else {
                     localStorage.clear();
-                    window.location.href="./homepage.html";
+                    window.location.href="/";
                 }
             },
         },
         mounted() {
             this.img_src = window.localStorage.getItem('img_src');
             this.img_src = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
+            axios({
+                method: 'get',
+                url: '/product/' + this.productId
+            }).then(res => {  //res是返回结果
+                if (res.data['code'] == 20200) {
+                    var data = res.data['data'];
+                    this.product.name = data.productName;
+                    this.product.price = data.fixPrice;
+                    this.product.currentPrice = data.currentPrice;
+                    this.product.contributor = toString(data.owners);
+                    this.product.tags = toString(data.tags);
+                    this.product.status = data.status;
+                    this.product.saleVolume = data.salesVolume;
+                    this.product.releaseDate = data.create_time;
+                    this.product.recentUpdateDate = data.update_time;
+                    this.product.description = data.outline;
+                    this.product.rating = data.reviewStar;
+                }
+            }).catch(function (error) { // 请求失败处理
+                console.log(error);
+            });
         }
     });
 
