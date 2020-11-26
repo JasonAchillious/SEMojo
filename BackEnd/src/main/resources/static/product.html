@@ -169,7 +169,11 @@
 										<div> Price: {{item.price}}</div>
 										<div> Contributors: {{item.contributors}}</div>
 										<div> Language: {{item.language}}</div>
-										<div> Tags:{{item.tags}} </div>
+										<div style="display: inline"> Tags:
+											<div v-for="tag in item.tags" style="display: inline-flex">
+												<p> {{tag}} </p>
+											</div>
+										</div>
 										<div> Destribution: {{item.destribution}}</div>
 									</div>
 									<div style="width: 15%;" align="right">
@@ -292,7 +296,7 @@
 			},
 			handleCurrentChange(val) {
 				this.current_page = val;
-				this.show_list = [];
+				this.show_list.splice(0,this.show_list.length);
 				for (let i=(this.current_page-1)*8; i<this.current_page*8 && i<this.total; i++){
 					this.show_list.push(this.conditional_list[i]);
 				}
@@ -302,23 +306,31 @@
 				this.language = val;
 				this.conditional_list = [];
 				for (let i = 0, length = this.list.length; i < length; i++) {
-					if(this.list[i].language==this.language && (this.list[i].type==this.type || this.type=='All Types')){
+					if((this.list[i].language==this.language||this.language=='All Languages') && (this.list[i].tags.includes(this.type) || this.type=='All Types')){
 						this.conditional_list.push(this.list[i]);
 					}
 				}
 				this.total = this.conditional_list.length;
 				this.current_page = 1;
+				this.show_list.splice(0,this.show_list.length);
+				for (let i=0; i<8 && i<this.total; i++){
+					this.show_list.push(this.conditional_list[i]);
+				}
 			},
 			handleTypeChange(val) {
 				this.type = val;
 				this.conditional_list = [];
 				for (let i = 0, length = this.list.length; i < length; i++) {
-					if(this.list[i].type==this.type && (this.list[i].language==this.language || this.language=='All Languages')){
+					if((this.list[i].tags.includes(this.type) ||this.type=='All Types') && (this.list[i].language==this.language || this.language=='All Languages')){
 						this.conditional_list.push(this.list[i]);
 					}
 				}
 				this.total = this.conditional_list.length;
 				this.current_page = 1;
+				this.show_list.splice(0,this.show_list.length);
+				for (let i=0; i<8 && i<this.total; i++){
+					this.show_list.push(this.conditional_list[i]);
+				}
 			},
 			handleCommand(command) {
 				if (command=="userpage"){

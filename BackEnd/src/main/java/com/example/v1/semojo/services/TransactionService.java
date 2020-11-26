@@ -1,5 +1,6 @@
 package com.example.v1.semojo.services;
 
+import com.example.v1.semojo.api.model.TransactionModel;
 import com.example.v1.semojo.dao.ProductDao;
 import com.example.v1.semojo.dao.TransactionDao;
 import com.example.v1.semojo.dao.UserAuthDao;
@@ -26,7 +27,7 @@ public class TransactionService {
     @Autowired
     UserAuthDao userAuthDao;
 
-    public Transaction createTransaction(Long projectId, String username) throws Exception {
+    public TransactionModel createTransaction(Long projectId, String username) throws Exception {
         Product product = productDao.findProductByProductId(projectId);
         if (product == null){
             throw new Exception("Product not exist by wrong ID");
@@ -41,10 +42,11 @@ public class TransactionService {
         transac.setStatus(Transaction.TransactionStatus.WaitingProcess);
         transac.setCreateTime(new Timestamp(System.currentTimeMillis()));
         transac.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-        return transactionDao.save(transac);
+        transactionDao.save(transac);
+        return new TransactionModel(transac);
     }
 
-    public Transaction createTransaction(List<Long> productIds, String username) throws Exception {
+    public TransactionModel createTransaction(List<Long> productIds, String username) throws Exception {
         Transaction transac = new Transaction();
         UserAuth bookerAuth = userAuthDao.findUserAuthByUsername(username);
         User booker = bookerAuth.getUser();
@@ -61,38 +63,66 @@ public class TransactionService {
             perchasedProducts.add(product);
         }
         transac.setProducts(perchasedProducts);
-        return transactionDao.save(transac);
+        transactionDao.save(transac);
+        return new TransactionModel(transac);
     }
 
-    public Transaction changeStatus(Long transactionId, String status){
+    public TransactionModel changeStatus(String username, Long transactionId, String status){
         Transaction transaction = transactionDao.findTransactionById(transactionId);
         transaction.setStatus(Transaction.TransactionStatus.valueOf(status));
+        User user = userAuthDao.findUserAuthByUsername(username).getUser();
+        if (Transaction.TransactionStatus.valueOf(status) == Transaction.TransactionStatus.PurchasedSuccess){
+            transaction.setBooker(user);
+            Timestamp d = new Timestamp(System.currentTimeMillis());
+            transaction.setUpdateTime(d);
+            transactionDao.save(transaction);
+            List<Transaction> userTransaction;
+            if (user.getUserTransec()!=null){
+                userTransaction = user.getUserTransec();
+            }else {
+                userTransaction = new ArrayList<>();
+            }
+            userTransaction.add(transaction);
+            user.setUserTransec(userTransaction);
+            userDao.save(user);
+        }
         Timestamp d = new Timestamp(System.currentTimeMillis());
         transaction.setUpdateTime(d);
         transactionDao.save(transaction);
-        return transaction;
+        return new TransactionModel(transaction);
     }
 
     public Transaction findTransactionById(long transactionId){
         return transactionDao.findTransactionById(transactionId);
     }
 
-    public List<Transaction> getUserTransactions(String username){
+    public List<TransactionModel> getUserTransactions(String username){
         UserAuth t_userAuth = userAuthDao.findUserAuthByUsername(username);
         User t_user = t_userAuth.getUser();
         List<Transaction> transactions = t_user.getUserTransec();
-        return transactions;
+        List<TransactionModel> transactionModels = new ArrayList<>();
+        for (Transaction transaction:transactions){
+            transactionModels.add(new TransactionModel(transaction));
+        }
+        return transactionModels;
     }
 
-    public List<Transaction> getUserProductsactions(long productId){
+    public List<TransactionModel> getUserProductsactions(long productId){
         Product product = productDao.findProductByProductId(productId);
-        return product.getProductTransac();
+        List<Transaction> transactions =  product.getProductTransac();
+        List<TransactionModel> transactionModels = new ArrayList<>();
+        for (Transaction transaction:transactions){
+            transactionModels.add(new TransactionModel(transaction));
+        }
+        return transactionModels;
     }
 
-    public List<Transaction> getTransactionDetail(String username, long productId){
+    public List<TransactionModel> getTransactionDetail(String username, long productId){
         User user = userAuthDao.findUserAuthByUsername(username).getUser();
         List<Product> products = user.getOwnedProducts();
         Product t_product = new Product();
+        List<Transaction> transactions;
+        List<TransactionModel> transactionModels = new ArrayList<>();
         for (Product product : products){
             if (productId == product.getProductId()){
                 t_product = product;
@@ -100,7 +130,11 @@ public class TransactionService {
             }
         }
         if (t_product.getProductId() == productId){
-            return t_product.getProductTransac();
+            transactions = t_product.getProductTransac();
+            for (Transaction transaction:transactions){
+                transactionModels.add(new TransactionModel(transaction));
+            }
+            return transactionModels;
         }
         else return null;
     }

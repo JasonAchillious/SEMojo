@@ -69,14 +69,12 @@ public class ViewController {
     @GetMapping("/contributor/{username}/product/{productId}/info_page")
     public String getProductInfoPage(@PathVariable String username,
                                  @PathVariable String productId){
-        System.out.println(username + "---------------------------");
         return "forward:/ProductDetail.html";
     }
 
     @GetMapping("/contributor/{username}/product/{productId}/edit_page")
     public String getProductPage(@PathVariable String username,
                                  @PathVariable String productId){
-        System.out.println(productId + "++++++++++++++++++++++++++");
         return "forward:/EditProduct.html";
     }
 

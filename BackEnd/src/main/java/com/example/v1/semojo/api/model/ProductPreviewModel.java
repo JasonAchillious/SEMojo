@@ -2,10 +2,7 @@ package com.example.v1.semojo.api.model;
 
 import com.example.v1.semojo.entities.*;
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ProductPreviewModel {
     private long productId;
@@ -14,7 +11,7 @@ public class ProductPreviewModel {
     private int reviewStar;
     private Timestamp update_time;
     private String creator;
-    private String tags;
+    private List<String> tags;
     private String language;
     private double currentPrice;
     private Product.ProductStatus status;
@@ -28,11 +25,11 @@ public class ProductPreviewModel {
         this.productId = productId;
     }
 
-    public String getTags() {
+    public List<String> getTags() {
         return tags;
     }
 
-    public void setTags(String tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
 
@@ -125,7 +122,11 @@ public class ProductPreviewModel {
         this.update_time = product.getUpdate_time();
         this.creator = product.getCreator();
         if (product.getTags()!=null){
-            this.tags = product.getTags().toString();
+            List<String> tags = new ArrayList<>();
+            for (ProductTag productTag:product.getTags()){
+                tags.add(productTag.getTag());
+            }
+            this.tags = tags;
         }
         if (product.getArtifacts()!=null){
             List<Artifact> languages = product.getArtifacts();
@@ -155,7 +156,7 @@ public class ProductPreviewModel {
         this.status = product.getStatus();
     }
 
-    public ProductPreviewModel(int productId, String productName, String outline, int reviewStar, Timestamp update_time, String creator, String tags, String language, double currentPrice, Product.ProductStatus status) {
+    public ProductPreviewModel(int productId, String productName, String outline, int reviewStar, Timestamp update_time, String creator, List<String> tags, String language, double currentPrice, Product.ProductStatus status) {
         this.productId = productId;
         this.productName = productName;
         this.outline = outline;
