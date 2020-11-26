@@ -52,7 +52,7 @@ public class ViewController {
 
     @GetMapping("/customer/{username}/userpage")
     public String getCustomerPage(@PathVariable String username){
-        System.out.println(username);
+        System.out.println(username + "------------------------");
         return "forward:/customer.html";
     }
 

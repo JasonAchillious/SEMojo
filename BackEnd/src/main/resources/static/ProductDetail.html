@@ -281,6 +281,12 @@
             },
         },
         mounted() {
+            //获取productid
+            var htmlHref = window.location.href;
+            htmlHref = htmlHref.replace(/^http:\/\/[^/]+/, "");
+            var addr = htmlHref.substr(htmlHref.lastIndexOf('/', htmlHref.lastIndexOf('/') - 1) + 1);
+            var index = addr.lastIndexOf("\/");
+            this.productId = decodeURI(addr.substring(0, index));
             this.img_src = window.localStorage.getItem('img_src');
             this.img_src = "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png";
             axios({
@@ -292,8 +298,8 @@
                     this.product.name = data.productName;
                     this.product.price = data.fixPrice;
                     this.product.currentPrice = data.currentPrice;
-                    this.product.contributor = toString(data.owners);
-                    this.product.tags = toString(data.tags);
+                    this.product.contributor = data.owners;
+                    this.product.tags = data.tags;
                     this.product.status = data.status;
                     this.product.saleVolume = data.salesVolume;
                     this.product.releaseDate = data.create_time;
