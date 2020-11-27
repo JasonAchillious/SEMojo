@@ -4,8 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.14.0/theme-chalk/index.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="/css/userpage.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Userpage</title>
@@ -45,26 +44,26 @@
                     </el-link>
                 </div>
 
-                <div align="right" style="width:40%; display:inline-block">
+                <div style="width: 20%; display: inline-block">&nbsp;</div>
+                <div align="right" style="width:20%; display:inline-flex;">
                     <el-input
                             placeholder="Search SEMojo"
                             v-model="search"
-                            class="input-with-select"
-                            style="width: 40%">
-                        <el-button slot="append" icon="el-icon-search"></el-button>
+                            style="width: 80%">
+                        <el-button slot="append" icon="el-icon-search" @click="searchfor('search')"></el-button>
                     </el-input>
-                    <el-link
-                            href="/login"
-                            target="_blank"
-                            style="color:#FFFFFF; width:15%;text-decoration:none"
-                            class=navigation_fontsize
-                    >Sign in
-                    </el-link>
-                    <el-link
-                            href="/signup"
-                            :underline="false">
-                        <el-button type="primary">Sign up</el-button>
-                    </el-link>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+                    <el-dropdown @command="handleCommand">
+							<span class="el-dropdown-link">
+								<el-avatar :src="img_src"></el-avatar>
+							</span>
+                        <el-dropdown-menu slot="dropdown" style="margin-top: -10px">
+                            <el-dropdown-item command="userpage">Your profile</el-dropdown-item>
+                            <el-dropdown-item command="contributor">Your products</el-dropdown-item>
+                            <el-dropdown-item command="logout">sign out</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </div>
             </div>
 
@@ -149,15 +148,12 @@
                     <div class="show-products" style="min-height:150px;overflow-y:auto;max-height:180px;">
                         <ul class="list">
                             <li class="list-item" v-for="(product, index) in products">
-                                <div style="display: block;margin-left:5%;margin-top:2%;width: 60%"
-                                     v-bind:class="product.name">
-                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;">
-                                        <a
-                                                v-bind:href="product.url">{{product.name}}</a></h1>
+                                <div style="display: block;margin-left:5%;margin-top:2%;width: 60%" v-bind:class="product.name">
+                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;"><a
+                                            v-bind:href="product.url">{{product.name}}</a></h1>
                                 </div>
                                 <div style="display: block;width:40%;margin-left:15%;margin-top: 6px;margin-bottom: 5px">
-                                    <el-button type="primary" size="mini" @click="clickDownload($event)">Download
-                                    </el-button>
+                                    <el-button type="primary" size="mini" @click="clickDownload($event)">Download</el-button>
                                     <el-button type="plain" size='mini' @click="clickReview($event)"
                                     >Review
                                     </el-button>
@@ -188,9 +184,8 @@
                         <ul class="list">
                             <li class="list-item" v-for="product in shoppingCarts">
                                 <div style="display: block;margin-left:5%;margin-top:2%;width: 60%">
-                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;">
-                                        <a
-                                                v-bind:href="product.url">{{product.name}}</a></h1>
+                                    <h1 style="font-size: 1.5rem;margin-left: 20%;vertical-align: middle;display: table-cell;"><a
+                                            v-bind:href="product.url">{{product.name}}</a></h1>
                                 </div>
                                 <div style="flex: right;display: block;width:40%;margin-left:15%;margin-top: 6px;margin-bottom: 5px">
                                     <el-button type="primary" size="mini">Purchase</el-button>
@@ -258,6 +253,7 @@
 
         data() {
             return {
+                img_src: "https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png",
                 search: '',
                 circleUrl: "/images/bg2.jpg",
                 squareUrl: "https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png",
@@ -293,6 +289,16 @@
             }
         },
         methods: {
+            handleCommand(command) {
+                if (command=="userpage"){
+                    window.location.href="./"+ store.getters.getUsername + "/userpage";
+                }else if (command=="contributor"){
+                    window.location.href="./contributor.html";
+                }else {
+                    localStorage.clear();
+                    window.location.href="/";
+                }
+            },
             getProfile: function () {
                 axios({
                     method: 'get',
@@ -329,6 +335,7 @@
                         "authorization": 'Bearer ' + store.getters.getToken,
                     }
                 }).then(res => {  //res是返回结果
+                    console.log(res);
                     if (res.data['code'] == "200") {
                         let datalist = res.data['data'];
                         for (let i = 0, length = datalist.length; i < length; i++) {
@@ -440,13 +447,13 @@
                         this.$message('失败')
                     }
                 })
-            }
+            },
 
         },
         mounted() {
             axios({
                 method: 'get',
-                url: '/customer/' + store.getters.getUsername + 'userpage/info',
+                url: '/customer/' + store.getters.getUsername + '/userpage/info',
                 headers: {
                     "authorization": 'Bearer ' + store.getters.getToken,
                 }
@@ -496,7 +503,6 @@
             });
 
         }
-
     })
 </script>
 </body>
