@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@RestController
 public class SourceCodeController {
     @Autowired
     FileService fileService;

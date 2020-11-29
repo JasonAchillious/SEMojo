@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.List;
 
+@RestController
 public class ArtifactController {
     @Autowired
     FileService fileService;

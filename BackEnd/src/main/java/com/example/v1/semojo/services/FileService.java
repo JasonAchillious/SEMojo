@@ -287,6 +287,7 @@ public class FileService {
             case "doc": return documentDao.findDocumentById(fileId).getLocation();
             case "artifact": return artifactDao.findArtifactById(fileId).getLocation();
             case "testcase": return testCaseDao.findTestCaseById(fileId).getLocation();
+            case "code": return sourceCodeDao.findSourceCodeById(fileId).getLocation();
             default: throw new Exception("Type Wrong");
         }
     }

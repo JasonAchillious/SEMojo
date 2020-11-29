@@ -15,7 +15,7 @@ public class TestCaseController {
     @Autowired
     FileService fileService;
 
-    @GetMapping("/project/{productId}/testcases")
+    @GetMapping("/product/{productId}/testcases")
     public WebRespResult getTestCaseList(@PathVariable Long productId){
         try {
             List<TestCase> testCases = fileService.findAllTestCase(productId);

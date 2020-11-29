@@ -22,19 +22,22 @@
                         <p class=navigation_fontsize style="color:#FFFFFF; width:15%; display:inline-block;">SEMojo</p>
                     </a>
                     <el-link
-                            href="/product.html"
+                            href="product.html"
+                            target="_blank"
                             style="color:#FFFFFF; text-decoration:none; width:10%"
                             class=navigation_fontsize
                     >Products
                     </el-link>
                     <el-link
-                            href="/support.html"
+                            href="support.html"
+                            target="_blank"
                             style="color:#FFFFFF; text-decoration:none; width:10%"
                             class=navigation_fontsize
                     >Support
                     </el-link>
                     <el-link
-                            href="/forum.html"
+                            href="forum.html"
+                            target="_blank"
                             style="color:#FFFFFF; text-decoration:none; width:10%"
                             class=navigation_fontsize
                     >Forum
@@ -90,14 +93,14 @@
                     <el-button type="primary" style="width: 50%;height: 40px;margin-left: 40%;" v-on:click="edit">EDIT
                         PROFILE
                     </el-button>
+                    </br>
+                    </br>
+                    <el-button type="success" style="width: 50%;height: 40px;margin-left: 40%;" v-on:click="permission">
+                        APPLY FOR CONTRIBUTOR
+                    </el-button>
 
                     <el-dialog title="Profile" :visible.sync="profileVisible">
                         <el-form class="profile" ref="form" :model="origin" size="mini">
-                            <el-form-item label="">
-                                <el-input v-model="origin.description" placeholder="Description">
-                                    <template slot="prepend">Description</template>
-                                </el-input>
-                            </el-form-item>
 
                             <el-form-item label="">
                                 <el-input v-model="origin.address" placeholder="Address">
@@ -261,6 +264,7 @@
                 // 原始个人信息
                 origin: {
                     name: '',
+                    address: '',
                     email: '',
                     gender: '',
                     phoneNum: '',
@@ -292,7 +296,7 @@
                     window.location.href="./contributor.html";
                 }else {
                     localStorage.clear();
-                    window.location.href="./homepage.html";
+                    window.location.href="/";
                 }
             },
             getProfile: function () {
@@ -307,6 +311,7 @@
                     if (res.data['code'] == "200") {
                         let temp = res.data['data'];
                         this.origin.name = store.getters.getUsername;
+                        this.origin.address = temp.address;
                         this.origin.email = temp.email;
                         this.origin.gender = temp.gender;
                         this.origin.phoneNum = temp.phoneNum;
@@ -325,7 +330,7 @@
             getPurchased: function () {
                 axios({
                     method: 'get',
-                    url: '/customer/' + store.getters.getUsername + '/info',
+                    url: '/customer/' + store.getters.getUsername + '/userpage/products',
                     headers: {
                         "authorization": 'Bearer ' + store.getters.getToken,
                     }
@@ -382,17 +387,8 @@
                 this.profileVisible = false;
 
                 //发送修改后的信息
-                let fd = new FormData();
-                fd.append("name", this.origin.name);
-                fd.append("description", this.origin.description);
-                fd.append("email", this.origin.email);
-                fd.append("gender", this.origin.gender);
-                fd.append("address", this.origin.address);
-                fd.append("phoneNum", this.origin.phoneNum);
-                fd.append("qqNum", this.origin.qqNum);
-                fd.append("weChatNum", this.origin.weChatNum);
-                axios.post('/userpage', fd).then(res => {
-                    if (res.data.code === 200) {
+                axios.put('/info/' + store.getters.getUsername, this.origin).then(res => {
+                    if (res.data.code === 10200) {
                         //console.log(res);
                         this.$message('上传成功');
                         this.getProfile;
@@ -409,6 +405,18 @@
 
             edit: function () {
                 this.profileVisible = true;
+            },
+
+            permission: function () {
+                //发送请求
+                axios.put('./userpage/auth').then(res => {
+                    if (res.data.code === 200) {
+                        //console.log(res);
+                        this.$message('请求成功');
+                    } else {
+                        this.$message('失败');
+                    }
+                })
             },
 
             //download
@@ -443,7 +451,57 @@
 
         },
         mounted() {
-            this.img_src = window.localStorage.getItem('img_src');
+            axios({
+                method: 'get',
+                url: '/customer/' + store.getters.getUsername + '/userpage/info',
+                headers: {
+                    "authorization": 'Bearer ' + store.getters.getToken,
+                }
+            }).then(res => {  //res是返回结果
+                console.log(res);
+                if (res.data['code'] == "200") {
+                    let temp = res.data['data'];
+                    this.origin.name = store.getters.getUsername;
+                    this.origin.address = temp.address;
+                    this.origin.email = temp.email;
+                    this.origin.gender = temp.gender;
+                    this.origin.phoneNum = temp.phoneNum;
+                    this.origin.qqNum = temp.qqNum;
+                    this.origin.weChatNum = temp.weChatNum;
+                    this.origin.portrait = temp.portrait;
+                } else {
+                    this.$message({
+                        message: 'connect wrong',
+                        type: 'warning'
+                    })
+                }
+            });
+
+            axios({
+                method: 'get',
+                url: '/customer/' + store.getters.getUsername + '/userpage/products',
+                headers: {
+                    "authorization": 'Bearer ' + store.getters.getToken,
+                }
+            }).then(res => {  //res是返回结果
+                if (res.data['code'] == "200") {
+                    let datalist = res.data['data'];
+                    for (let i = 0, length = datalist.length; i < length; i++) {
+                        let product = {
+                            productId: datalist[i].productId,
+                            productName: datalist[i].productName,
+                            url: 'www.baidu.com',
+                        }
+                        this.products.push(product);
+                    }
+                } else {
+                    this.$message({
+                        message: 'connect wrong',
+                        type: 'warning'
+                    })
+                }
+            });
+
         }
     })
 </script>

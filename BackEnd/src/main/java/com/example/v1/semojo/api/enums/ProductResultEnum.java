@@ -8,7 +8,8 @@ public enum ProductResultEnum {
     PRODUCT_NOT_EXIST(20401,"product not exist"),
     PRODUCT_IS_EXIST(20402,"product has existed"),
     NO_AUTHORITY(20403, "No authority"),
-    TAG_IS_EXIST(20404, "tag has existed")
+    TAG_IS_EXIST(20404, "tag has existed"),
+    TAG_NOT_EXIST(20405, "tag not existed")
     ;
     private Integer code;
     private String msg;

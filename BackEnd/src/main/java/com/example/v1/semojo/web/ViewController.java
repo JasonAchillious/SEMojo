@@ -52,7 +52,7 @@ public class ViewController {
 
     @GetMapping("/customer/{username}/userpage")
     public String getCustomerPage(@PathVariable String username){
-        System.out.println(username);
+        System.out.println(username + "------------------------");
         return "forward:/customer.html";
     }
 
@@ -81,6 +81,11 @@ public class ViewController {
     @GetMapping("/product/{productId}/info_page)")
     public String getProductInfoPage(@PathVariable String productId){
         return "forward:/ProductDetail.html";
+    }
+
+    @GetMapping("/contributor/{username}/product/{productId}/codes")
+    public String getCodesListRedirect(@PathVariable String productId, @PathVariable String username){
+        return "redirect:/product/{productId}/codes";
     }
 
 }
