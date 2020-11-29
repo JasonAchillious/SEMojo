@@ -164,20 +164,30 @@ public class ProductDetailModel {
         List<String> docs = new ArrayList<>();
         List<String> testCases = new ArrayList<>();
         List<String> tags = new ArrayList<>();
-        for (User user:product.getOwners()){
-            owners.add(user.getAuth().getUsername());
+        if (product.getOwners()!=null){
+            for (User user:product.getOwners()){
+                owners.add(user.getAuth().getUsername());
+            }
         }
-        for (Artifact artifact: product.getArtifacts()){
-            artifacts.add(artifact.getFileName());
+        if (product.getArtifacts()!=null){
+            for (Artifact artifact: product.getArtifacts()){
+                artifacts.add(artifact.getFileName());
+            }
         }
-        for (Document document: product.getDocs()){
-            docs.add(document.getFileName());
+        if (product.getDocs()!=null){
+            for (Document document: product.getDocs()){
+                docs.add(document.getFileName());
+            }
         }
-        for (TestCase testCase: product.getTestCases()){
-            testCases.add(testCase.getFileName());
+        if (product.getTestCases()!=null){
+            for (TestCase testCase: product.getTestCases()){
+                testCases.add(testCase.getFileName());
+            }
         }
-        for (ProductTag tag: product.getTags()){
-            tags.add(tag.getTag());
+        if (product.getTags()!=null){
+            for (ProductTag tag: product.getTags()){
+                tags.add(tag.getTag());
+            }
         }
         this.owners = owners;
         this.artifacts = artifacts;

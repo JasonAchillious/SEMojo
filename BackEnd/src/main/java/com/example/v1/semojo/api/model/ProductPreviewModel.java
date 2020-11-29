@@ -113,7 +113,9 @@ public class ProductPreviewModel {
     }
 
     public ProductPreviewModel() {
+
     }
+
     public ProductPreviewModel(Product product) {
         this.productId = product.getProductId();
         this.productName = product.getProductName();

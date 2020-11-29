@@ -47,8 +47,10 @@ public class ProductTagModel {
     public ProductTagModel(ProductTag productTag) {
         this.id = productTag.getId();
         List<Long> productIdList = new ArrayList<>();
-        for (Product product: productTag.getProducts()){
-            productIdList.add(product.getProductId());
+        if (productTag.getProducts()!= null){
+            for (Product product: productTag.getProducts()){
+                productIdList.add(product.getProductId());
+            }
         }
         this.productId = productIdList;
         this.tag = productTag.getTag();

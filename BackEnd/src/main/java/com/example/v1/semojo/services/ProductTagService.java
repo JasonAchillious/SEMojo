@@ -34,7 +34,12 @@ public class ProductTagService {
     }
 
     public List<ProductTagModel> getProductTagList(long limit, long start){
-        List<ProductTag> productTags = productTagDao.findProductTagsByLimitAndStart(limit, start);
+        List<ProductTag> productTags = new ArrayList<>();
+        if (limit == -1||start == -1){
+            productTags = productTagDao.findAll();
+        }else {
+            productTags = productTagDao.findProductTagsByLimitAndStart(limit, start);
+        }
         List<ProductTagModel> productTagModels = new ArrayList<>();
         for (ProductTag productTag: productTags){
             productTagModels.add(new ProductTagModel(productTag));
@@ -51,5 +56,9 @@ public class ProductTagService {
         productTag.setTag(tag);
         productTag.setDetail(detail);
         return new ProductTagModel(productTagDao.save(productTag));
+    }
+
+    public void deleteProductTag(long productTagId){
+        productTagDao.deleteById(productTagId);
     }
 }

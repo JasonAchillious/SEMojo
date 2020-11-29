@@ -23,8 +23,10 @@ public class TransactionModel {
         this.status = transaction.getStatus();
         this.booker = transaction.getBooker().getAuth().getUsername();
         List<String> products = new ArrayList<>();
-        for (Product product: transaction.getProducts()){
-            products.add(product.getProductId() + product.getProductName());
+        if (transaction.getProducts()!=null){
+            for (Product product: transaction.getProducts()){
+                products.add(product.getProductId() + product.getProductName());
+            }
         }
         this.products = products;
     }
