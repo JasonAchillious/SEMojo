@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity(name = "sub_review")
-public class subReview {
+public class SubReview {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String answerToWho;

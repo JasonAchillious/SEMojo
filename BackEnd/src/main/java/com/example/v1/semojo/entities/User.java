@@ -28,11 +28,47 @@ public class User {
     @ManyToMany
     private List<Product> ownedProducts;
 
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Product> favorites;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Product> shoppingCart;
+
     @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL)
     private List<Review> reviews;
 
     @OneToMany(mappedBy = "questioner", cascade = CascadeType.ALL)
     private List<Issue> issues;
+
+//    @ManyToOne
+//    private User friend;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<User> friendList;
+
+    public List<Product> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(List<Product> favorites) {
+        this.favorites = favorites;
+    }
+
+    public List<Product> getShoppingCart() {
+        return shoppingCart;
+    }
+
+    public void setShoppingCart(List<Product> shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
+    public List<User> getFriendList() {
+        return friendList;
+    }
+
+    public void setFriendList(List<User> friendList) {
+        this.friendList = friendList;
+    }
 
     public List<Product> getOwnedProducts() {
         return ownedProducts;

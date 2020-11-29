@@ -62,6 +62,16 @@ public class Product {
     @OneToMany(mappedBy = "issueProduct")
     private List<Issue> issueList;
 
+    @ManyToMany(mappedBy = "favorites")
+    private List<User> collectors;
+
+    public List<User> getCollectors() {
+        return collectors;
+    }
+
+    public void setCollectors(List<User> collectors) {
+        this.collectors = collectors;
+    }
 
     public List<Issue> getIssueList() {
         return issueList;
