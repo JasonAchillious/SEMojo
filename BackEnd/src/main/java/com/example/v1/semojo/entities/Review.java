@@ -10,7 +10,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long reviewId;
     private String context;
-    private Integer score;
+    private Double score;
     private Timestamp createTime;
     private Timestamp updateTime;
 
@@ -27,7 +27,7 @@ public class Review {
     @ManyToOne(fetch = FetchType.LAZY)
     private Product reviewProduct;
     @OneToMany(mappedBy = "answerReview", cascade = CascadeType.ALL)
-    private List<subReview> subReviewList;
+    private List<SubReview> subReviewList;
 
     public ReviewStatus getStatus() {
         return status;
@@ -37,11 +37,11 @@ public class Review {
         this.status = status;
     }
 
-    public List<subReview> getSubReviewList() {
+    public List<SubReview> getSubReviewList() {
         return subReviewList;
     }
 
-    public void setSubReviewList(List<subReview> subReviewList) {
+    public void setSubReviewList(List<SubReview> subReviewList) {
         this.subReviewList = subReviewList;
     }
 
@@ -61,11 +61,11 @@ public class Review {
         this.context = context;
     }
 
-    public Integer getScore() {
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(Integer score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 
