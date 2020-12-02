@@ -137,7 +137,7 @@ public class IssueService {
         subIssue.setIssue(issue);
         subIssue.setAnswerToWho(answerToWho);
         subIssue.setContext(context);
-        subIssue.setPoster(user);
+        subIssue.setSubIssuer(user);
         Timestamp d = new Timestamp(System.currentTimeMillis());
         subIssue.setCreateTime(d);
         subIssue.setUpdateTime(d);

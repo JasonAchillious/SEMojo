@@ -20,14 +20,14 @@ public class SubIssue {
     private Issue issue;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private User poster;
+    private User subIssuer;
 
-    public User getPoster() {
-        return poster;
+    public User getSubIssuer() {
+        return subIssuer;
     }
 
-    public void setPoster(User poster) {
-        this.poster = poster;
+    public void setSubIssuer(User subIssuer) {
+        this.subIssuer = subIssuer;
     }
 
     public long getSubIssueId() {

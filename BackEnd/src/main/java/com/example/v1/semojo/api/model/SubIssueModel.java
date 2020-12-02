@@ -15,7 +15,7 @@ public class SubIssueModel {
     private Timestamp updateTime;
     private Issue.IssueStatus status;
     private String issue;
-    private String poster;
+    private String subIssuer;
 
     public SubIssueModel(SubIssue subIssue) {
         this.subIssueId = subIssue.getSubIssueId();
@@ -25,19 +25,23 @@ public class SubIssueModel {
         this.updateTime = subIssue.getUpdateTime();
         this.status = subIssue.getStatus();
         this.issue = subIssue.getIssue().getTitle();
-        this.poster = subIssue.getPoster().getAuth().getUsername();
+        this.subIssuer = subIssue.getSubIssuer().getAuth().getUsername();
     }
 
     public void setStatus(Issue.IssueStatus status) {
         this.status = status;
     }
 
-    public String getPoster() {
-        return poster;
+    public Issue.IssueStatus getStatus() {
+        return status;
     }
 
-    public void setPoster(String poster) {
-        this.poster = poster;
+    public String getSubIssuer() {
+        return subIssuer;
+    }
+
+    public void setSubIssuer(String subIssuer) {
+        this.subIssuer = subIssuer;
     }
 
     public long getSubIssueId() {

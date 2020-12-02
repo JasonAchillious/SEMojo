@@ -9,6 +9,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long reviewId;
+    private String title;
     private String context;
     private Double score;
     private Timestamp createTime;
@@ -25,9 +26,17 @@ public class Review {
     @ManyToOne(fetch = FetchType.EAGER)
     private User reviewer;
     @ManyToOne(fetch = FetchType.LAZY)
-    private Product reviewProduct;
+    private User reviewAdmin;
     @OneToMany(mappedBy = "answerReview", cascade = CascadeType.ALL)
     private List<SubReview> subReviewList;
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public ReviewStatus getStatus() {
         return status;
@@ -93,11 +102,11 @@ public class Review {
         this.reviewer = reviewer;
     }
 
-    public Product getReviewProduct() {
-        return reviewProduct;
+    public User getReviewAdmin() {
+        return reviewAdmin;
     }
 
-    public void setReviewProduct(Product reviewProduct) {
-        this.reviewProduct = reviewProduct;
+    public void setReviewAdmin(User reviewAdmin) {
+        this.reviewAdmin = reviewAdmin;
     }
 }

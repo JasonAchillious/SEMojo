@@ -37,10 +37,13 @@ public class User {
     @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL)
     private List<Review> reviews;
 
+    @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL)
+    private List<SubIssue> subReviews;
+
     @OneToMany(mappedBy = "questioner", cascade = CascadeType.ALL)
     private List<Issue> issues;
 
-    @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "subIssuer", cascade = CascadeType.ALL)
     private List<SubIssue> subIssues;
 //    @ManyToOne
 //    private User friend;

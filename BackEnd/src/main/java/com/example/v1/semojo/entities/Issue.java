@@ -25,8 +25,10 @@ public class Issue {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User questioner;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Product issueProduct;
+
     @OneToMany(mappedBy = "issue", cascade = CascadeType.ALL)
     private List<SubIssue> subIssueList;
 

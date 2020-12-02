@@ -125,7 +125,7 @@ public class IssueController {
             return IssueRespResultUtil.error(IssueResultEnum.ISSUE_NOT_EXIST.getCode(), IssueResultEnum.ISSUE_NOT_EXIST.getMsg());
         }else if (issueService.findSubIssueBySubIssueId(subIssueId) == null){
             return IssueRespResultUtil.error(IssueResultEnum.SUBISSUE_NOT_EXIST.getCode(), IssueResultEnum.SUBISSUE_NOT_EXIST.getMsg());
-        }else if (issueService.findSubIssueBySubIssueId(subIssueId).getPoster() != userService.findUserByUsername(username)){
+        }else if (issueService.findSubIssueBySubIssueId(subIssueId).getSubIssuer() != userService.findUserByUsername(username)){
             return UserRespResultUtil.error(IssueResultEnum.NO_AUTHORITY.getCode(), IssueResultEnum.NO_AUTHORITY.getMsg());
         }
         return new WebRespResult(200, "success", issueService.updateSubIssues(subIssueId,context,status));
@@ -144,7 +144,7 @@ public class IssueController {
             return IssueRespResultUtil.error(IssueResultEnum.ISSUE_NOT_EXIST.getCode(), IssueResultEnum.ISSUE_NOT_EXIST.getMsg());
         }else if (issueService.findSubIssueBySubIssueId(subIssueId) == null){
             return IssueRespResultUtil.error(IssueResultEnum.SUBISSUE_NOT_EXIST.getCode(), IssueResultEnum.SUBISSUE_NOT_EXIST.getMsg());
-        }else if (issueService.findSubIssueBySubIssueId(subIssueId).getPoster() != userService.findUserByUsername(username)){
+        }else if (issueService.findSubIssueBySubIssueId(subIssueId).getSubIssuer() != userService.findUserByUsername(username)){
             return UserRespResultUtil.error(IssueResultEnum.NO_AUTHORITY.getCode(), IssueResultEnum.NO_AUTHORITY.getMsg());
         }
         issueService.deleteSubIssue(username, issueId, subIssueId);

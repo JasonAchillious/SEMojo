@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 public class SubReview {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private long subReviewId;
     private String answerToWho;
     private String context;
     private Timestamp createTime;
@@ -16,6 +17,25 @@ public class SubReview {
 
     @ManyToOne
     private Review answerReview;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User poster;
+
+    public long getSubReviewId() {
+        return subReviewId;
+    }
+
+    public void setSubReviewId(long subReviewId) {
+        this.subReviewId = subReviewId;
+    }
+
+    public User getPoster() {
+        return poster;
+    }
+
+    public void setPoster(User poster) {
+        this.poster = poster;
+    }
 
     public Review.ReviewStatus getStatus() {
         return status;
