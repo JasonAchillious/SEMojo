@@ -1,32 +1,42 @@
-package com.example.v1.semojo.entities;
+package com.example.v1.semojo.api.model;
 
-import javax.persistence.*;
+import com.example.v1.semojo.entities.Issue;
+import com.example.v1.semojo.entities.Review;
+import com.example.v1.semojo.entities.SubIssue;
+import com.example.v1.semojo.entities.User;
+
 import java.sql.Timestamp;
 
-@Entity(name = "sub_issue")
-public class SubIssue {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class SubIssueModel {
     private long subIssueId;
     private String answerToWho;
     private String context;
     private Timestamp createTime;
     private Timestamp updateTime;
-
-    @Enumerated(EnumType.STRING)
     private Issue.IssueStatus status;
+    private String issue;
+    private String poster;
 
-    @ManyToOne
-    private Issue issue;
+    public SubIssueModel(SubIssue subIssue) {
+        this.subIssueId = subIssue.getSubIssueId();
+        this.answerToWho = subIssue.getAnswerToWho();
+        this.context = subIssue.getContext();
+        this.createTime = subIssue.getCreateTime();
+        this.updateTime = subIssue.getUpdateTime();
+        this.status = subIssue.getStatus();
+        this.issue = subIssue.getIssue().getTitle();
+        this.poster = subIssue.getPoster().getAuth().getUsername();
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private User poster;
+    public void setStatus(Issue.IssueStatus status) {
+        this.status = status;
+    }
 
-    public User getPoster() {
+    public String getPoster() {
         return poster;
     }
 
-    public void setPoster(User poster) {
+    public void setPoster(String poster) {
         this.poster = poster;
     }
 
@@ -70,19 +80,11 @@ public class SubIssue {
         this.updateTime = updateTime;
     }
 
-    public Issue.IssueStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(Issue.IssueStatus status) {
-        this.status = status;
-    }
-
-    public Issue getIssue() {
+    public String getIssue() {
         return issue;
     }
 
-    public void setIssue(Issue issue) {
+    public void setIssue(String issue) {
         this.issue = issue;
     }
 }
