@@ -40,11 +40,21 @@ public class User {
     @OneToMany(mappedBy = "questioner", cascade = CascadeType.ALL)
     private List<Issue> issues;
 
+    @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL)
+    private List<SubIssue> subIssues;
 //    @ManyToOne
 //    private User friend;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<User> friendList;
+
+    public List<SubIssue> getSubIssues() {
+        return subIssues;
+    }
+
+    public void setSubIssues(List<SubIssue> subIssues) {
+        this.subIssues = subIssues;
+    }
 
     public List<Product> getFavorites() {
         return favorites;

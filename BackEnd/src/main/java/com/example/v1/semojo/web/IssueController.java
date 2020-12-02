@@ -12,6 +12,7 @@ import com.example.v1.semojo.entities.Issue;
 import com.example.v1.semojo.services.IssueService;
 import com.example.v1.semojo.services.ProductService;
 import com.example.v1.semojo.services.UserService;
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -85,32 +86,69 @@ public class IssueController {
 
     @GetMapping("/product/{productId}/issue/{issueId}/sub_issues")
     public WebRespResult getSubIssues(@PathVariable Long productId, @PathVariable Long issueId){
-        return null;
+        if (productService.findProductByProductId(productId)==null){
+            return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_NOT_EXIST.getCode(), ProductResultEnum.PRODUCT_NOT_EXIST.getMsg());
+        }else if (issueService.findIssueByIssueId(issueId)==null){
+            return IssueRespResultUtil.error(IssueResultEnum.ISSUE_NOT_EXIST.getCode(), IssueResultEnum.ISSUE_NOT_EXIST.getMsg());
+        }
+        return new WebRespResult(200, "success", issueService.getSubIssues(issueId));
     }
 
     @PostMapping("/customer/{username}/product/{productId}/issue/{issueId}/sub_issue")
-    public WebRespResult addSubIssues(@PathVariable Long productId,
+    public WebRespResult addSubIssues(@PathVariable String username,
+                                      @PathVariable Long productId,
                                       @PathVariable Long issueId,
                                       @RequestParam String answerToWho,
                                       @RequestParam String context){
-
-        return null;
+        if (productService.findProductByProductId(productId)==null){
+            return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_NOT_EXIST.getCode(), ProductResultEnum.PRODUCT_NOT_EXIST.getMsg());
+        }else if (userService.findUserByUsername(username)==null){
+            return UserRespResultUtil.error(UserResultEnum.USER_NOT_EXIST.getCode(), UserResultEnum.USER_NOT_EXIST.getMsg());
+        }else if (issueService.findIssueByIssueId(issueId)==null){
+            return IssueRespResultUtil.error(IssueResultEnum.ISSUE_NOT_EXIST.getCode(), IssueResultEnum.ISSUE_NOT_EXIST.getMsg());
+        }
+        return new WebRespResult(200, "success", issueService.addSubIssues(username, issueId, answerToWho, context));
     }
 
     @PutMapping("/customer/{username}/product/{productId}/issue/{issueId}/sub_issue/{subIssueId}")
-    public WebRespResult updateSubIssues(@PathVariable Long productId,
+    public WebRespResult updateSubIssues(@PathVariable String username,
+                                         @PathVariable Long productId,
                                          @PathVariable Long issueId,
                                          @PathVariable Long subIssueId,
                                          @RequestParam String context,
                                          @RequestParam String status){
-        return null;
+        if (productService.findProductByProductId(productId)==null){
+            return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_NOT_EXIST.getCode(), ProductResultEnum.PRODUCT_NOT_EXIST.getMsg());
+        }else if (userService.findUserByUsername(username)==null){
+            return UserRespResultUtil.error(UserResultEnum.USER_NOT_EXIST.getCode(), UserResultEnum.USER_NOT_EXIST.getMsg());
+        }else if (issueService.findIssueByIssueId(issueId)==null){
+            return IssueRespResultUtil.error(IssueResultEnum.ISSUE_NOT_EXIST.getCode(), IssueResultEnum.ISSUE_NOT_EXIST.getMsg());
+        }else if (issueService.findSubIssueBySubIssueId(subIssueId) == null){
+            return IssueRespResultUtil.error(IssueResultEnum.SUBISSUE_NOT_EXIST.getCode(), IssueResultEnum.SUBISSUE_NOT_EXIST.getMsg());
+        }else if (issueService.findSubIssueBySubIssueId(subIssueId).getPoster() != userService.findUserByUsername(username)){
+            return UserRespResultUtil.error(IssueResultEnum.NO_AUTHORITY.getCode(), IssueResultEnum.NO_AUTHORITY.getMsg());
+        }
+        return new WebRespResult(200, "success", issueService.updateSubIssues(subIssueId,context,status));
     }
 
     @DeleteMapping("/admin/{username}/product/{productId}/issue/{issueId}/sub_issue/{subIssueId}")
-    public WebRespResult deleteSubIssues(@PathVariable Long productId,
+    public WebRespResult deleteSubIssues(@PathVariable String username,
+                                         @PathVariable Long productId,
                                          @PathVariable Long issueId,
                                          @PathVariable Long subIssueId){
-
-        return null;
+        if (productService.findProductByProductId(productId)==null){
+            return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_NOT_EXIST.getCode(), ProductResultEnum.PRODUCT_NOT_EXIST.getMsg());
+        }else if (userService.findUserByUsername(username)==null){
+            return UserRespResultUtil.error(UserResultEnum.USER_NOT_EXIST.getCode(), UserResultEnum.USER_NOT_EXIST.getMsg());
+        }else if (issueService.findIssueByIssueId(issueId)==null){
+            return IssueRespResultUtil.error(IssueResultEnum.ISSUE_NOT_EXIST.getCode(), IssueResultEnum.ISSUE_NOT_EXIST.getMsg());
+        }else if (issueService.findSubIssueBySubIssueId(subIssueId) == null){
+            return IssueRespResultUtil.error(IssueResultEnum.SUBISSUE_NOT_EXIST.getCode(), IssueResultEnum.SUBISSUE_NOT_EXIST.getMsg());
+        }else if (issueService.findSubIssueBySubIssueId(subIssueId).getPoster() != userService.findUserByUsername(username)){
+            return UserRespResultUtil.error(IssueResultEnum.NO_AUTHORITY.getCode(), IssueResultEnum.NO_AUTHORITY.getMsg());
+        }
+        issueService.deleteSubIssue(username, issueId, subIssueId);
+        return new WebRespResult(200, "success");
     }
+
 }
