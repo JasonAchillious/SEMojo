@@ -39,8 +39,10 @@ public class JwtAuthFilter extends GenericFilterBean {
                 SecurityContextHolder.getContext().setAuthentication(token);
             } catch (SignatureException | MalformedJwtException e){
                 response.getWriter().write("{ \"error_msg\":" + "token parsing error" + "}");
+                response.getWriter().flush();
             } catch (ExpiredJwtException e){
                 response.getWriter().write("{ \"error_msg\":" + "token has expired" + "}");
+                response.getWriter().flush();
             } catch (Exception e){
                 e.printStackTrace();
             }

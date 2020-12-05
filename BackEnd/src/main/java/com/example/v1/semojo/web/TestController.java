@@ -1,5 +1,8 @@
 package com.example.v1.semojo.web;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,21 +13,14 @@ import java.util.Map;
 
 @RestController
 public class TestController {
+    @Autowired
+    RedisTemplate stringRedisTemplate;
 
     @PostMapping("/hello")
-    public String hello(String uploadDir, HttpServletRequest req) {
-        try {
-            String realPath = ResourceUtils.getURL("classpath:").getPath() + "static/uploadFile/" + uploadDir;
-            File folder = new File(realPath, uploadDir);
-            if (!folder.isDirectory()){
-                folder.mkdirs();
-                return realPath;
-            }
-            return realPath + "-error";
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return  "error";
+    public String hello(@RequestParam String key, @RequestParam String value) {
+        ValueOperations<String, String> ops1 = stringRedisTemplate.opsForValue();
+        ops1.set(key, value);
+        return  ops1.get(key);
     }
 
     @GetMapping("/customer/hello")
