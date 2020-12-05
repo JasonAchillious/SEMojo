@@ -34,11 +34,14 @@ public class User {
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Product> shoppingCart;
 
+    @OneToMany(mappedBy = "reviewAdmin")
+    private List<Review> reviewList;
+
     @OneToMany(mappedBy = "reviewer", cascade = CascadeType.ALL)
     private List<Review> reviews;
 
     @OneToMany(mappedBy = "poster", cascade = CascadeType.ALL)
-    private List<SubIssue> subReviews;
+    private List<SubReview> subReviews;
 
     @OneToMany(mappedBy = "questioner", cascade = CascadeType.ALL)
     private List<Issue> issues;
@@ -50,6 +53,22 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<User> friendList;
+
+    public List<Review> getReviewList() {
+        return reviewList;
+    }
+
+    public void setReviewList(List<Review> reviewList) {
+        this.reviewList = reviewList;
+    }
+
+    public List<SubReview> getSubReviews() {
+        return subReviews;
+    }
+
+    public void setSubReviews(List<SubReview> subReviews) {
+        this.subReviews = subReviews;
+    }
 
     public List<SubIssue> getSubIssues() {
         return subIssues;

@@ -56,9 +56,6 @@ public class Product {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Transaction> productTransac;
 
-    @OneToMany(mappedBy = "reviewProduct")
-    private List<Review> reviewList;
-
     @OneToMany(mappedBy = "issueProduct")
     private List<Issue> issueList;
 
@@ -79,14 +76,6 @@ public class Product {
 
     public void setIssueList(List<Issue> issueList) {
         this.issueList = issueList;
-    }
-
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
-
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
     }
 
     public List<ProductTag> getTags() {

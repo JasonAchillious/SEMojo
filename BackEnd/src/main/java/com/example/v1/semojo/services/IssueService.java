@@ -45,6 +45,8 @@ public class IssueService {
     
     public Issue addNewIssue( String username, Long productId, String title, String outline,
                               String context){
+        User user = userAuthDao.findUserAuthByUsername(username).getUser();
+        Product product = productDao.findProductByProductId(productId);
         Issue issue = new Issue();
         issue.setContext(context);
         Timestamp d = new Timestamp(System.currentTimeMillis());
@@ -55,7 +57,10 @@ public class IssueService {
         issue.setSubIssueList(subIssues);
         issue.setTitle(title);
         issue.setUpdateTime(d);
-        User user = userAuthDao.findUserAuthByUsername(username).getUser();
+        issue.setQuestioner(user);
+        issue.setIssueProduct(product);
+        issueDao.save(issue);
+
         List<Issue> userIssues;
         if (user.getIssues()!=null){
             userIssues = user.getIssues();
@@ -64,10 +69,8 @@ public class IssueService {
         }
         userIssues.add(issue);
         user.setIssues(userIssues);
-        issue.setQuestioner(user);
         userDao.save(user);
 
-        Product product = productDao.findProductByProductId(productId);
         List<Issue> issueList;
         if (product.getIssueList()!=null){
             issueList = product.getIssueList();
@@ -76,7 +79,7 @@ public class IssueService {
         }
         issueList.add(issue);
         product.setIssueList(issueList);
-        issue.setIssueProduct(product);
+
         productDao.save(product);
         return issueDao.save(issue);
 
@@ -86,12 +89,13 @@ public class IssueService {
         return subIssueDao.findSubIssueBySubIssueId(subIssueId);
     }
 
-    public IssueModel updateIssue(long issueId, String title, String outline, String context){
+    public IssueModel updateIssue(long issueId, String title, String outline, String context, String status){
         Issue issue = issueDao.findIssueByIssueId(issueId);
         issue.setTitle(title);
         issue.setOutline(outline);
         issue.setContext(context);
         issue.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+        issue.setStatus(Issue.IssueStatus.valueOf(status));
         issueDao.save(issue);
         return new IssueModel(issue);
     }
@@ -102,8 +106,10 @@ public class IssueService {
         User user = userAuthDao.findUserAuthByUsername(username).getUser();
         List<Issue> userIssueList = user.getIssues();
         userIssueList.remove(issue);
+        user.setIssues(userIssueList);
         List<Issue> productIssueList = product.getIssueList();
         productIssueList.remove(issue);
+        product.setIssueList(productIssueList);
         productDao.save(product);
         userDao.save(user);
         issueDao.delete(issue);
@@ -124,7 +130,7 @@ public class IssueService {
         return subIssueModels;
     }
 
-    public SubIssueModel addSubIssues(String username, long issueId, String answerToWho, String context){
+    public SubIssueModel addSubIssue(String username, long issueId, String answerToWho, String context){
         List<SubIssue> subIssues;
         Issue issue = issueDao.findIssueByIssueId(issueId);
         User user = userAuthDao.findUserAuthByUsername(username).getUser();
@@ -142,8 +148,8 @@ public class IssueService {
         subIssue.setCreateTime(d);
         subIssue.setUpdateTime(d);
         subIssue.setStatus(Issue.IssueStatus.open);
-        subIssues.add(subIssue);
         subIssueDao.save(subIssue);
+        subIssues.add(subIssue);
         issue.setSubIssueList(subIssues);
         List<SubIssue> subIssueList;
         if (user.getSubIssues() != null){
@@ -158,21 +164,24 @@ public class IssueService {
         return new SubIssueModel(subIssue);
     }
 
-    public SubIssueModel updateSubIssues(long subIssueId, String context, String status){
+    public SubIssueModel updateSubIssue(long subIssueId, String context, String status){
         SubIssue subIssue = subIssueDao.findSubIssueBySubIssueId(subIssueId);
         subIssue.setContext(context);
         subIssue.setStatus(Issue.IssueStatus.valueOf(status));
+        subIssueDao.save(subIssue);
         return new SubIssueModel(subIssue);
     }
 
-    public void deleteSubIssue(String username, long issueId, long subIssueId){
+    public void deleteSubIssue(long issueId, long subIssueId){
         Issue issue = issueDao.findIssueByIssueId(issueId);
-        User user = userAuthDao.findUserAuthByUsername(username).getUser();
         SubIssue subIssue = subIssueDao.findSubIssueBySubIssueId(subIssueId);
+        User user = subIssue.getSubIssuer();
         List<SubIssue> subIssues = issue.getSubIssueList();
         subIssues.remove(subIssue);
-        List<SubIssue> UserSubIssues = user.getSubIssues();
-        UserSubIssues.remove(subIssue);
+        issue.setSubIssueList(subIssues);
+        List<SubIssue> userSubIssues = user.getSubIssues();
+        userSubIssues.remove(subIssue);
+        user.setSubIssues(userSubIssues);
         subIssueDao.delete(subIssue);
         issueDao.save(issue);
         userDao.save(user);

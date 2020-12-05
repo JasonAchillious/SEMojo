@@ -10,6 +10,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long reviewId;
     private String title;
+    private String outline;
     private String context;
     private Double score;
     private Timestamp createTime;
@@ -29,6 +30,14 @@ public class Review {
     private User reviewAdmin;
     @OneToMany(mappedBy = "answerReview", cascade = CascadeType.ALL)
     private List<SubReview> subReviewList;
+
+    public String getOutline() {
+        return outline;
+    }
+
+    public void setOutline(String outline) {
+        this.outline = outline;
+    }
 
     public String getTitle() {
         return title;

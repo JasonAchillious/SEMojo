@@ -11,6 +11,7 @@ import java.util.List;
 public class ReviewModel {
     private Long reviewId;
     private String title;
+    private String outline;
     private String context;
     private Double score;
     private Timestamp createTime;
@@ -23,6 +24,7 @@ public class ReviewModel {
     public ReviewModel(Review review) {
         this.reviewId = review.getReviewId();
         this.title = review.getTitle();
+        this.outline = review.getOutline();
         this.context = review.getContext();
         this.score = review.getScore();
         this.createTime = review.getCreateTime();
@@ -37,6 +39,14 @@ public class ReviewModel {
             }
         }
         this.subReviewList = subReviewList;
+    }
+
+    public String getOutline() {
+        return outline;
+    }
+
+    public void setOutline(String outline) {
+        this.outline = outline;
     }
 
     public String getTitle() {
