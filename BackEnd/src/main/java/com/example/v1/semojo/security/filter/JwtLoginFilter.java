@@ -47,7 +47,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
         for (GrantedAuthority authority: authorities){
             roleStrBuf.append(authority.getAuthority()).append(" ");
         }
-        System.out.println("******" + authResult.getCredentials().toString() + "***************************");
+
         String jwt = Jwts.builder()
                 .claim("authorities", roleStrBuf)
                 .setSubject(authResult.getName())

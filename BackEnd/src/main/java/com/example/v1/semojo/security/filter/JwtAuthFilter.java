@@ -1,5 +1,6 @@
 package com.example.v1.semojo.security.filter;
 
+import com.example.v1.semojo.security.util.JwtUtil;
 import io.jsonwebtoken.*;
 import org.apache.catalina.core.Constants;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +15,9 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import java.awt.print.Printable;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 
 public class JwtAuthFilter extends GenericFilterBean {
@@ -24,12 +27,14 @@ public class JwtAuthFilter extends GenericFilterBean {
         HttpServletRequest req = (HttpServletRequest) request;
         String jwtToken = req.getHeader("authorization");
         //System.out.println(jwtToken);
+        PrintWriter out = response.getWriter();
         if (jwtToken != null && jwtToken.trim().length() > 0) {
             try {
-                Claims claims = Jwts.parser()
-                        .setSigningKey("zzx@11711621")
-                        .parseClaimsJws(jwtToken.replace("Bearer", ""))
-                        .getBody();
+                Claims claims = JwtUtil.parseJWT(jwtToken);
+//                        Jwts.parser()
+//                        .setSigningKey("zzx@11711621")
+//                        .parseClaimsJws(jwtToken.replace("Bearer", ""))
+//                        .getBody();
                 String username = claims.getSubject();
                 List<GrantedAuthority> authorities = AuthorityUtils
                         .commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
@@ -38,11 +43,13 @@ public class JwtAuthFilter extends GenericFilterBean {
                         authorities);
                 SecurityContextHolder.getContext().setAuthentication(token);
             } catch (SignatureException | MalformedJwtException e){
-                response.getWriter().write("{ \"error_msg\":" + "token parsing error" + "}");
-                response.getWriter().flush();
+                out.write("{ \"error_msg\":" + "token parsing error" + "}");
+                out.flush();
+                out.close();
             } catch (ExpiredJwtException e){
-                response.getWriter().write("{ \"error_msg\":" + "token has expired" + "}");
-                response.getWriter().flush();
+                out.write("{ \"error_msg\":" + "token has expired" + "}");
+                out.flush();
+                out.close();
             } catch (Exception e){
                 e.printStackTrace();
             }

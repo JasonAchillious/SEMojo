@@ -37,8 +37,9 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserAuth userAuth = userAuthDao.findUserAuthByUsername(username);
         if (userAuth == null) {
-            throw new UsernameNotFoundException("用户不存在");
+            throw new UsernameNotFoundException("User not exists");
         }
+
         return userAuth;
     }
 
