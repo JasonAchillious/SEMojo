@@ -1,6 +1,5 @@
 package com.example.v1.semojo.security;
 
-import com.example.v1.semojo.security.Handler.AccessDeniedHanderImpl;
 import com.example.v1.semojo.security.Handler.LoginFailureHandler;
 import com.example.v1.semojo.security.Handler.LoginSuccessHandler;
 import com.example.v1.semojo.security.filter.JwtAuthFilter;
@@ -57,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/js/**", "/css/**","/images/**");
+        web.ignoring().antMatchers("/js/**", "/css/**","/img/**", "/fonts");
     }
 
     @Override
@@ -77,7 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .anyRequest().permitAll();
 
         http.formLogin()
-                .loginPage("/login.html").permitAll()
+                .loginPage("/index.html").permitAll()
                 .loginProcessingUrl("/login")
                 .successHandler(new LoginSuccessHandler())
                 .failureHandler(new LoginFailureHandler())

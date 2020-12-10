@@ -27,7 +27,6 @@ public class JwtAuthFilter extends GenericFilterBean {
         HttpServletRequest req = (HttpServletRequest) request;
         String jwtToken = req.getHeader("authorization");
         //System.out.println(jwtToken);
-        PrintWriter out = response.getWriter();
         if (jwtToken != null && jwtToken.trim().length() > 0) {
             try {
                 Claims claims = JwtUtil.parseJWT(jwtToken);
@@ -43,10 +42,12 @@ public class JwtAuthFilter extends GenericFilterBean {
                         authorities);
                 SecurityContextHolder.getContext().setAuthentication(token);
             } catch (SignatureException | MalformedJwtException e){
+                PrintWriter out = response.getWriter();
                 out.write("{ \"error_msg\":" + "token parsing error" + "}");
                 out.flush();
                 out.close();
             } catch (ExpiredJwtException e){
+                PrintWriter out = response.getWriter();
                 out.write("{ \"error_msg\":" + "token has expired" + "}");
                 out.flush();
                 out.close();
