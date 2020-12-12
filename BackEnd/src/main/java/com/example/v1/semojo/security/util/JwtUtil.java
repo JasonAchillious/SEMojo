@@ -69,7 +69,7 @@ public class JwtUtil {
         SecretKey secretKey=generalKey();
         return Jwts.parser()
                 .setSigningKey(secretKey)
-                .parseClaimsJws(jwt)
+                .parseClaimsJws(jwt.replace("Bearer", ""))
                 .getBody();
     }
 
