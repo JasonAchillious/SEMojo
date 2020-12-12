@@ -26,6 +26,8 @@ public class JwtAuthFilter extends GenericFilterBean {
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         String jwtToken = req.getHeader("authorization");
+        boolean doFilterFlag = true;
+        //System.out.println(jwtToken);
         System.out.println(jwtToken);
         if (jwtToken != null && jwtToken.trim().length() > 0) {
             try {
@@ -41,10 +43,18 @@ public class JwtAuthFilter extends GenericFilterBean {
                         null,
                         authorities);
                 SecurityContextHolder.getContext().setAuthentication(token);
-                for (GrantedAuthority authority : authorities) {
-                    System.out.print(authority);
-                }
-                System.out.println("*******************");
+            } catch (SignatureException | MalformedJwtException e){
+                PrintWriter out = response.getWriter();
+                out.write("{ \"error_msg\":" + "token parsing error" + "}");
+                out.flush();
+                out.close();
+                doFilterFlag = false;
+            } catch (ExpiredJwtException e){
+                PrintWriter out = response.getWriter();
+                out.write("{ \"error_msg\":" + "token has expired" + "}");
+                out.flush();
+                out.close();
+                doFilterFlag = false;
             } catch (Exception e){
                 e.printStackTrace();
             }
@@ -53,6 +63,7 @@ public class JwtAuthFilter extends GenericFilterBean {
 //        else {
 //            response.getWriter().write("{ \"error_msg\":" + "token is empty" + "}");
 //        }
-        chain.doFilter(req, response);
+        if (doFilterFlag)
+            chain.doFilter(req, response);
     }
 }
