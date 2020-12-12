@@ -10,5 +10,4 @@ public class SemojoApplication {
     public static void main(String[] args) {
         SpringApplication.run(SemojoApplication.class, args);
     }
-
 }
