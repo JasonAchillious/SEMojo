@@ -26,7 +26,7 @@ public class ViewController {
     }
     @GetMapping("/")
     public String getMainPage(){
-        return "homepage.html";
+        return "index.html";
     }
 
     @GetMapping("/login")
