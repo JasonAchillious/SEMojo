@@ -37,7 +37,6 @@ public class swaggerConfig {
         return new ApiInfoBuilder()
                 .title("Semojo Restful API")
                 .description("These are Restful APIs for Semojo")
-                .termsOfServiceUrl("http://127.0.0.1:8080/")
                 .version("1.0")
                 .build();
     }

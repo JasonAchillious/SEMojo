@@ -45,12 +45,6 @@ public class UserController {
 
     @RequestMapping(value = "/register", method = POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "register a user")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "username", value = "account", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "password", value = "password", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "confirmPassword", value = "string matching password", required = true, dataType = "String"),
-            @ApiImplicitParam(name = "email", value = "email", required = true, dataType = "String")
-    })
     @ApiResponses({
             @ApiResponse(code=200, message="success", response= UserAuthModel.class),
     })
@@ -96,9 +90,6 @@ public class UserController {
 
     @RequestMapping(value = "/info/{username}", method = PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(value = "updateInfo", notes = "update the Info", httpMethod = "PUT")
-    @ApiImplicitParams(
-            @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
-    )
     public WebRespResult updateInfo(@PathVariable String username,
                                     @RequestBody UserInfoModel userInfoModel){
         if (userService.findUserByUsername(username) == null){
@@ -111,11 +102,6 @@ public class UserController {
 
     @RequestMapping(value = "/admin/users", method = GET)
     @ApiOperation(value = "get the list", notes = "obtain the list of registered user", tags = "admin", httpMethod = "GET")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "start", value = "start index in database", required = true, dataType = "long"),
-            @ApiImplicitParam(name = "limit", value = "the number of user in list", required = true, dataType = "long"),
-            @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
-    })
     @ApiResponses({
             @ApiResponse(code=200, message="success", response= List.class)
     })
@@ -126,9 +112,6 @@ public class UserController {
 
     @RequestMapping(value = "admin/user/{username}", method = DELETE)
     @ApiOperation(value = "delete user", notes = "delete user by id", tags = "admin", httpMethod = "DELETE")
-    @ApiImplicitParams(
-            @ApiImplicitParam(name = "token", value = "jwt", required = true, dataType = "bear token")
-    )
     @ApiResponses({
             @ApiResponse(code=200, message="success", response= WebRespResult.class),
     })
