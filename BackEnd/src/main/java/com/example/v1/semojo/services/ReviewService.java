@@ -31,8 +31,8 @@ public class ReviewService {
         User user = userAuthDao.findUserAuthByUsername(adminUsername).getUser();
         List<Review> reviews;
         List<ReviewModel> reviewModels = new ArrayList<>();
-        if (user.getReviews()!= null){
-            reviews = user.getReviews();
+        if (user.getReviewList()!= null){
+            reviews = user.getReviewList();
         }else {
             reviews = new ArrayList<>();
         }

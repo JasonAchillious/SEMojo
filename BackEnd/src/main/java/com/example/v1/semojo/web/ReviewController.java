@@ -12,12 +12,11 @@ import com.example.v1.semojo.entities.Review;
 import com.example.v1.semojo.services.ReviewService;
 import com.example.v1.semojo.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class ReviewController {
     @Autowired
     ReviewService reviewService;
@@ -33,7 +32,7 @@ public class ReviewController {
         return new WebRespResult(200, "success", reviewModels);
     }
 
-    @PostMapping("customer/{username}/admin/{adminUsername}/review")
+    @PostMapping("/customer/{username}/admin/{adminUsername}/review")
     public WebRespResult addReview(@PathVariable String username,
                                    @PathVariable String adminUsername,
                                    @RequestParam String title,
@@ -46,7 +45,7 @@ public class ReviewController {
         return new WebRespResult(200, "success", new ReviewModel(review));
     }
 
-    @PutMapping("customer/{username}/admin/{adminUsername}/review/{reviewId}")
+    @PutMapping("/customer/{username}/admin/{adminUsername}/review/{reviewId}")
     public WebRespResult updateReview(@PathVariable String username,
                                       @PathVariable String adminUsername,
                                       @PathVariable long reviewId,
@@ -65,7 +64,7 @@ public class ReviewController {
         return new WebRespResult(200, "success", reviewModel);
     }
 
-    @DeleteMapping("admin/{adminUsername}/customer/{username}/review/{reviewId}")
+    @DeleteMapping("/admin/{adminUsername}/customer/{username}/review/{reviewId}")
     public WebRespResult deleteReview(@PathVariable String adminUsername,
                                       @PathVariable String username,
                                       @PathVariable long reviewId){

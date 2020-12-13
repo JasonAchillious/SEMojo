@@ -35,7 +35,7 @@ public class IssueController {
         return new WebRespResult(200, "success", issueModels);
     }
 
-    @PostMapping("customer/{username}/product/{productId}/issue")
+    @PostMapping("/customer/{username}/product/{productId}/issue")
     public WebRespResult addIssue(@PathVariable String username,
                                   @PathVariable Long productId,
                                   @RequestParam String title,
@@ -50,7 +50,7 @@ public class IssueController {
         return new WebRespResult(200, "success", new IssueModel(issue));
     }
 
-    @PutMapping("customer/{username}/product/{productId}/issue/{issueId}")
+    @PutMapping("/customer/{username}/product/{productId}/issue/{issueId}")
     public WebRespResult updateIssue(@PathVariable String username,
                                      @PathVariable Long productId,
                                      @PathVariable Long issueId,
@@ -71,7 +71,7 @@ public class IssueController {
         return new WebRespResult(200, "success", issueModel);
     }
 
-    @DeleteMapping("contributor/{username}/product/{productId}/issue/{issueId}")
+    @DeleteMapping("/contributor/{username}/product/{productId}/issue/{issueId}")
     public WebRespResult deleteIssue(@PathVariable String username,
                                      @PathVariable Long productId,
                                      @PathVariable Long issueId){

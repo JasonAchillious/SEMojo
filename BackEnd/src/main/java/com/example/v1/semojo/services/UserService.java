@@ -149,6 +149,7 @@ public class UserService implements UserDetailsService {
         info.setWeChatNum(user.getWeChatNum());
         info.setPortrait(user.getPortrait());
         info.setQqNum(user.getQqNum());
+        info.setRole(user.getAuth().getRole());
         return info;
     }
 

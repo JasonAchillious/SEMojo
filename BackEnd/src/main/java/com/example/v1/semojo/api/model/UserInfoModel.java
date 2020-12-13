@@ -8,6 +8,15 @@ public class UserInfoModel {
     private String qqNum;
     private String weChatNum;
     private String portrait;
+    private int role;
+
+    public int getRole() {
+        return role;
+    }
+
+    public void setRole(int role) {
+        this.role = role;
+    }
 
     public String getEmail() {
         return email;

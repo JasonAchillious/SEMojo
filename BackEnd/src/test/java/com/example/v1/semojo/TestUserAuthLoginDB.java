@@ -28,7 +28,7 @@ public class TestUserAuthLoginDB {
         userAuthDao.save(u1);
 
         UserAuth u2 = new UserAuth();
-        u2.setUsername("XuPingShen");
+        u2.setUsername("XuPinShen");
         u2.setPassword(encoder.encode("123"));
         u2.setAccountNonExpired(true);
         u2.setAccountNonLocked(true);
@@ -38,7 +38,7 @@ public class TestUserAuthLoginDB {
         userAuthDao.save(u2);
 
         UserAuth u3 = new UserAuth();
-        u3.setUsername("ChengQianFan");
+        u3.setUsername("ChenQianFan");
         u3.setPassword(encoder.encode("123"));
         u3.setAccountNonExpired(true);
         u3.setAccountNonLocked(true);
