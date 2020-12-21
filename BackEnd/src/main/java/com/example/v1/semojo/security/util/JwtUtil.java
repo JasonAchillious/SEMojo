@@ -41,7 +41,7 @@ public class JwtUtil {
             Date now = new Date(nowMilllis);
             SecretKey secretKey=generalKey();
             JwtBuilder builder = Jwts.builder()
-                    .claim("authorities", roles)
+                    .claim("Authorization", roles)
                     .setId(id)
                     .setIssuer(iss)
                     .setSubject(subject)
