@@ -1,4 +1,4 @@
-package com.example.v1.semojo.entities;
+package com.example.v1.semojo.entities.mongodb;
 
 import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
@@ -13,22 +13,28 @@ import java.util.List;
         @CompoundIndex(name = "productName_description_idx", def = "{'productName': 1, 'description': -1}")
 })
 public class ProductMongo {
-    @MongoId
-    private String productId;
+
+    private Long productId;
     @Indexed(unique = true)
     private String productName;
     @Indexed
     private String description;
     @DBRef
-    private List<TextMongo> files;
+    private List<TextMongo> textFiles;
     @DBRef
     private List<ArtifactMongo> artifacts;
 
-    public String getProductId() {
+    public ProductMongo(Long productId, String productName, String description){
+        this.productId = productId;
+        this.productName = productName;
+        this.description = description;
+    }
+
+    public Long getProductId() {
         return productId;
     }
 
-    public void setProductId(String productId) {
+    public void setProductId(Long productId) {
         this.productId = productId;
     }
 
@@ -48,12 +54,12 @@ public class ProductMongo {
         this.description = description;
     }
 
-    public List<TextMongo> getFiles() {
-        return files;
+    public List<TextMongo> getTextFiles() {
+        return textFiles;
     }
 
-    public void setFiles(List<TextMongo> files) {
-        this.files = files;
+    public void setTextFiles(List<TextMongo> files) {
+        this.textFiles = files;
     }
 
     public List<ArtifactMongo> getArtifacts() {

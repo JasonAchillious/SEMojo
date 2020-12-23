@@ -1,7 +1,15 @@
 package com.example.v1.semojo.services;
 
 import com.example.v1.semojo.dao.*;
+import com.example.v1.semojo.dao.mongoDAO.ArtifactMongoDao;
+import com.example.v1.semojo.dao.mongoDAO.ProductMongoDao;
+import com.example.v1.semojo.dao.mongoDAO.TextMongoDao;
 import com.example.v1.semojo.entities.*;
+import com.example.v1.semojo.entities.mongodb.ArtifactMongo;
+import com.example.v1.semojo.entities.mongodb.ProductMongo;
+import com.example.v1.semojo.entities.mongodb.TextMongo;
+import org.apache.commons.io.IOUtils;
+import org.bson.types.Binary;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +41,12 @@ public class FileService {
     AdditionalFileDao additionalFileDao;
     @Autowired
     ProductDao productDao;
+    @Autowired
+    TextMongoDao textMongoDao;
+    @Autowired
+    ProductMongoDao productMongoDao;
+    @Autowired
+    ArtifactMongoDao artifactMongoDao;
 
     private static final Logger logger = LoggerFactory.getLogger(FileService.class);
 
@@ -68,20 +84,24 @@ public class FileService {
             case "python": af.setLang(SourceCode.Lang.python);
             default: throw new Exception("Not Such Language");
         }
+        Artifact artifactFile;
         if (artifacts == null){
             artifacts = new ArrayList<>();
             artifacts.add(af);
             product.setArtifacts(artifacts);
             Product updateProduct = productDao.save(product);
             List<Artifact> newArtifactList = updateProduct.getArtifacts();
-            return newArtifactList.get(newArtifactList.size()-1);
+            artifactFile = newArtifactList.get(newArtifactList.size()-1);
         }else {
             artifacts.add(af);
             product.setArtifacts(artifacts);
             Product updateProduct = productDao.save(product);
             List<Artifact> newArtifactList = updateProduct.getArtifacts();
-            return newArtifactList.get(newArtifactList.size()-1);
+            artifactFile = newArtifactList.get(newArtifactList.size()-1);
         }
+
+        insertArtifactMongo(productId, artifact, artifactFile.getId(), lang, filePath);
+        return artifactFile;
     }
 
     public String uploadFile(Long productId,
@@ -106,7 +126,7 @@ public class FileService {
         String filePath = file.getPath();
         return filePath;
     }
-
+    // todo add mongodb support
     public AdditionalFile uploadAddition(Long productId, String username, String description, MultipartFile uploadFile,
                                          HttpServletRequest req) throws IOException {
         String location = this.uploadFile(productId, uploadFile, "addition", req);
@@ -134,7 +154,7 @@ public class FileService {
             return fileList.get(fileList.size()-1);
         }
     }
-
+    // todo add mongodb support
     public Document uploadDoc(Long productId, String username, String description, MultipartFile uploadFile,
                               HttpServletRequest req) throws IOException {
         String location = this.uploadFile(productId, uploadFile, "doc", req);
@@ -162,7 +182,7 @@ public class FileService {
             return newDocs.get(newDocs.size()-1);
         }
     }
-
+    // todo add mongodb support
     public TestCase uploadTestCase(Long productId,
                                    String username,
                                    String description,
@@ -227,6 +247,7 @@ public class FileService {
         sc.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         sc.setFileName(sourceCode.getOriginalFilename());
 
+        SourceCode code;
         switch (lang){
             case "java": sc.setLang(SourceCode.Lang.java); break;
             case "golang": sc.setLang(SourceCode.Lang.golang); break;
@@ -242,14 +263,16 @@ public class FileService {
             product.setSourceCodes(sourceCodeList);
             Product updateProduct = productDao.save(product);
             List<SourceCode> newSourceCodes = updateProduct.getSourceCodes();
-            return newSourceCodes.get(newSourceCodes.size()-1);
+            code = newSourceCodes.get(newSourceCodes.size()-1);
         }else {
             sourceCodeList.add(sc);
             product.setSourceCodes(sourceCodeList);
             Product updateProduct = productDao.save(product);
             List<SourceCode> newSourceCodes = updateProduct.getSourceCodes();
-            return newSourceCodes.get(newSourceCodes.size()-1);
+            code = newSourceCodes.get(newSourceCodes.size()-1);
         }
+        insertTextFile(productId, sourceCode, code.getId(), "code", filePath);
+        return code;
     }
 
     public Optional<AdditionalFile> getAdditionalFile(Long fileId){
@@ -281,6 +304,14 @@ public class FileService {
         return product.getTestCases();
     }
 
+    public TextMongo findTextMongoById(long textId){
+        return textMongoDao.findTextMongoByTextId(textId);
+    }
+
+    public ArtifactMongo findArtifactMongoById(long artifactId){
+        return artifactMongoDao.findArtifactMongoByArtifactId(artifactId);
+    }
+
     public String getLocation(String type, Long fileId) throws Exception {
         switch (type){
             case "other": return additionalFileDao.findAdditionalFileById(fileId).getLocation();
@@ -308,4 +339,57 @@ public class FileService {
         }
         return folder;
     }
+
+
+    public TextMongo insertTextFile(Long productId, MultipartFile textFile,
+                                    long textId, String contentType, String path) throws Exception {
+        StringWriter writer = new StringWriter();
+        IOUtils.copy(textFile.getInputStream(), writer, StandardCharsets.UTF_8.name());
+        String content = writer.toString();
+        TextMongo textMongo = new TextMongo(textId,
+                textFile.getOriginalFilename(),
+                contentType, textFile.getSize(),
+                new Timestamp(System.currentTimeMillis()) ,content, path);
+        ProductMongo productMongo =  productMongoDao.findProductMongoByProductId(productId);
+        if (productMongo != null){
+            textMongo = textMongoDao.save(textMongo);
+            List<TextMongo> textMongoList;
+            if (productMongo.getTextFiles() != null) {
+                textMongoList = productMongo.getTextFiles();
+            }else{
+                textMongoList = new ArrayList<>();
+            }
+            textMongoList.add(textMongo);
+            productMongo.setTextFiles(textMongoList);
+            productMongoDao.save(productMongo);
+            return textMongo;
+        }else {
+            throw new Exception("Not such product in mongodb");
+        }
+    }
+
+    public ArtifactMongo insertArtifactMongo(Long productId, MultipartFile artifact,
+                                             long artifactId, String type, String path) throws Exception {
+        ArtifactMongo artifactMongo = new ArtifactMongo(artifactId,
+                artifact.getOriginalFilename(),
+                type, artifact.getSize(),
+                new Binary(artifact.getBytes()), new Timestamp(System.currentTimeMillis()), path);
+        ProductMongo productMongo =  productMongoDao.findProductMongoByProductId(productId);
+        if (productMongo != null){
+            artifactMongo = artifactMongoDao.save(artifactMongo);
+            List<ArtifactMongo> artifactMongoList;
+            if (productMongo.getArtifacts() != null) {
+                artifactMongoList = productMongo.getArtifacts();
+            }else{
+                artifactMongoList = new ArrayList<>();
+            }
+            artifactMongoList.add(artifactMongo);
+            productMongo.setArtifacts(artifactMongoList);
+            productMongoDao.save(productMongo);
+            return artifactMongo;
+        }else {
+            throw new Exception("Not such product in mongodb");
+        }
+    }
+
 }

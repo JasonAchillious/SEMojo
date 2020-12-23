@@ -7,6 +7,8 @@ import com.example.v1.semojo.api.model.FileRespModel;
 import com.example.v1.semojo.api.util.FileRespResultUtil;
 import com.example.v1.semojo.api.util.RespUtil;
 import com.example.v1.semojo.entities.AdditionalFile;
+import com.example.v1.semojo.entities.mongodb.ArtifactMongo;
+import com.example.v1.semojo.entities.mongodb.TextMongo;
 import com.example.v1.semojo.services.FileService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -112,6 +114,22 @@ public class FileController {
                     os.write(buffer);
                     i = bis.read(buffer);
                 }
+            }else {
+                OutputStream os = response.getOutputStream();
+                switch (type) {
+                    case "code":
+                        TextMongo textMongo = fileService.findTextMongoById(fileId);
+                        os.write(textMongo.getContent().getBytes());
+                        break;
+                    case "artifact":
+                        ArtifactMongo artifactMongo = fileService.findArtifactMongoById(fileId);
+                        os.write(artifactMongo.getContent().getData());
+                        break;
+                    default:
+                        os.write("{\"code\": 401, \"msg\": \"Wrong Type for Downloading file\"}".getBytes());
+                 }
+                 os.flush();
+                 os.close();
             }
         }catch (Exception e) {
             e.printStackTrace();

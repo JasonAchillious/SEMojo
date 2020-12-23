@@ -3,7 +3,9 @@ package com.example.v1.semojo.services;
 import com.example.v1.semojo.api.model.ProductDetailModel;
 import com.example.v1.semojo.api.model.ProductPreviewModel;
 import com.example.v1.semojo.dao.*;
+import com.example.v1.semojo.dao.mongoDAO.ProductMongoDao;
 import com.example.v1.semojo.entities.*;
+import com.example.v1.semojo.entities.mongodb.ProductMongo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,8 @@ public class ProductService {
     UserDao userDao;
     @Autowired
     AuthorityDao authorityDao;
+    @Autowired
+    ProductMongoDao productMongoDao;
 
     public List<ProductPreviewModel> getProductList( int limit, int start, String tag, String lang){
         List<ProductPreviewModel> result = new ArrayList<>();
@@ -127,7 +131,8 @@ public class ProductService {
         owners.add(t_creator);
         n_product.setOwners(owners);
         n_product.setStatus(Product.ProductStatus.developing);
-        productDao.save(n_product);
+        Product product = productDao.save(n_product);
+        insertProductMongo(product.getProductId(), product.getProductName(), product.getOutline());
     }
 
     public Product findProductByProductName(String productName){
@@ -216,5 +221,10 @@ public class ProductService {
             }
         }
         productDao.deleteById(productId);
+    }
+
+    public ProductMongo insertProductMongo(Long productId, String productName, String description){
+        ProductMongo productMongo = new ProductMongo(productId, productName, description);
+        return productMongoDao.save(productMongo);
     }
 }
