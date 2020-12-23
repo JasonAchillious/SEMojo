@@ -28,7 +28,6 @@ public class JwtAuthFilter extends GenericFilterBean {
         String jwtToken = req.getHeader("authorization");
         boolean doFilterFlag = true;
         //System.out.println(jwtToken);
-        System.out.println(jwtToken);
         if (jwtToken != null && jwtToken.trim().length() > 0) {
             try {
                 Claims claims = JwtUtil.parseJWT(jwtToken);
@@ -39,6 +38,8 @@ public class JwtAuthFilter extends GenericFilterBean {
                 String username = claims.getSubject();
                 List<GrantedAuthority> authorities = AuthorityUtils
                         .commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
+
+
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username,
                         null,
                         authorities);
