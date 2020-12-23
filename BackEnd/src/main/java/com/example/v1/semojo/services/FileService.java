@@ -8,6 +8,7 @@ import com.example.v1.semojo.entities.*;
 import com.example.v1.semojo.entities.mongodb.ArtifactMongo;
 import com.example.v1.semojo.entities.mongodb.ProductMongo;
 import com.example.v1.semojo.entities.mongodb.TextMongo;
+import com.example.v1.semojo.util.FileUtil;
 import org.apache.commons.io.IOUtils;
 import org.bson.types.Binary;
 import org.slf4j.Logger;
@@ -99,8 +100,8 @@ public class FileService {
             List<Artifact> newArtifactList = updateProduct.getArtifacts();
             artifactFile = newArtifactList.get(newArtifactList.size()-1);
         }
-
-        insertArtifactMongo(productId, artifact, artifactFile.getId(), lang, filePath);
+        File file = new File(filePath);
+        insertArtifactMongo(productId, artifact, artifactFile.getId(), lang, filePath, file);
         return artifactFile;
     }
 
@@ -236,7 +237,8 @@ public class FileService {
                                        MultipartFile sourceCode,
                                        HttpServletRequest req) throws Exception {
 
-        String filePath = uploadFile(productId, sourceCode, "code", req);
+        String filePath = "TODO";
+                //uploadFile(productId, sourceCode, "code", req);
         Product product = productDao.findProductByProductId(productId);
         List<SourceCode> sourceCodeList = product.getSourceCodes();
         SourceCode sc = new SourceCode();
@@ -271,7 +273,7 @@ public class FileService {
             List<SourceCode> newSourceCodes = updateProduct.getSourceCodes();
             code = newSourceCodes.get(newSourceCodes.size()-1);
         }
-        insertTextFile(productId, sourceCode, code.getId(), "code", filePath);
+        insertTextFile(productId, sourceCode, code.getId(), "code");
         return code;
     }
 
@@ -342,14 +344,15 @@ public class FileService {
 
 
     public TextMongo insertTextFile(Long productId, MultipartFile textFile,
-                                    long textId, String contentType, String path) throws Exception {
+                                    long textId, String contentType) throws Exception {
         StringWriter writer = new StringWriter();
+
         IOUtils.copy(textFile.getInputStream(), writer, StandardCharsets.UTF_8.name());
         String content = writer.toString();
-        TextMongo textMongo = new TextMongo(textId,
+        TextMongo textMongo = new TextMongo(productId, textId,
                 textFile.getOriginalFilename(),
                 contentType, textFile.getSize(),
-                new Timestamp(System.currentTimeMillis()) ,content, path);
+                new Timestamp(System.currentTimeMillis()) ,content);
         ProductMongo productMongo =  productMongoDao.findProductMongoByProductId(productId);
         if (productMongo != null){
             textMongo = textMongoDao.save(textMongo);
@@ -369,11 +372,12 @@ public class FileService {
     }
 
     public ArtifactMongo insertArtifactMongo(Long productId, MultipartFile artifact,
-                                             long artifactId, String type, String path) throws Exception {
-        ArtifactMongo artifactMongo = new ArtifactMongo(artifactId,
+                                             long artifactId, String type, String path, File file) throws Exception {
+        byte[] bFile = FileUtil.fileToByte(file);
+        ArtifactMongo artifactMongo = new ArtifactMongo(productId, artifactId,
                 artifact.getOriginalFilename(),
                 type, artifact.getSize(),
-                new Binary(artifact.getBytes()), new Timestamp(System.currentTimeMillis()), path);
+                new Binary(bFile), new Timestamp(System.currentTimeMillis()), path);
         ProductMongo productMongo =  productMongoDao.findProductMongoByProductId(productId);
         if (productMongo != null){
             artifactMongo = artifactMongoDao.save(artifactMongo);

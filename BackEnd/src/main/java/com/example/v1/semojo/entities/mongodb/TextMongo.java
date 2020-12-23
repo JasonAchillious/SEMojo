@@ -8,9 +8,11 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Document(collation = "texts")
+@Document("texts")
 public class TextMongo {
+    private String _id;
     private Long textId;
+    private Long productId;
     private String name;
     private String contentType;
     private long size;
@@ -18,18 +20,20 @@ public class TextMongo {
     private String content;
     private String path;
 
+
     protected TextMongo() {
     }
 
 
-    public TextMongo(Long textId, String name, String contentType, long size, Timestamp updateDate, String content, String path) {
+    public TextMongo(Long productId, Long textId, String name,
+                     String contentType, long size, Timestamp updateDate, String content) {
         this.textId = textId;
         this.name = name;
         this.contentType = contentType;
         this.size = size;
         this.updateDate = updateDate;
         this.content = content;
-        this.path = path;
+        this.productId = productId;
     }
 
     @Override
@@ -49,6 +53,22 @@ public class TextMongo {
     @Override
     public int hashCode() {
         return Objects.hash(textId, name, contentType, size, updateDate, content, path);
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public Long getTextId() {

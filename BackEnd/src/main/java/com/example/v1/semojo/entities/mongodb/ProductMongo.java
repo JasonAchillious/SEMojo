@@ -13,7 +13,7 @@ import java.util.List;
         @CompoundIndex(name = "productName_description_idx", def = "{'productName': 1, 'description': -1}")
 })
 public class ProductMongo {
-
+    private String _id;
     private Long productId;
     @Indexed(unique = true)
     private String productName;

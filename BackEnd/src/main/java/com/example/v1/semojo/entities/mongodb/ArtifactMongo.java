@@ -8,9 +8,11 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Document(collation = "artifacts")
+@Document("artifacts")
 public class ArtifactMongo {
+    private String _id;
     private Long artifactId;
+    private Long productId;
     private String name;
     private String type;
     private long size;
@@ -23,7 +25,7 @@ public class ArtifactMongo {
     }
 
 
-    public ArtifactMongo(Long artifactId, String name, String type, long size,
+    public ArtifactMongo(Long productId, Long artifactId, String name, String type, long size,
                          Binary content, Timestamp updateDate, String path) {
         this.name = name;
         this.type = type;
@@ -32,6 +34,7 @@ public class ArtifactMongo {
         this.artifactId = artifactId;
         this.updateDate = updateDate;
         this.path = path;
+        this.productId = productId;
     }
 
 
@@ -53,6 +56,22 @@ public class ArtifactMongo {
     @Override
     public int hashCode() {
         return Objects.hash(artifactId, name, type, size, updateDate, md5, content, path);
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public Long getArtifactId() {
