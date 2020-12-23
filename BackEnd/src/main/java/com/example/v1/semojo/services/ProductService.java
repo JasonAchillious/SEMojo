@@ -139,7 +139,7 @@ public class ProductService {
         return productDao.findProductByProductName(productName);
     }
 
-    public void updateProduct(long productId, String productName, String outline, double currentPrice, String status, List<String> contributors, List<String> tags){
+    public void updateProduct(long productId, String productName, String outline, double currentPrice, String status, String contributors, String tags){
         Timestamp d = new Timestamp(System.currentTimeMillis());
         Product t_product = findProductByProductId(productId);
         t_product.setProductName(productName);
@@ -148,7 +148,9 @@ public class ProductService {
         t_product.setStatus(Product.ProductStatus.valueOf(status));
         t_product.setUpdate_time(d);
         productDao.save(t_product);
-        for (String contributor : contributors) {
+        String[] contributorsArray = contributors.split("_");
+        String[] tagsArray = tags.split("_");
+        for (String contributor : contributorsArray) {
             System.out.println(contributor);
             UserAuth t_userAuth = userAuthDao.findUserAuthByUsername(contributor);
             Authority n_auth = new Authority();
@@ -182,7 +184,7 @@ public class ProductService {
                 userDao.save(user);
             }
         }
-        for (String tag : tags){
+        for (String tag : tagsArray){
             List<ProductTag> t_tags;
             System.out.println(tag);
             if (t_product.getTags()!=null){
