@@ -148,67 +148,67 @@ public class ProductService {
         t_product.setStatus(Product.ProductStatus.valueOf(status));
         t_product.setUpdate_time(d);
         productDao.save(t_product);
-        String[] contributorsArray = contributors.split("_");
-        String[] tagsArray = tags.split("_");
-        for (String contributor : contributorsArray) {
-            System.out.println(contributor);
-            UserAuth t_userAuth = userAuthDao.findUserAuthByUsername(contributor);
-            Authority n_auth = new Authority();
-            n_auth.setProductId(t_product.getProductId());
-            n_auth.setName(Authority.AuthType.all);
-
-            List<Authority> userAuths;
-            if (t_userAuth.getAuthorities()!=null){
-                userAuths = t_userAuth.getAuthority();
-            }else {
-                userAuths = new ArrayList<>();
-            }
-            if (!userAuths.contains(n_auth)){
-                System.out.println(n_auth.getName());
-                userAuths.add(n_auth);
-                t_userAuth.setAuthorities(userAuths);
-                List<User> owners = t_product.getOwners();
-                owners.add(t_userAuth.getUser());
-                t_product.setOwners(owners);
-                User user = t_userAuth.getUser();
-                List<Product> products ;
-                if (user.getOwnedProducts()!=null){
-                    products = user.getOwnedProducts();
-                }else {
-                    products = new ArrayList<>();
-                }
-                products.add(t_product);
-                user.setOwnedProducts(products);
-                productDao.save(t_product);
-                userAuthDao.save(t_userAuth);
-                userDao.save(user);
-            }
-        }
-        for (String tag : tagsArray){
-            List<ProductTag> t_tags;
-            System.out.println(tag);
-            if (t_product.getTags()!=null){
-                t_tags = t_product.getTags();
-            }else {
-                t_tags = new ArrayList<>();
-            }
-            ProductTag t_tag = productTagDao.findProductTagByTag(tag);
-            System.out.println(t_tag.getTag());
-            if (!t_tags.contains(t_tag)){
-                t_tags.add(t_tag);
-                List<Product> products;
-                if (t_tag.getProducts()!= null){
-                    products = t_tag.getProducts();
-                }else {
-                    products = new ArrayList<>();
-                }
-                products.add(t_product);
-                t_tag.setProducts(products);
-                t_product.setTags(t_tags);
-                productTagDao.save(t_tag);
-                productDao.save(t_product);
-            }
-        }
+//        String[] contributorsArray = contributors.split("_");
+//        String[] tagsArray = tags.split("_");
+//        for (String contributor : contributorsArray) {
+//            System.out.println(contributor);
+//            UserAuth t_userAuth = userAuthDao.findUserAuthByUsername(contributor);
+//            Authority n_auth = new Authority();
+//            n_auth.setProductId(t_product.getProductId());
+//            n_auth.setName(Authority.AuthType.all);
+//
+//            List<Authority> userAuths;
+//            if (t_userAuth.getAuthorities()!=null){
+//                userAuths = t_userAuth.getAuthority();
+//            }else {
+//                userAuths = new ArrayList<>();
+//            }
+//            if (!userAuths.contains(n_auth)){
+//                System.out.println(n_auth.getName());
+//                userAuths.add(n_auth);
+//                t_userAuth.setAuthorities(userAuths);
+//                List<User> owners = t_product.getOwners();
+//                owners.add(t_userAuth.getUser());
+//                t_product.setOwners(owners);
+//                User user = t_userAuth.getUser();
+//                List<Product> products ;
+//                if (user.getOwnedProducts()!=null){
+//                    products = user.getOwnedProducts();
+//                }else {
+//                    products = new ArrayList<>();
+//                }
+//                products.add(t_product);
+//                user.setOwnedProducts(products);
+//                productDao.save(t_product);
+//                userAuthDao.save(t_userAuth);
+//                userDao.save(user);
+//            }
+//        }
+//        for (String tag : tagsArray){
+//            List<ProductTag> t_tags;
+//            System.out.println(tag);
+//            if (t_product.getTags()!=null){
+//                t_tags = t_product.getTags();
+//            }else {
+//                t_tags = new ArrayList<>();
+//            }
+//            ProductTag t_tag = productTagDao.findProductTagByTag(tag);
+//            System.out.println(t_tag.getTag());
+//            if (!t_tags.contains(t_tag)){
+//                t_tags.add(t_tag);
+//                List<Product> products;
+//                if (t_tag.getProducts()!= null){
+//                    products = t_tag.getProducts();
+//                }else {
+//                    products = new ArrayList<>();
+//                }
+//                products.add(t_product);
+//                t_tag.setProducts(products);
+//                t_product.setTags(t_tags);
+//                productTagDao.save(t_tag);
+//                productDao.save(t_product);
+//            }
+//        }
         productDao.save(t_product);
     }
 
