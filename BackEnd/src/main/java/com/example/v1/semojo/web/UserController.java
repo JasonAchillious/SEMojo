@@ -225,49 +225,4 @@ public class UserController {
             return new WebRespResult<>(200, "success", productPreviewModels);
 
     }
-
-    @GetMapping("custormer/{username}/friends")
-    public WebRespResult getFriends(@PathVariable String username){
-        return null;
-    }
-
-    @PostMapping("customer/{username}/friend")
-    public WebRespResult addFriend(@PathVariable String username, @RequestParam String friendName){
-        return null;
-    }
-
-    @DeleteMapping("customer/{username}/friend")
-    public WebRespResult deleteFriend(@PathVariable String username, @RequestParam String friendName){
-        return null;
-    }
-
-    @GetMapping("custormer/{username}/shopping_cart")
-    public WebRespResult getShoppingCartList(@PathVariable String username){
-        return null;
-    }
-
-    @PostMapping("custormer/{username}/shopping_cart")
-    public WebRespResult addProductToShoppingCart(@PathVariable String username, @RequestParam Long productId){
-        return null;
-    }
-
-    @DeleteMapping("custormer/{username}/shopping_cart")
-    public WebRespResult deleteProductInShoppingCart(@PathVariable String username, @RequestParam Long productId){
-        return null;
-    }
-
-    @GetMapping("custormer/{username}/favorites")
-    public WebRespResult getFavorites(@PathVariable String username){
-        return null;
-    }
-
-    @PostMapping("custormer/{username}/favorites")
-    public WebRespResult addProductToFavorites(@PathVariable String username, @RequestParam Long productId){
-        return null;
-    }
-
-    @DeleteMapping("custormer/{username}/favorites")
-    public WebRespResult deleteProductInFavorites(@PathVariable String username, @RequestParam Long productId){
-        return null;
-    }
 }
