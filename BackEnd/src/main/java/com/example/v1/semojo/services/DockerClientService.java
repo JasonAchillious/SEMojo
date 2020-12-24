@@ -33,6 +33,8 @@ import java.io.*;
 import java.sql.Timestamp;
 import java.util.*;
 
+import static com.example.v1.semojo.util.ConnectUtil.directory;
+
 @Service
 public class DockerClientService{
 
@@ -55,10 +57,10 @@ public class DockerClientService{
                 filename = filename.substring(0, dot);
             }
         }
-        FileUtil.bytesToFile(artifactMongo.getContent().getData(),"D:\\program\\IdeaProjects\\SEMojo-v1\\BackEnd\\src\\main\\java\\com\\example\\v1\\semojo\\file\\"+filename+"\\"+filename+".jar");
+        FileUtil.bytesToFile(artifactMongo.getContent().getData(),directory + "src/main/java/com/example/v1/semojo/file/"+filename+"/"+filename+".jar");
         FileWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter("D:\\program\\IdeaProjects\\SEMojo-v1\\BackEnd\\src\\main\\java\\com\\example\\v1\\semojo\\file\\"+ filename +"\\input.txt");
+            fileWriter = new FileWriter(directory + "src/main/java/com/example/v1/semojo/file/"+ filename +"/input.txt");
             fileWriter.write(textMongo.getContent());
         } catch (IOException e) {
             e.printStackTrace();
@@ -87,11 +89,11 @@ public class DockerClientService{
         dockerFactory.copyFile(filename, id);
         dockerFactory.getFile(filename);
         ConnectUtil.closeChannel();
-        File file = new File("D:\\program\\IdeaProjects\\SEMojo-v1\\BackEnd\\src\\main\\java\\com\\example\\v1\\semojo\\file\\"+filename+"\\output.txt");
+        File file = new File(directory + "src/main/java/com/example/v1/semojo/file/"+filename+"/output.txt");
         StringBuffer buffer = new StringBuffer();
         BufferedReader bf= null;
         try {
-            bf = new BufferedReader(new FileReader("D:\\program\\IdeaProjects\\SEMojo-v1\\BackEnd\\src\\main\\java\\com\\example\\v1\\semojo\\file\\"+filename+"\\output.txt"));
+            bf = new BufferedReader(new FileReader(directory + "src/main/java/com/example/v1/semojo/file/"+filename+"/output.txt"));
             String s = null;
             while((s = bf.readLine())!=null){//使用readLine方法，一次读一行
                 buffer.append(s);
