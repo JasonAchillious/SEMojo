@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TextMongoDao extends MongoRepository<TextMongo,String> {
     TextMongo findTextMongoByTextId(Long textId);
-    List<TextMongo> findTextMongosByContentLike(String keyword);
+    List<TextMongo> findTextMongosByContentContaining(String keyword);
 
 
 }
