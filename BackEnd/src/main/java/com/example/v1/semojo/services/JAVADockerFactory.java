@@ -1,5 +1,6 @@
 package com.example.v1.semojo.services;
 
+import com.example.v1.semojo.util.ConnectUtil;
 import com.jcraft.jsch.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,7 +35,7 @@ public class JAVADockerFactory implements ArtifactsDockerFactory {
         if (channelSftp.isClosed()) {
             createChannel(); // 如果被关闭则应重新创建
         }
-        String src = "D:/program/IdeaProjects/SEMojo-v1/BackEnd/src/main/java/com/example/v1/semojo/file/" + filename + "/" + filename + ".jar";
+        String src = directory + "src/main/java/com/example/v1/semojo/file/" + filename + "/" + filename + ".jar";
         String dst = "ooad/java/"+ filename + "/" + filename + ".jar";
         try {
             channelSftp.mkdir("ooad/java/"+filename);
@@ -44,7 +45,7 @@ public class JAVADockerFactory implements ArtifactsDockerFactory {
             System.out.println("sftp upload file failed! src: {" + src + "}, dst: {" + dst + "}");
             return false;
         }
-        src = "D:/program/IdeaProjects/SEMojo-v1/BackEnd/src/main/java/com/example/v1/semojo/file/" + filename + "/input.txt";
+        src = directory + "src/main/java/com/example/v1/semojo/file/" + filename + "/input.txt";
         dst = "ooad/java/"+ filename + "/input.txt";
         try {
             channelSftp.put(src, dst, ChannelSftp.OVERWRITE);
@@ -53,7 +54,7 @@ public class JAVADockerFactory implements ArtifactsDockerFactory {
             System.out.println("sftp upload file failed! src: {" + src + "}, dst: {" + dst + "}");
             return false;
         }
-        src = "D:/program/IdeaProjects/SEMojo-v1/BackEnd/src/main/java/com/example/v1/semojo/file/output.txt";
+        src = directory + "src/main/java/com/example/v1/semojo/file/output.txt";
         dst = "ooad/java/"+ filename + "/output.txt";
         try {
             channelSftp.put(src, dst, ChannelSftp.OVERWRITE);
@@ -62,7 +63,7 @@ public class JAVADockerFactory implements ArtifactsDockerFactory {
             System.out.println("sftp upload file failed! src: {" + src + "}, dst: {" + dst + "}");
             return false;
         }
-        src = "D:\\program\\IdeaProjects\\SEMojo-v1\\BackEnd\\javaDocker\\Dockerfile";
+        src = directory + "javaDocker/Dockerfile";
         dst = "ooad/java/"+ filename + "/Dockerfile";
         try {
             channelSftp.put(src, dst, ChannelSftp.OVERWRITE);
@@ -85,7 +86,7 @@ public class JAVADockerFactory implements ArtifactsDockerFactory {
             createChannel(); // 如果被关闭则应重新创建
         }
         String src = "ooad/java/"+ filename + "/output.txt";
-        String dst = "D:/program/IdeaProjects/SEMojo-v1/BackEnd/src/main/java/com/example/v1/semojo/file/" + filename + "/output.txt";
+        String dst = directory + "src/main/java/com/example/v1/semojo/file/" + filename + "/output.txt";
         try {
             channelSftp.get(src, dst);
             System.out.println("sftp get file success! src: {" + src + "}, dst: {" + dst + "}");
