@@ -34,6 +34,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 import static com.example.v1.semojo.util.ConnectUtil.directory;
+import static com.example.v1.semojo.util.ConnectUtil.runCmd;
 
 @Service
 public class DockerClientService{
@@ -78,15 +79,12 @@ public class DockerClientService{
         dockerFactory.uploadFile(filename);
         dockerFactory.createImage(filename);
 
-        String id = dockerClient.createContainerCmd("ooad:"+filename).withStdinOpen(Boolean.TRUE).exec().getId();
-        System.out.println(id);
-        dockerClient.startContainerCmd(id).exec();
+        runCmd("cd /root/ooad/java/"+filename+"; docker run -i ooad:"+filename+" < input.txt > output.txt");
         try {
             Thread.currentThread().sleep(10000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        dockerFactory.copyFile(filename, id);
         dockerFactory.getFile(filename);
         ConnectUtil.closeChannel();
         File file = new File(directory + "src/main/java/com/example/v1/semojo/file/"+filename+"/output.txt");
@@ -100,6 +98,11 @@ public class DockerClientService{
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            ConnectUtil.closeClient();
         } catch (IOException e) {
             e.printStackTrace();
         }

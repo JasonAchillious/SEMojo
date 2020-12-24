@@ -3,6 +3,7 @@ package com.example.v1.semojo;
 import com.example.v1.semojo.api.model.ContainerModel;
 import com.example.v1.semojo.api.model.DockerModel;
 import com.example.v1.semojo.services.DockerClientService;
+import com.example.v1.semojo.util.ConnectUtil;
 import com.github.dockerjava.api.DockerClient;
 import com.github.dockerjava.api.command.CreateContainerResponse;
 import com.github.dockerjava.api.command.InspectContainerResponse;
@@ -14,6 +15,8 @@ import java.io.*;
 import java.util.List;
 import java.util.Objects;
 
+import static com.example.v1.semojo.util.ConnectUtil.*;
+
 @SpringBootTest
 class SemojoApplicationTests {
 //@Autowired
@@ -21,17 +24,18 @@ class SemojoApplicationTests {
     @Test
     void contextLoads() {
         //连接docker服务器
-//        DockerClient dockerClient = dockerClientService.initClient();
+//        DockerClient dockerClient = ConnectUtil.initClient();
+//        runCmd("docker run -it --name getInput ooad:getInput > output.txt");
 //        DockerModel dockerModel = dockerClientService.getDockerInfo();
 //        List<ContainerModel> containerModels = dockerClientService.getContainers();
 //        System.out.println(containerModels.toString());
 //        System.out.println(dockerModel.toString());
 
-//        dockerClientService.createChannel();
+//        createChannel();
 ////        dockerClientService.uploadFile("getInput", "ooad/getInput");
-//        dockerClientService.runCmd("docker run -it --name getInput java:getInput");
+//        runCmd("cd /root/ooad/java/getInput; docker run -it --name getInput java:getInput > output");
 //        List<String> results = dockerClientService.runCmd("aaa");
-//
+//        closeChannel();
 //
 //        for (String id: results){
 //            System.out.println(id);

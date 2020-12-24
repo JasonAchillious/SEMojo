@@ -90,7 +90,7 @@ public class ConnectUtil {
      * 关闭docker连接
      *
      */
-    public void closeClient() throws IOException {
+    public static void closeClient() throws IOException {
         dockerClient.close();
     }
 
