@@ -1,5 +1,6 @@
 package com.example.v1.semojo.api.model;
 
+import java.util.Date;
 import java.sql.Timestamp;
 
 public class TextSearchModel {
@@ -10,15 +11,11 @@ public class TextSearchModel {
     private String name;
     private String contentType;
     private long size;
-    private Timestamp updateDate;
+    private Date updateDate;
     private String content;
 
     public Long getTextId() {
         return textId;
-    }
-
-    public void setTextId(Long textId) {
-        this.textId = textId;
     }
 
     public Long getProductId() {
@@ -69,11 +66,11 @@ public class TextSearchModel {
         this.size = size;
     }
 
-    public Timestamp getUpdateDate() {
+    public Date getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Timestamp updateDate) {
+    public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
 
@@ -83,5 +80,17 @@ public class TextSearchModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setTextId(Long textId) {
+        this.textId = textId;
+    }
+
+    public String getProductDescription() {
+        return productDescription;
+    }
+
+    public void setProductDescription(String productDescription) {
+        this.productDescription = productDescription;
     }
 }
