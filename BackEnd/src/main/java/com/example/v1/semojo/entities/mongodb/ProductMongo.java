@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 import java.util.List;
 
-@Document(collection="products")
+@Document("products")
 @CompoundIndexes({
         @CompoundIndex(name = "productName_description_idx", def = "{'productName': 1, 'description': -1}")
 })

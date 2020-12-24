@@ -42,7 +42,7 @@ public class TestCaseController {
     }
 
     @PostMapping("/contributor/{username}/product/{productId}/testcase")
-    public WebRespResult uploadTestCase(@PathVariable Long projectId,
+    public WebRespResult uploadTestCase(@PathVariable Long productId,
                                         @PathVariable String username,
                                         @RequestParam String description,
                                         @RequestParam String input,
@@ -53,7 +53,7 @@ public class TestCaseController {
                                         MultipartFile uploadFile,
                                         HttpServletRequest req){
         try {
-            TestCase testCase = fileService.uploadTestCase(projectId, username, description, input, output,
+            TestCase testCase = fileService.uploadTestCase(productId, username, description, input, output,
                     inputDescription, outputDescription, status, uploadFile, req);
             return new WebRespResult<>(200, "upload success", testCase);
         } catch (Exception e) {
