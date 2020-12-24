@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Optional;
@@ -123,6 +124,7 @@ public class FileController {
             }else {
 
                 OutputStream os = response.getOutputStream();
+                FileInputStream fis;
                 switch (type) {
                     case "code":
                         Criteria criteria = Criteria.where("textId").is(fileId);
@@ -130,10 +132,11 @@ public class FileController {
                         TextMongo textMongo = mongoTemplate.findOne(query, TextMongo.class, "texts");
                         //TextMongo textMongo = fileService.findTextMongoById(fileId);
                         if (textMongo != null) {
-                            response.setContentType("application/octet-stream");
-                            response.setHeader("content-type", "application/octet-stream");
-                            response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(textMongo.getName(), "utf8"));
-                            os.write(textMongo.getContent().getBytes());
+                            response.setCharacterEncoding("UTF-8");
+                            response.setContentType("text/html");
+                            response.setHeader("Content-Disposition", "attachment;fileName=" + textMongo.getName());
+                            os.write(textMongo.getContent().getBytes(StandardCharsets.UTF_8));
+                            os.close();
                         }else {
                             os.write("{\"code\": 401, \"msg\": \"No such file\"}".getBytes());
                         }
@@ -148,8 +151,17 @@ public class FileController {
                     default:
                         os.write("{\"code\": 401, \"msg\": \"Wrong Type for Downloading file\"}".getBytes());
                  }
-                 os.flush();
-                 os.close();
+//                byte[] buffer = new byte[1024];
+//
+//                BufferedInputStream bis = new BufferedInputStream(fis);
+//                os = response.getOutputStream();
+//                int i = bis.read(buffer);
+//                while(i != -1){
+//                    os.write(buffer);
+//                    i = bis.read(buffer);
+//                }
+//                 os.flush();
+//                 os.close();
             }
         }catch (Exception e) {
             e.printStackTrace();

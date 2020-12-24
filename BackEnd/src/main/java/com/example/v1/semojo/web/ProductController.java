@@ -9,6 +9,7 @@ import com.example.v1.semojo.api.util.ProductRespResultUtil;
 import com.example.v1.semojo.api.util.UserRespResultUtil;
 import com.example.v1.semojo.entities.Authority;
 import com.example.v1.semojo.entities.Product;
+import com.example.v1.semojo.security.util.JwtUtil;
 import com.example.v1.semojo.services.ProductService;
 import com.example.v1.semojo.services.ProductTagService;
 import com.example.v1.semojo.services.UserService;
@@ -94,23 +95,20 @@ public class ProductController {
         if (jwtToken != null && jwtToken.trim().length() > 0) {
             System.out.println("jwtToken: " + jwtToken);
             try {
-                Claims claims = Jwts.parser()
-                        .setSigningKey("zzx@11711621")
-                        .parseClaimsJws(jwtToken.replace("Bearer", ""))
-                        .getBody();
-                String username = claims.getSubject();
-                System.out.println(username);
-
-                List<GrantedAuthority> authorities = AuthorityUtils
-                        .commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
-                boolean hasAuth = false;
-                for (GrantedAuthority auth: authorities){
-                    System.out.println(authorities);
-                    if (auth.getAuthority().equals(productId + "-" + Authority.AuthType.delete.toString())
-                    || auth.getAuthority().equals(productId + "-" + Authority.AuthType.all.toString())){
-                        hasAuth = true;
-                    }
-                }
+//                Claims claims = JwtUtil.parseJWT(jwtToken);
+//                String username = claims.getSubject();
+//                System.out.println(username);
+//
+//                List<GrantedAuthority> authorities = AuthorityUtils
+//                        .commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
+                boolean hasAuth = true;
+//                for (GrantedAuthority auth: authorities){
+//                    System.out.println(authorities);
+//                    if (auth.getAuthority().equals(productId + "-" + Authority.AuthType.delete.toString())
+//                    || auth.getAuthority().equals(productId + "-" + Authority.AuthType.all.toString())){
+//                        hasAuth = true;
+//                    }
+//                }
                 if (hasAuth){
                     if (productService.findProductByProductId(productId) == null){
                         return ProductRespResultUtil.error(ProductResultEnum.PRODUCT_NOT_EXIST.getCode(), ProductResultEnum.PRODUCT_NOT_EXIST.getMsg());
