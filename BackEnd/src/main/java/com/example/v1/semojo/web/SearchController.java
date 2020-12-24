@@ -17,8 +17,7 @@ import java.util.Map;
 public class SearchController {
     @Autowired
     SearchService searchService;
-    @Resource
-    private MongoTemplate mongoTemplate;
+
 
     @GetMapping("/search/user")
     public WebRespResult searchUserByName(@RequestParam String username){
@@ -26,26 +25,29 @@ public class SearchController {
             List<UserAllInfoModel> userList = searchService.searchUserNameLike(username);
             return new WebRespResult<List>(200, "success", userList);
         } catch (Exception e){
+            e.printStackTrace();
             return new WebRespResult(500, "error");
         }
     }
 
-    @GetMapping("search/product")
+    @GetMapping("/search/product")
     public WebRespResult searchProduct(@RequestParam String keyword){
         try {
             Map<String, List> searchResult = searchService.searchProduct(keyword);
             return new WebRespResult<Map>(200, "success", searchResult);
         } catch (Exception e){
+            e.printStackTrace();
             return new WebRespResult(500, "error");
         }
     }
 
-    @GetMapping("search/code")
+    @GetMapping("/search/code")
     public WebRespResult searchCode(@RequestParam String keyword){
         try {
             Map<String, List> searchResult = searchService.searchCode(keyword);
             return new WebRespResult<Map>(200, "success", searchResult);
         } catch (Exception e){
+            e.printStackTrace();
             return new WebRespResult(500, "error");
         }
 

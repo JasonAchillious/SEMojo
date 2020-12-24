@@ -13,4 +13,6 @@ public interface ProductDao extends JpaRepository<Product, Long> {
     @Query(nativeQuery=true, value = "select *from product order by sales_volume desc limit ?1 offset ?2")
     List<Product> findProductsByLimitAndStart(long limit, long start);
     Product findProductByProductName(String productName);
+    List<Product> findProductsByProductNameContaining(String productName);
+    List<Product> findProductsByOutlineContaining(String keyword);
 }
