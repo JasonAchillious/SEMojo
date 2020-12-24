@@ -33,8 +33,9 @@ public class SourceCodeController {
 
     @PutMapping("/contributor/{username}/product/{productId}/code/{codeId}")
     public WebRespResult updateSourceCode(@PathVariable Long productId,
-                                        @PathVariable String username,
-                                        @PathVariable Long codeId
+                                          @PathVariable String username,
+                                          @PathVariable Long codeId,
+                                          @RequestParam String content
 
     ){
         return null;

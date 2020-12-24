@@ -21,10 +21,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SearchService {
@@ -66,16 +63,27 @@ public class SearchService {
         List<Product> descriptionLikeProducts = productDao.findProductsByOutlineContaining(keyword);
         List<ProductDetailModel> nameInfos = new ArrayList<>();
         List<ProductDetailModel> descriptionInfos = new ArrayList<>();
+        Set<String> productNameSet = new HashSet<>();
         for (Product product : nameLikeProducts){
-            nameInfos.add(new ProductDetailModel(product));
+            if (!productNameSet.contains(product.getProductName())) {
+                ProductDetailModel detailModel =  new ProductDetailModel(product);
+                detailModel.setProductId(product.getProductId());
+                nameInfos.add(new ProductDetailModel(product));
+                productNameSet.add(product.getProductName());
+            }
         }
         for (Product product : descriptionLikeProducts){
-            descriptionInfos.add(new ProductDetailModel(product));
+            if (!productNameSet.contains(product.getProductName())) {
+                ProductDetailModel detailModel =  new ProductDetailModel(product);
+                detailModel.setProductId(product.getProductId());
+                descriptionInfos.add(detailModel);
+                productNameSet.add(product.getProductName());
+            }
         }
 
         Map<String, List> result = new HashMap<>();
-        result.put("name", nameInfos);
-        result.put("description", descriptionInfos);
+        result.put("productNameLike", nameInfos);
+        result.put("descriptionLike", descriptionInfos);
         return result;
     }
 
