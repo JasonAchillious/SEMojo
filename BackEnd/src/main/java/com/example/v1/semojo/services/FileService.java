@@ -194,7 +194,8 @@ public class FileService {
                                    String status,
                                    MultipartFile uploadFile,
                                    HttpServletRequest req) throws Exception {
-        String location = this.uploadFile(productId, uploadFile, "testcase", req);
+        String location = "TODO";
+                //this.uploadFile(productId, uploadFile, "testcase", req);
         Product product = productDao.findProductByProductId(productId);
         List<TestCase> testCaseList= product.getTestCases();
         TestCase newTestCase = new TestCase();
@@ -214,20 +215,23 @@ public class FileService {
             case "deprecated": newTestCase.setStatus(TestCase.testStatus.untested); break;
             default: throw new Exception("Not Such Status");
         }
+        TestCase tc;
         if (testCaseList == null){
             testCaseList = new ArrayList<>();
             testCaseList.add(newTestCase);
             product.setTestCases(testCaseList);
             Product updateProduct =  productDao.save(product);
             List<TestCase> newCases = updateProduct.getTestCases();
-            return newCases.get(newCases.size()-1);
+            tc = newCases.get(newCases.size()-1);
         }else {
             testCaseList.add(newTestCase);
             product.setTestCases(testCaseList);
             Product updateProduct =  productDao.save(product);
             List<TestCase> newCases = updateProduct.getTestCases();
-            return newCases.get(newCases.size()-1);
+            tc = newCases.get(newCases.size()-1);
         }
+        insertTextFile(productId, uploadFile, tc.getId(), "testcase");
+        return tc;
     }
 
     public SourceCode uploadSourceCode(String username,

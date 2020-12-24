@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface ProductMongoDao extends MongoRepository<ProductMongo,String> {
     ProductMongo findProductMongoByProductId(Long productId);
-    List<ProductMongo> findProductMongosByProductNameLike(String keyword);
-    List<ProductMongo> findProductMongosByDescriptionLike(String keyword);
+    List<ProductMongo> findProductMongosByProductNameLike(String productName);
+    List<ProductMongo> findProductMongosByDescriptionLike(String description);
 }

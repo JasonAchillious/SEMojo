@@ -1,6 +1,7 @@
 package com.example.v1.semojo.entities.mongodb;
 
 import org.bson.types.Binary;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -13,10 +14,12 @@ public class TextMongo {
     private String _id;
     private Long textId;
     private Long productId;
+    @Indexed
     private String name;
     private String contentType;
     private long size;
     private Timestamp updateDate;
+    @Indexed
     private String content;
     private String path;
 
