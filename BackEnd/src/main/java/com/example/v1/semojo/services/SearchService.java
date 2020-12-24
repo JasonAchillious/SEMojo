@@ -1,5 +1,6 @@
 package com.example.v1.semojo.services;
 
+import com.example.v1.semojo.api.model.ProductDetailModel;
 import com.example.v1.semojo.api.model.TextSearchModel;
 import com.example.v1.semojo.api.model.UserAllInfoModel;
 import com.example.v1.semojo.api.model.UserInfoModel;
@@ -7,13 +8,19 @@ import com.example.v1.semojo.dao.ProductDao;
 import com.example.v1.semojo.dao.UserAuthDao;
 import com.example.v1.semojo.dao.mongoDAO.ProductMongoDao;
 import com.example.v1.semojo.dao.mongoDAO.TextMongoDao;
+import com.example.v1.semojo.entities.Product;
 import com.example.v1.semojo.entities.User;
 import com.example.v1.semojo.entities.UserAuth;
 import com.example.v1.semojo.entities.mongodb.ProductMongo;
 import com.example.v1.semojo.entities.mongodb.TextMongo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.mapping.MongoId;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +36,8 @@ public class SearchService {
     ProductMongoDao productMongoDao;
     @Autowired
     TextMongoDao textMongoDao;
+    @Resource
+    private MongoTemplate mongoTemplate;
 
     public List<UserAllInfoModel> searchUserNameLike(String userName){
         List<UserAuth> userAuthList = userAuthDao.findByUsernameLike("%" + userName + "%");
@@ -53,17 +62,27 @@ public class SearchService {
     }
 
     public Map<String, List> searchProduct(String keyword){
-        List<ProductMongo> nameLikeProducts = productMongoDao.findProductMongosByProductNameLike("%"+keyword+"%");
-        List<ProductMongo> descriptionLikeProducts = productMongoDao.findProductMongosByDescriptionLike("%" + keyword + "%");
+        List<Product> nameLikeProducts = productDao.findProductsByProductNameContaining(keyword);
+        List<Product> descriptionLikeProducts = productDao.findProductsByOutlineContaining(keyword);
+        List<ProductDetailModel> nameInfos = new ArrayList<>();
+        List<ProductDetailModel> descriptionInfos = new ArrayList<>();
+        for (Product product : nameLikeProducts){
+            nameInfos.add(new ProductDetailModel(product));
+        }
+        for (Product product : descriptionLikeProducts){
+            descriptionInfos.add(new ProductDetailModel(product));
+        }
 
         Map<String, List> result = new HashMap<>();
-        result.put("name", nameLikeProducts);
-        result.put("description", descriptionLikeProducts);
+        result.put("name", nameInfos);
+        result.put("description", descriptionInfos);
         return result;
     }
 
     public Map<String,List> searchCode(String keyword){
-        List<TextMongo> textList = textMongoDao.findTextMongosByContentLike("%" + keyword + "%");
+        Query query = Query.query(Criteria.where("content").regex(keyword));
+        List<TextMongo> textList = mongoTemplate.find(query, TextMongo.class);
+        //List<TextMongo> textList = textMongoDao.findTextMongosByContentLike("%" + keyword + "%");
         Map<String,List> productCodes = new HashMap<>();
         for (TextMongo text: textList){
             long productId = text.getProductId();

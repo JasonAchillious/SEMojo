@@ -17,8 +17,7 @@ import java.util.Map;
 public class SearchController {
     @Autowired
     SearchService searchService;
-    @Resource
-    private MongoTemplate mongoTemplate;
+
 
     @GetMapping("/search/user")
     public WebRespResult searchUserByName(@RequestParam String username){
