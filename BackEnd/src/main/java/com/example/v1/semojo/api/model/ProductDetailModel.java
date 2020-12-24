@@ -17,12 +17,21 @@ public class ProductDetailModel {
     private double fixPrice;
     private double currentPrice;
     private Product.ProductStatus status;
+    private Long productId;
 
     private List<String> tags;
     private List<String> owners;
     private List<String> artifacts;
     private List<String> docs;
     private List<String> testCases;
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
 
     public String getProductName() {
         return productName;

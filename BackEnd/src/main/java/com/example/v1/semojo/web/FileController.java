@@ -16,10 +16,14 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -33,6 +37,8 @@ import java.util.Optional;
 public class FileController {
     @Autowired
     FileService fileService;
+    @Resource
+    private MongoTemplate mongoTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(FileController.class);
 
@@ -115,17 +121,28 @@ public class FileController {
                     i = bis.read(buffer);
                 }
             }else {
+
                 OutputStream os = response.getOutputStream();
                 switch (type) {
                     case "code":
-                        TextMongo textMongo = fileService.findTextMongoById(fileId);
-                        if (textMongo != null)
+                        Criteria criteria = Criteria.where("textId").is(fileId);
+                        Query query = new Query(criteria);
+                        TextMongo textMongo = mongoTemplate.findOne(query, TextMongo.class, "texts");
+                        //TextMongo textMongo = fileService.findTextMongoById(fileId);
+                        if (textMongo != null) {
+                            response.setContentType("application/octet-stream");
+                            response.setHeader("content-type", "application/octet-stream");
+                            response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(textMongo.getName(), "utf8"));
                             os.write(textMongo.getContent().getBytes());
-                        else
+                        }else {
                             os.write("{\"code\": 401, \"msg\": \"No such file\"}".getBytes());
+                        }
                         break;
                     case "artifact":
                         ArtifactMongo artifactMongo = fileService.findArtifactMongoById(fileId);
+                        response.setContentType("application/octet-stream");
+                        response.setHeader("content-type", "application/octet-stream");
+                        response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(artifactMongo.getName(), "utf8"));
                         os.write(artifactMongo.getContent().getData());
                         break;
                     default:

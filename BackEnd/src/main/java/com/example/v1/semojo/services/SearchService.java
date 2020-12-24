@@ -66,13 +66,17 @@ public class SearchService {
         Set<String> productNameSet = new HashSet<>();
         for (Product product : nameLikeProducts){
             if (!productNameSet.contains(product.getProductName())) {
+                ProductDetailModel detailModel =  new ProductDetailModel(product);
+                detailModel.setProductId(product.getProductId());
                 nameInfos.add(new ProductDetailModel(product));
                 productNameSet.add(product.getProductName());
             }
         }
         for (Product product : descriptionLikeProducts){
             if (!productNameSet.contains(product.getProductName())) {
-                nameInfos.add(new ProductDetailModel(product));
+                ProductDetailModel detailModel =  new ProductDetailModel(product);
+                detailModel.setProductId(product.getProductId());
+                descriptionInfos.add(detailModel);
                 productNameSet.add(product.getProductName());
             }
         }

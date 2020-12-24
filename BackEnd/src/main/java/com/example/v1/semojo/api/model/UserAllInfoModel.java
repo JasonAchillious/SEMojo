@@ -13,6 +13,7 @@ public class UserAllInfoModel {
     private String qqNum;
     private String weChatNum;
     private String portrait;
+    private Long productId;
 
     public String getUsername() {
         return username;
@@ -92,5 +93,13 @@ public class UserAllInfoModel {
 
     public void setPortrait(String portrait) {
         this.portrait = portrait;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 }
