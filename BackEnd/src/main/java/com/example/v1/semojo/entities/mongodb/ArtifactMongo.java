@@ -17,8 +17,8 @@ public class ArtifactMongo {
     @Indexed
     private String name;
     private String type;
-    private long size;
-    private Timestamp updateDate;
+    private Long size;
+    private Date updateDate;
     @Indexed
     private String md5;
     private Binary content;
@@ -29,7 +29,7 @@ public class ArtifactMongo {
 
 
     public ArtifactMongo(Long productId, Long artifactId, String name, String type, long size,
-                         Binary content, Timestamp updateDate, String path) {
+                         Binary content, Date updateDate, String path) {
         this.name = name;
         this.type = type;
         this.size = size;
@@ -109,11 +109,11 @@ public class ArtifactMongo {
         this.size = size;
     }
 
-    public Timestamp getUpdateDate() {
+    public Date getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Timestamp updateDate) {
+    public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
 

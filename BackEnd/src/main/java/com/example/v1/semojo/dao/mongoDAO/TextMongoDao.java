@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface TextMongoDao extends MongoRepository<TextMongo,String> {
-    TextMongo findTextMongoByTextId(long textId);
+    TextMongo findTextMongoByTextId(Long textId);
     List<TextMongo> findTextMongosByContentLike(String keyword);
 
 

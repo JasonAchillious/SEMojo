@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -356,7 +357,7 @@ public class FileService {
         TextMongo textMongo = new TextMongo(productId, textId,
                 textFile.getOriginalFilename(),
                 contentType, textFile.getSize(),
-                new Timestamp(System.currentTimeMillis()) ,content);
+                new Date(System.currentTimeMillis()) ,content);
         ProductMongo productMongo =  productMongoDao.findProductMongoByProductId(productId);
         if (productMongo != null){
             textMongo = textMongoDao.save(textMongo);
@@ -381,7 +382,7 @@ public class FileService {
         ArtifactMongo artifactMongo = new ArtifactMongo(productId, artifactId,
                 artifact.getOriginalFilename(),
                 type, artifact.getSize(),
-                new Binary(bFile), new Timestamp(System.currentTimeMillis()), path);
+                new Binary(bFile), new Date(System.currentTimeMillis()), path);
         ProductMongo productMongo =  productMongoDao.findProductMongoByProductId(productId);
         if (productMongo != null){
             artifactMongo = artifactMongoDao.save(artifactMongo);

@@ -18,7 +18,7 @@ public class TextMongo {
     private String name;
     private String contentType;
     private long size;
-    private Timestamp updateDate;
+    private Date updateDate;
     @Indexed
     private String content;
     private String path;
@@ -29,7 +29,7 @@ public class TextMongo {
 
 
     public TextMongo(Long productId, Long textId, String name,
-                     String contentType, long size, Timestamp updateDate, String content) {
+                     String contentType, long size, Date updateDate, String content) {
         this.textId = textId;
         this.name = name;
         this.contentType = contentType;
@@ -106,11 +106,11 @@ public class TextMongo {
         this.size = size;
     }
 
-    public Timestamp getUpdateDate() {
+    public Date getUpdateDate() {
         return updateDate;
     }
 
-    public void setUpdateDate(Timestamp updateDate) {
+    public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
     }
 
