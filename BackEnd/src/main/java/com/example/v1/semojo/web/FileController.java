@@ -119,7 +119,10 @@ public class FileController {
                 switch (type) {
                     case "code":
                         TextMongo textMongo = fileService.findTextMongoById(fileId);
-                        os.write(textMongo.getContent().getBytes());
+                        if (textMongo != null)
+                            os.write(textMongo.getContent().getBytes());
+                        else
+                            os.write("{\"code\": 401, \"msg\": \"No such file\"}".getBytes());
                         break;
                     case "artifact":
                         ArtifactMongo artifactMongo = fileService.findArtifactMongoById(fileId);

@@ -211,9 +211,9 @@ public class FileService {
         newTestCase.setInputDescription(inputDescription);
         newTestCase.setOutPutDescription(outPutDescription);
         switch (status){
-            case "beta": newTestCase.setStatus(TestCase.testStatus.pass); break;
-            case "finalVersion": newTestCase.setStatus(TestCase.testStatus.fail); break;
-            case "deprecated": newTestCase.setStatus(TestCase.testStatus.untested); break;
+            case "pass": newTestCase.setStatus(TestCase.testStatus.pass); break;
+            case "fail": newTestCase.setStatus(TestCase.testStatus.fail); break;
+            case "untested": newTestCase.setStatus(TestCase.testStatus.untested); break;
             default: throw new Exception("Not Such Status");
         }
         TestCase tc;
