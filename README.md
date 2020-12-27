@@ -24,4 +24,4 @@ and customers.
 ### Attention
 You need to change the url in ConnectUtil.java with the url your stored path of "BackEnd" directory.
 
-![Alt text](DevDoc/picture/path problem.png "path")
+![Alt text](https://github.com/JasonAchillious/SEMojo/blob/master/DevDoc/picture/path%20problem.png "path")
