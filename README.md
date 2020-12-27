@@ -1,8 +1,8 @@
 # SEMojo
-a website to provide services of advanced software engineering techniques (automated testing, repairing, code generation, code summarization, etc.)
+A website to provide services of advanced software engineering techniques (automated testing, repairing, code generation, code summarization, etc.)
 
 ### Development requirements.
-+ Enabling SaaS platform
++ Enable docker container run technics uploaded.
 + Payment options
 + Support three user groups: admin, contributors,
 and customers.
@@ -21,3 +21,6 @@ and customers.
  + 朱昉 (Fang Zhu)
  + 赵志翔 (Zhixiang Zhao)
   
+### Attention
+You need to change the url in ConnectUtil.java with the url your stored path of "BackEnd" directory.
+![img.png](img.png)
