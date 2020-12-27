@@ -22,6 +22,8 @@ and customers.
  + 赵志翔 (Zhixiang Zhao)
   
 ### Attention
+You need to add all ca files to a "ca" directory under the catalogue of the same level as SemojoApplication.
+
 You need to change the url in ConnectUtil.java with the url your stored path of "BackEnd" directory.
 
 ![Alt text](https://github.com/JasonAchillious/SEMojo/blob/master/DevDoc/picture/path%20problem.png "path")
