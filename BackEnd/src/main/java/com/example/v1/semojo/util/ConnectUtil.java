@@ -18,7 +18,7 @@ import java.util.*;
 
 public class ConnectUtil {
 
-    public static final String directory = "F:/大学学习/计算机/Project/OOAD_new/SEMojo/BackEnd/";
+    public static final String directory = "D:/program/IdeaProjects/SEMojo-v1/BackEnd/";
     /**
      * 客户端
      */

@@ -1,8 +1,5 @@
 package com.example.v1.semojo.services;
 
-import com.example.v1.semojo.api.model.ContainerModel;
-import com.example.v1.semojo.api.model.DockerModel;
-import com.example.v1.semojo.api.model.LoginRespModel;
 import com.example.v1.semojo.dao.mongoDAO.ArtifactMongoDao;
 import com.example.v1.semojo.dao.mongoDAO.ProductMongoDao;
 import com.example.v1.semojo.dao.mongoDAO.TextMongoDao;
@@ -11,27 +8,11 @@ import com.example.v1.semojo.entities.mongodb.ProductMongo;
 import com.example.v1.semojo.entities.mongodb.TextMongo;
 import com.example.v1.semojo.util.ConnectUtil;
 import com.example.v1.semojo.util.FileUtil;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.github.dockerjava.api.DockerClient;
-import com.github.dockerjava.api.async.ResultCallback;
-import com.github.dockerjava.api.command.BuildImageCmd;
-import com.github.dockerjava.api.command.BuildImageResultCallback;
-import com.github.dockerjava.api.command.CreateContainerResponse;
-import com.github.dockerjava.api.command.InspectContainerResponse;
-import com.github.dockerjava.api.model.*;
-import com.github.dockerjava.core.DefaultDockerClientConfig;
-import com.github.dockerjava.core.DockerClientBuilder;
-import com.github.dockerjava.core.DockerClientConfig;
-import com.jcraft.jsch.*;
-import org.apache.commons.lang.math.RandomUtils;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
-import java.sql.Timestamp;
-import java.util.*;
 
 import static com.example.v1.semojo.util.ConnectUtil.directory;
 import static com.example.v1.semojo.util.ConnectUtil.runCmd;
@@ -81,7 +62,7 @@ public class DockerClientService{
 
         runCmd("cd /root/ooad/java/"+filename+"; docker run -i ooad:"+filename+" < input.txt > output.txt");
         try {
-            Thread.currentThread().sleep(10000);
+            Thread.currentThread().sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
