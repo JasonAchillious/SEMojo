@@ -32,11 +32,13 @@ public class DockerClientService{
         TextMongo textMongo = textMongoDao.findTextMongoByTextId(testcaseId);
         ArtifactMongo artifactMongo = artifactMongoDao.findArtifactMongoByArtifactId(artifactsId);
         ProductMongo productMongo = productMongoDao.findProductMongoByProductId(productId);
-        String filename = artifactMongo.getName();
-        if ((filename != null) && (filename.length() > 0)) {
-            int dot = filename.lastIndexOf('.');
-            if ((dot >-1) && (dot < (filename.length() - 1))) {
-                filename = filename.substring(0, dot);
+        String allFilename = artifactMongo.getName();
+        int dot = 0;
+        String filename = allFilename;
+        if ((allFilename != null) && (allFilename.length() > 0)) {
+            dot = allFilename.lastIndexOf('.');
+            if ((dot >-1) && (dot < (allFilename.length() - 1))) {
+                filename = allFilename.substring(0, dot);
             }
         }
         FileUtil.bytesToFile(artifactMongo.getContent().getData(),directory + "src/main/java/com/example/v1/semojo/file/"+filename+"/"+filename+".jar");
@@ -54,13 +56,20 @@ public class DockerClientService{
                 ex.printStackTrace();
             }
         }
-        DockerClient dockerClient = ConnectUtil.initClient();
+        ConnectUtil.initClient();
         ConnectUtil.createChannel();
-        ArtifactsDockerFactory dockerFactory = new JAVADockerFactory();
-        dockerFactory.uploadFile(filename);
-        dockerFactory.createImage(filename);
-
-        runCmd("cd /root/ooad/java/"+filename+"; docker run -i ooad:"+filename+" < input.txt > output.txt");
+        ArtifactsDockerFactory dockerFactory;
+        if (allFilename.substring(dot).equals(".jar")){
+            dockerFactory = new JAVADockerFactory();
+            dockerFactory.uploadFile(filename);
+            dockerFactory.createImage(filename);
+            runCmd("cd /root/ooad/java/"+filename+"; docker run -i ooad:"+filename+" < input.txt > output.txt");
+        }else {
+            dockerFactory = new PythonDockerFactory();
+            dockerFactory.uploadFile(filename);
+            dockerFactory.createImage(filename);
+            runCmd("cd /root/ooad/python/"+filename+"; docker run -i ooad:"+filename+" < input.txt > output.txt");
+        }
         try {
             Thread.currentThread().sleep(5000);
         } catch (InterruptedException e) {
